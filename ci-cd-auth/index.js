@@ -36,7 +36,7 @@ app.get("/signup", (req, res) => {
 app.get("/login", (req, res) => {
   res.sendFile(path.join(__dirname, "views", "login.html"));
 });
-
+const bcrypt = require("bcrypt");
 // Sign-up route for students and lecturers (POST request)
 app.post("/signup", async (req, res) => {
   const { username, email, password, confirmPassword, role } = req.body;
@@ -59,6 +59,8 @@ app.post("/signup", async (req, res) => {
       return res.status(400).send("User with this email or username already exists.");
     }
 
+    const hashedPassword = await bcrypt.hash(password, 10); // 🔒 Hash the password
+
     const newUser = new User({ username, email, password, role });
     await newUser.save();
 
@@ -79,11 +81,16 @@ app.post("/login", async (req, res) => {
   try {
     const user = await User.findOne({ username });
 
-    if (!user || user.password !== password) {
-      return res.status(401).send("Invalid username or password.");
+    if (!user) {
+      return res.status(404).send("❌ Username not found.");
+    }
+    const passwordMatch = await bcrypt.compare(password, user.password); // ✅ Compare hashed password
+
+    if (!passwordMatch) {
+      return res.status(401).send("❌ Incorrect password.");
     }
 
-    res.status(200).send(`Welcome, ${user.username}!`);
+    res.status(200).send(`✅ Welcome, ${user.username}!`);
   } catch (error) {
     res.status(500).send("Login failed: " + error.message);
   }
