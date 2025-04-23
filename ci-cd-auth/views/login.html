@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Log in - CI/CD Learning Platform</title>
+  <link rel="stylesheet" href="/styles.css" /> <!-- Link to your CSS file -->
+</head>
+<body>
+  <!-- Header with Navbar -->
+  <header>
+    <nav class="navbar">
+      <div class="logo">CI/CD Learning</div>
+      <ul class="nav-links">
+        <li><a href="/">Home</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Main log in Section -->
+  <main>
+    <div class="login-form">
+      <h2>Log In</h2>
+      <form action="/login" method="POST">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" required placeholder="Enter your username" /><br/>
+
+     
+
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required placeholder="Enter your password" /><br/>
+
+     
+
+        <button type="submit">Log In</button>
+      </form>
+      <p>You Dont Have Account? <a href="/signup">Signup here</a></p>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 CI/CD Learning Platform | All Rights Reserved</p>
+  </footer>
+</body>
+</html>

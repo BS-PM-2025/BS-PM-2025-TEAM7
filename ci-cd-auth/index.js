@@ -32,6 +32,11 @@ app.get("/signup", (req, res) => {
   res.sendFile(path.join(__dirname, "views", "signup.html"));
 });
 
+// Serve log-in page (GET request)
+app.get("/login", (req, res) => {
+  res.sendFile(path.join(__dirname, "views", "login.html"));
+});
+
 // Sign-up route for students and lecturers (POST request)
 app.post("/signup", async (req, res) => {
   const { username, email, password, confirmPassword, role } = req.body;
@@ -62,6 +67,28 @@ app.post("/signup", async (req, res) => {
     res.status(500).send("Error creating user: " + error.message);
   }
 });
+
+// ✅ Login route (POST)
+app.post("/login", async (req, res) => {
+  const { username, password } = req.body;
+
+  if (!username || !password) {
+    return res.status(400).send("Username and password are required.");
+  }
+
+  try {
+    const user = await User.findOne({ username });
+
+    if (!user || user.password !== password) {
+      return res.status(401).send("Invalid username or password.");
+    }
+
+    res.status(200).send(`Welcome, ${user.username}!`);
+  } catch (error) {
+    res.status(500).send("Login failed: " + error.message);
+  }
+});
+
 
 // Start the server
 app.listen(PORT, () => {
