@@ -13,8 +13,8 @@
       <div class="logo">CI/CD Learning</div>
       <ul class="nav-links" id="nav-links">
         <li><a href="/">Home</a></li>
-        <li class="auth-link"><a href="/signup">Sign Up</a></li>
-        <li class="auth-link"><a href="/login">Login</a></li>
+        <li><a href="/signup">Sign Up</a></li>
+        <li><a href="/login">Login</a></li>
       </ul>
     </nav>
   </header>
@@ -24,6 +24,7 @@
     <section class="hero">
       <h1>Welcome to the CI/CD Learning Platform</h1>
       <p>Master Continuous Integration and Continuous Deployment with hands-on projects and guided tutorials.</p>
+      <div id="action-buttons"></div>
     </section>
   </main>
 
@@ -32,8 +33,9 @@
     <p>&copy; 2025 CI/CD Learning Platform | All Rights Reserved</p>
   </footer>
 
-  <!-- Token Behavior Script -->
+  <!-- Role-based behavior script -->
   <script>
+    // Decode JWT
     function parseJwt(token) {
       try {
         return JSON.parse(atob(token.split('.')[1]));
@@ -42,6 +44,7 @@
       }
     }
 
+    // Logout function
     function logout() {
       localStorage.removeItem("token");
       window.location.href = "/login";
@@ -49,28 +52,37 @@
 
     const token = localStorage.getItem("token");
     const user = parseJwt(token);
-    const nav = document.getElementById("nav-links");
+    const navbar = document.querySelector("#nav-links");
 
     if (user) {
-      // Remove Login/Signup
-      document.querySelectorAll(".auth-link").forEach(link => link.remove());
+      // Remove Login and Signup
+      const linksToRemove = ["Sign Up", "Login"];
+      Array.from(navbar.children).forEach(li => {
+        if (linksToRemove.some(text => li.textContent.includes(text))) {
+          navbar.removeChild(li);
+        }
+      });
 
       // Add Profile
-      const profileItem = document.createElement("li");
-      profileItem.innerHTML = `<a href="/${user.role === 'student' ? 'StudentProfile' : 'LecturerProfile'}">${user.role.charAt(0).toUpperCase() + user.role.slice(1)} Profile</a>`;
-      nav.appendChild(profileItem);
+      const profileLi = document.createElement("li");
+      profileLi.innerHTML = user.role === "student"
+        ? `<a href="/StudentProfile">Profile</a>`
+        : `<a href="/LecturerProfile">Profile</a>`;
+      navbar.appendChild(profileLi);
 
       // Add Logout
-      const logoutItem = document.createElement("li");
-      logoutItem.innerHTML = `<a href="#" onclick="logout()">Logout</a>`;
-      nav.appendChild(logoutItem);
+      const logoutLi = document.createElement("li");
+      logoutLi.innerHTML = `<a href="#" onclick="logout()">Logout</a>`;
+      navbar.appendChild(logoutLi);
     }
 
-    // Prevent back nav after logout
-    if (!token) {
-      history.pushState(null, null, location.href);
-      window.onpopstate = () => history.go(1);
-    }
+    // Disable browser back after logout
+    window.onload = () => {
+      if (!token) {
+        history.pushState(null, null, location.href);
+        window.onpopstate = () => history.go(1);
+      }
+    };
   </script>
 </body>
 </html>

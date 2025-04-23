@@ -45,6 +45,33 @@
       <p>Already have an account? <a href="/login">Login here</a></p>
     </div>
   </main>
+  <script>
+    document.querySelector("form").addEventListener("submit", async function (e) {
+      e.preventDefault(); // Prevent the default form action
+  
+      const formData = new FormData(this);
+      const formObject = Object.fromEntries(formData.entries());
+  
+      try {
+        const response = await fetch("/signup", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formObject)
+        });
+  
+        if (response.ok) {
+          alert("Signup successful!");
+          window.location.href = "/login";
+        } else {
+          const result = await response.json();
+          alert("Signup failed: " + (result.message || "Unknown error."));
+        }
+      } catch (error) {
+        alert("An error occurred: " + error.message);
+      }
+    });
+  </script>
+  
 
   <!-- Footer -->
   <footer>
