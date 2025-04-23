@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Log in - CI/CD Learning Platform</title>
-  <link rel="stylesheet" href="/styles.css" /> <!-- Link to your CSS file -->
+  <link rel="stylesheet" href="/styles.css" />
 </head>
 <body>
   <!-- Header with Navbar -->
@@ -17,24 +17,22 @@
     </nav>
   </header>
 
-  <!-- Main log in Section -->
+  <!-- Main login section -->
   <main>
     <div class="login-form">
       <h2>Log In</h2>
-      <form action="/login" method="POST">
+      <form id="login-form">
         <label for="username">Username</label>
-        <input type="text" id="username" name="username" required placeholder="Enter your username" /><br/>
-
-     
+        <input type="text" id="username" name="username" required placeholder="Enter your username" />
 
         <label for="password">Password</label>
-        <input type="password" id="password" name="password" required placeholder="Enter your password" /><br/>
-
-     
+        <input type="password" id="password" name="password" required placeholder="Enter your password" />
 
         <button type="submit">Log In</button>
+        <p id="error-message" style="color: red; font-weight: bold;"></p>
       </form>
-      <p>You Dont Have Account? <a href="/signup">Signup here</a></p>
+      <p>Back To Home? <a href="/">Click here</a></p>
+      <p>You don't have an account? <a href="/signup">Signup here</a></p>
     </div>
   </main>
 
@@ -42,5 +40,58 @@
   <footer>
     <p>&copy; 2025 CI/CD Learning Platform | All Rights Reserved</p>
   </footer>
+
+  <script>
+    // Prevent accessing login page if already logged in
+    const token = localStorage.getItem("token");
+    if (token) {
+      const user = parseJwt(token);
+      if (user && user.role) {
+        window.location.href = "/";
+      }
+    }
+
+    // Prevent using back after login
+    window.onload = () => {
+      history.pushState(null, null, location.href);
+      window.onpopstate = () => {
+        history.go(1);
+      };
+    };
+
+    function parseJwt(token) {
+      try {
+        return JSON.parse(atob(token.split('.')[1]));
+      } catch (e) {
+        return null;
+      }
+    }
+
+    document.getElementById("login-form").addEventListener("submit", async function (e) {
+      e.preventDefault();
+      const formData = new FormData(e.target);
+      const body = Object.fromEntries(formData.entries());
+
+      try {
+        const response = await fetch("/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body)
+        });
+
+        const result = await response.json();
+
+        if (!response.ok) {
+          document.getElementById("error-message").textContent = result.message || "Login failed.";
+          return;
+        }
+
+        localStorage.setItem("token", result.token);
+        window.location.href = "/";
+      } catch (err) {
+        document.getElementById("error-message").textContent = "Server error. Please try again.";
+      }
+    });
+  </script>
 </body>
 </html>

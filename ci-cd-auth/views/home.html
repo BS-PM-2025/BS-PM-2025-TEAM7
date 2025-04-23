@@ -7,19 +7,19 @@
   <link rel="stylesheet" href="/styles.css" />
 </head>
 <body>
+  <!-- Header with Navbar -->
   <header>
     <nav class="navbar">
       <div class="logo">CI/CD Learning</div>
-      <ul class="nav-links">
+      <ul class="nav-links" id="nav-links">
         <li><a href="/">Home</a></li>
-        <!-- Add Sign Up link in the navbar -->
-        <li><a href="/signup">Sign Up</a></li>
-        <!-- You can add more navigation links here -->
-        <li><a href="/login">Login</a></li>
+        <li class="auth-link"><a href="/signup">Sign Up</a></li>
+        <li class="auth-link"><a href="/login">Login</a></li>
       </ul>
     </nav>
   </header>
 
+  <!-- Hero Section -->
   <main>
     <section class="hero">
       <h1>Welcome to the CI/CD Learning Platform</h1>
@@ -27,8 +27,50 @@
     </section>
   </main>
 
+  <!-- Footer -->
   <footer>
     <p>&copy; 2025 CI/CD Learning Platform | All Rights Reserved</p>
   </footer>
+
+  <!-- Token Behavior Script -->
+  <script>
+    function parseJwt(token) {
+      try {
+        return JSON.parse(atob(token.split('.')[1]));
+      } catch (e) {
+        return null;
+      }
+    }
+
+    function logout() {
+      localStorage.removeItem("token");
+      window.location.href = "/login";
+    }
+
+    const token = localStorage.getItem("token");
+    const user = parseJwt(token);
+    const nav = document.getElementById("nav-links");
+
+    if (user) {
+      // Remove Login/Signup
+      document.querySelectorAll(".auth-link").forEach(link => link.remove());
+
+      // Add Profile
+      const profileItem = document.createElement("li");
+      profileItem.innerHTML = `<a href="/${user.role === 'student' ? 'StudentProfile' : 'LecturerProfile'}">${user.role.charAt(0).toUpperCase() + user.role.slice(1)} Profile</a>`;
+      nav.appendChild(profileItem);
+
+      // Add Logout
+      const logoutItem = document.createElement("li");
+      logoutItem.innerHTML = `<a href="#" onclick="logout()">Logout</a>`;
+      nav.appendChild(logoutItem);
+    }
+
+    // Prevent back nav after logout
+    if (!token) {
+      history.pushState(null, null, location.href);
+      window.onpopstate = () => history.go(1);
+    }
+  </script>
 </body>
 </html>

@@ -1,11 +1,14 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
-const User = require("./models/user"); // Import the User model
 const path = require("path");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const User = require("./models/user");
 
 const app = express();
 const PORT = 3000;
+const JWT_SECRET = "your_secret_key"; // Replace with a secure secret
 
 // Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -16,88 +19,103 @@ mongoose.connect("mongodb://127.0.0.1:27017/ci_cd_learning", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
-  .then(() => console.log("Connected to MongoDB"))
-  .catch((err) => console.error("MongoDB connection error:", err));
+  .then(() => console.log("✅ Connected to MongoDB"))
+  .catch((err) => console.error("❌ MongoDB connection error:", err));
 
-// Serve static files (like styles.css)
+// Serve static files
 app.use(express.static(path.join(__dirname, "public")));
 
-// Serve homepage
+// Routes for HTML pages
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "views", "home.html"));
 });
 
-// Serve sign-up page (GET request)
 app.get("/signup", (req, res) => {
   res.sendFile(path.join(__dirname, "views", "signup.html"));
 });
 
-// Serve log-in page (GET request)
 app.get("/login", (req, res) => {
   res.sendFile(path.join(__dirname, "views", "login.html"));
 });
-const bcrypt = require("bcrypt");
-// Sign-up route for students and lecturers (POST request)
+
+
+app.get("/StudentProfile", (req, res) => {
+  res.sendFile(path.join(__dirname, "views", "studentProfile.html"));
+});
+
+app.get("/LecturerProfile", (req, res) => {
+  res.sendFile(path.join(__dirname, "views", "lecturerProfile.html"));
+});
+
+// Sign-up Route
 app.post("/signup", async (req, res) => {
   const { username, email, password, confirmPassword, role } = req.body;
 
   if (!username || !email || !password || !confirmPassword || !role) {
-    return res.status(400).send("All fields are required.");
+    return res.status(400).json({ message: "All fields are required." });
   }
 
   if (password !== confirmPassword) {
-    return res.status(400).send("Passwords do not match.");
+    return res.status(400).json({ message: "Passwords do not match." });
   }
 
-  if (role !== "student" && role !== "lecturer") {
-    return res.status(400).send("Role must be either 'student' or 'lecturer'.");
+  if (!["student", "lecturer"].includes(role)) {
+    return res.status(400).json({ message: "Role must be student or lecturer." });
   }
 
   try {
     const userExists = await User.findOne({ $or: [{ email }, { username }] });
     if (userExists) {
-      return res.status(400).send("User with this email or username already exists.");
+      return res.status(400).json({ message: "User already exists." });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10); // 🔒 Hash the password
-
-    const newUser = new User({ username, email, password, role });
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const newUser = new User({ username, email, password: hashedPassword, role });
     await newUser.save();
 
-    res.status(201).send("User created successfully!");
+    res.status(201).json({ message: "User created successfully!" });
   } catch (error) {
-    res.status(500).send("Error creating user: " + error.message);
+    res.status(500).json({ message: "Error creating user: " + error.message });
   }
 });
 
-// ✅ Login route (POST)
+// Login Route
 app.post("/login", async (req, res) => {
   const { username, password } = req.body;
 
   if (!username || !password) {
-    return res.status(400).send("Username and password are required.");
+    return res.status(400).json({ message: "Username and password are required." });
   }
 
   try {
     const user = await User.findOne({ username });
-
     if (!user) {
-      return res.status(404).send("❌ Username not found.");
-    }
-    const passwordMatch = await bcrypt.compare(password, user.password); // ✅ Compare hashed password
-
-    if (!passwordMatch) {
-      return res.status(401).send("❌ Incorrect password.");
+      return res.status(404).json({ message: "Username not found." });
     }
 
-    res.status(200).send(`✅ Welcome, ${user.username}!`);
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(401).json({ message: "Incorrect password." });
+    }
+
+    const token = jwt.sign(
+      { username: user.username, email: user.email, role: user.role },
+      JWT_SECRET,
+      { expiresIn: "2h" }
+    );
+
+    res.status(200).json({ token });
   } catch (error) {
-    res.status(500).send("Login failed: " + error.message);
+    res.status(500).json({ message: "Login failed: " + error.message });
   }
 });
 
+// Logout (dummy for frontend control)
+app.post("/logout", (req, res) => {
+  res.status(200).json({ message: "Logged out successfully." });
+});
 
 // Start the server
 app.listen(PORT, () => {
-  console.log(`CI/CD Learning Platform running at http://localhost:${PORT}`);
+  console.log(`🚀 Server running at http://localhost:${PORT}`);
 });
