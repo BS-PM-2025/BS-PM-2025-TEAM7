@@ -3,18 +3,173 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Log in - CI/CD Learning Platform</title>
-  <link rel="stylesheet" href="/styles.css" />
+  <title>Log In - CI/CD Learning Platform</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 100vh;
+      min-height: 100vh;
+      padding: 120px;
+    }
+
+    header {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      padding: 1.5rem;
+      background-color: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(8px);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-radius: 10px;
+      width: calc(100% - 40px);
+    }
+
+    .logo {
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: #00ffc3;
+    }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .nav-links li a {
+      text-decoration: none;
+      color: #e0f7fa;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    .nav-links li a:hover {
+      color: #00ffc3;
+    }
+
+    .login-form {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 20px;
+      backdrop-filter: blur(15px);
+      padding: 3rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      max-width: 500px;
+      width: 100%;
+      text-align: center;
+      margin: auto;
+      animation: fadeIn 1.5s ease-in-out;
+    }
+
+    .login-form h2 {
+      font-size: 2rem;
+      color: #ffffff;
+      margin-bottom: 20px;
+    }
+
+    .login-form label {
+      font-size: 1rem;
+      color: #d2f8ff;
+      margin-bottom: 8px;
+      display: block;
+      text-align: left;
+    }
+
+    .login-form input {
+      width: 100%;
+      padding: 15px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      color: #ffffff;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .login-form input:focus {
+      border-color: #00ffc3;
+      outline: none;
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .login-form button {
+      width: 100%;
+      padding: 15px;
+      background: #00ffc3;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #1f4037;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .login-form button:hover {
+      background: #00c0a2;
+    }
+
+    .login-form p {
+      margin-top: 15px;
+      color: #e0f7fa;
+    }
+
+    .login-form a {
+      color: #00ffc3;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .login-form a:hover {
+      color: #00c0a2;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1rem;
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(8px);
+      margin-top: 50px;
+      border-radius: 10px;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 600px) {
+      .login-form {
+        padding: 2rem;
+      }
+
+      .login-form h2 {
+        font-size: 1.6rem;
+      }
+    }
+  </style>
 </head>
 <body>
   <!-- Header with Navbar -->
   <header>
-    <nav class="navbar">
-      <div class="logo">CI/CD Learning</div>
-      <ul class="nav-links">
-        <li><a href="/">Home</a></li>
-      </ul>
-    </nav>
+    <div class="logo">CI/CD Learning</div>
+    <ul class="nav-links">
+      <li><a href="/">Home</a></li>
+    </ul>
   </header>
 
   <!-- Main login section -->

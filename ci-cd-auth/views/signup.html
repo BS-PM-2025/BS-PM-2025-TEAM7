@@ -4,78 +4,292 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Sign Up - CI/CD Learning Platform</title>
-  <link rel="stylesheet" href="/styles.css" /> <!-- Link to your CSS file -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 100vh;
+      min-height: 100vh;
+      padding: 120px;
+    }
+
+    header {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      padding: 1.5rem;
+      background-color: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(8px);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-radius: 10px;
+      width: calc(100% - 40px);
+    }
+
+    .logo {
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: #00ffc3;
+    }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .nav-links li a {
+      text-decoration: none;
+      color: #e0f7fa;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    .nav-links li a:hover {
+      color: #00ffc3;
+    }
+
+    .hero-section {
+      text-align: center;
+      padding: 4rem 0;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      backdrop-filter: blur(10px);
+      margin-top: 80px;
+    }
+
+    .hero-section h1 {
+      font-size: 2.5rem;
+      color: #00ffc3;
+    }
+
+    .hero-section p {
+      font-size: 1.2rem;
+      color: #d2f8ff;
+      margin-bottom: 30px;
+    }
+
+    .hero-section button {
+      background: #00ffc3;
+      color: #1f4037;
+      padding: 15px 30px;
+      font-size: 1.2rem;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .hero-section button:hover {
+      background: #00c0a2;
+    }
+
+    .signup-container {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 20px;
+      backdrop-filter: blur(15px);
+      padding: 3rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      max-width: 500px;
+      width: 100%;
+      text-align: center;
+      margin: auto;
+      animation: fadeIn 1.5s ease-in-out;
+    }
+
+    .signup-container h2 {
+      font-size: 2rem;
+      color: #ffffff;
+      margin-bottom: 20px;
+    }
+
+    .signup-container label {
+      font-size: 1rem;
+      color: #d2f8ff;
+      margin-bottom: 8px;
+      display: block;
+      text-align: left;
+    }
+
+    .signup-container input, .signup-container select {
+      width: 100%;
+      padding: 15px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      color: #ffffff;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .signup-container input:focus, .signup-container select:focus {
+      border-color: #00ffc3;
+      outline: none;
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .signup-container button {
+      width: 100%;
+      padding: 15px;
+      background: #00ffc3;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #1f4037;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .signup-container button:hover {
+      background: #00c0a2;
+    }
+
+    .signup-container p {
+      margin-top: 15px;
+      color: #e0f7fa;
+    }
+
+    .signup-container a {
+      color: #00ffc3;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .signup-container a:hover {
+      color: #00c0a2;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1rem;
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(8px);
+      margin-top: 50px;
+      border-radius: 10px;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 600px) {
+      .signup-container {
+        padding: 2rem;
+      }
+
+      .signup-container h2 {
+        font-size: 1.6rem;
+      }
+
+      .hero-section {
+        padding: 2rem 0;
+      }
+
+      .hero-section h1 {
+        font-size: 2rem;
+      }
+
+      .hero-section p {
+        font-size: 1rem;
+      }
+    }
+  </style>
 </head>
 <body>
   <!-- Header with Navbar -->
   <header>
-    <nav class="navbar">
-      <div class="logo">CI/CD Learning</div>
-      <ul class="nav-links">
-        <li><a href="/">Home</a></li>
-      </ul>
-    </nav>
+    <div class="logo">CI/CD Learning</div>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="/">Home</a></li>
+      <li class="auth-link"><a href="/signup">Sign Up</a></li>
+      <li class="auth-link"><a href="/login">Login</a></li>
+    </ul>
   </header>
-
-  <!-- Main Sign Up Section -->
-  <main>
-    <div class="signup-form">
-      <h2>Sign Up</h2>
-      <form action="/signup" method="POST">
-        <label for="username">Username</label>
-        <input type="text" id="username" name="username" required placeholder="Enter your username" /><br/>
-
-        <label for="email">Email</label>
-        <input type="email" id="email" name="email" required placeholder="Enter your email" /><br/>
-
-        <label for="password">Password</label>
-        <input type="password" id="password" name="password" required placeholder="Enter your password" /><br/>
-
-        <label for="confirmPassword">Confirm Password</label>
-        <input type="password" id="confirmPassword" name="confirmPassword" required placeholder="Confirm your password" /><br/>
-
-        <label for="role">Role</label>
-        <select id="role" name="role" required>
-          <option value="student">Student</option>
-          <option value="lecturer">Lecturer</option>
-        </select><br/>
-
-        <button type="submit">Sign Up</button>
-      </form>
-      <p>Already have an account? <a href="/login">Login here</a></p>
-    </div>
-  </main>
-  <script>
-    document.querySelector("form").addEventListener("submit", async function (e) {
-      e.preventDefault(); // Prevent the default form action
   
-      const formData = new FormData(this);
-      const formObject = Object.fromEntries(formData.entries());
+  <!-- Sign Up Form Section -->
+  <div class="signup-container">
+    <h2>Create Your Account</h2>
+    <form action="/signup" method="POST">
+      <label for="username">Username</label>
+      <input type="text" id="username" name="username" required placeholder="Enter your username" />
   
-      try {
-        const response = await fetch("/signup", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(formObject)
-        });
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" required placeholder="Enter your email" />
   
-        if (response.ok) {
-          alert("Signup successful!");
-          window.location.href = "/login";
-        } else {
-          const result = await response.json();
-          alert("Signup failed: " + (result.message || "Unknown error."));
-        }
-      } catch (error) {
-        alert("An error occurred: " + error.message);
-      }
-    });
-  </script>
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" required placeholder="Enter your password" />
   
-
+      <label for="confirmPassword">Confirm Password</label>
+      <input type="password" id="confirmPassword" name="confirmPassword" required placeholder="Confirm your password" />
+  
+      <label for="role">Role</label>
+      <select id="role" name="role" required>
+        <option value="student">Student</option>
+        <option value="lecturer">Lecturer</option>
+      </select>
+  
+      <button type="submit">Sign Up</button>
+    </form>
+  
+    <p>Already have an account? <a href="/login">Login here</a></p>
+  </div>
+  
   <!-- Footer -->
   <footer>
-    <p>&copy; 2025 CI/CD Learning Platform | All Rights Reserved</p>
+    &copy; 2025 CI/CD Learning Platform | All Rights Reserved
   </footer>
+  
+  <!-- Token Behavior Script -->
+  <script>
+    function parseJwt(token) {
+      try {
+        return JSON.parse(atob(token.split('.')[1]));
+      } catch (e) {
+        return null;
+      }
+    }
+  
+    function logout() {
+      localStorage.removeItem("token");
+      window.location.href = "/login";
+    }
+  
+    const token = localStorage.getItem("token");
+    const user = parseJwt(token);
+    const nav = document.getElementById("nav-links");
+  
+    if (user) {
+      document.querySelectorAll(".auth-link").forEach(link => link.remove());
+  
+      const profileItem = document.createElement("li");
+      profileItem.innerHTML = `<a href="/${user.role === 'student' ? 'StudentProfile' : 'LecturerProfile'}">${user.role.charAt(0).toUpperCase() + user.role.slice(1)} Profile</a>`;
+      nav.appendChild(profileItem);
+  
+      const logoutItem = document.createElement("li");
+      logoutItem.innerHTML = `<a href="#" onclick="logout()">Logout</a>`;
+      nav.appendChild(logoutItem);
+    }
+  
+    if (!token) {
+      history.pushState(null, null, location.href);
+      window.onpopstate = () => history.go(1);
+    }
+  </script>
+  
 </body>
 </html>
