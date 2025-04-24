@@ -8,24 +8,13 @@ const User = require("./models/user");
 
 const app = express();
 const PORT = 3000;
-const JWT_SECRET = "your_secret_key"; // Change this to a strong secret
+const JWT_SECRET = "your_secret_key";
 
-// Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 
-// MongoDB connection
-mongoose.connect("mongodb://127.0.0.1:27017/ci_cd_learning", {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
-  .then(() => console.log("✅ Connected to MongoDB"))
-  .catch((err) => console.error("❌ MongoDB connection error:", err));
-
-// Serve static files
 app.use(express.static(path.join(__dirname, "public")));
 
-// Routes: HTML Pages
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "views", "home.html"));
 });
@@ -45,7 +34,6 @@ app.get("/LecturerProfile", (req, res) => {
   res.sendFile(path.join(__dirname, "views", "lecturerProfile.html"));
 });
 
-// Sign-up Route
 app.post("/signup", async (req, res) => {
   const { username, email, password, confirmPassword, role } = req.body;
 
@@ -62,13 +50,12 @@ app.post("/signup", async (req, res) => {
     return res.status(400).json({ message: "User already exists." });
   }
 
-  const newUser = new User({ username, email, password, role }); // 🔐 password will be hashed via .pre('save')
+  const newUser = new User({ username, email, password, role });
   await newUser.save();
 
-  res.status(201).redirect("/login");
+  res.redirect("/login");
 });
 
-// Login Route
 app.post("/login", async (req, res) => {
   const { username, password } = req.body;
 
@@ -95,8 +82,21 @@ app.post("/login", async (req, res) => {
   res.status(200).json({ token });
 });
 
-
-// Start server
-app.listen(PORT, () => {
-  console.log(`🚀 Server running at http://localhost:${PORT}`);
+app.post("/logout", (req, res) => {
+  res.status(200).json({ message: "Logged out" });
 });
+
+if (require.main === module) {
+  mongoose.connect("mongodb://127.0.0.1:27017/ci_cd_learning", {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+    .then(() => console.log("Connected to MongoDB"))
+    .catch((err) => console.error("MongoDB connection error:", err));
+
+  app.listen(PORT, () => {
+    console.log(`Server running at http://localhost:${PORT}`);
+  });
+}
+
+module.exports = app;
