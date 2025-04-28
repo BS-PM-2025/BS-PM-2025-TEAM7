@@ -1,13 +1,11 @@
 pipeline {
-    agent any
-
-    stages {
-        stage('Checkout') {
-            steps {
-                echo 'Checking out code...'
-                checkout scm
-            }
+    agent {
+        docker {
+            image 'node:18'
+            args '-p 3000:3000' // optional if you want to expose ports
         }
+    }
+    stages {
         stage('Install Dependencies') {
             steps {
                 echo 'Installing Node.js dependencies...'
@@ -17,7 +15,7 @@ pipeline {
         stage('Build React App') {
             steps {
                 echo 'Building React app...'
-                dir('ci-cd-auth') {
+                dir('ci-cd-auth') { // adjust folder name if your frontend is somewhere else
                     sh 'npm install'
                     sh 'npm run build'
                 }
@@ -36,4 +34,3 @@ pipeline {
         }
     }
 }
-
