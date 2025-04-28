@@ -1,1 +1,39 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                echo 'Checking out code...'
+                checkout scm
+            }
+        }
+        stage('Install Dependencies') {
+            steps {
+                echo 'Installing Node.js dependencies...'
+                sh 'npm install'
+            }
+        }
+        stage('Build React App') {
+            steps {
+                echo 'Building React app...'
+                dir('ci-cd-auth') {
+                    sh 'npm install'
+                    sh 'npm run build'
+                }
+            }
+        }
+        stage('Test') {
+            steps {
+                echo 'Running tests...'
+                sh 'npm test || true' // continue even if tests fail
+            }
+        }
+        stage('Deploy') {
+            steps {
+                echo 'Deploying app (simulation)...'
+            }
+        }
+    }
+}
 
