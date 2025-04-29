@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Manage Courses</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      color: #ffffff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      min-height: 100vh;
+      padding: 0;
+      flex-direction: column;
+      margin-top: 150px;
+    }
+
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 1rem 2rem;
+      background-color: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(8px);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-radius: 0 0 10px 10px;
+      z-index: 10;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #00ffc3;
+      letter-spacing: 1px;
+    }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 2rem;
+    }
+
+    .nav-links li {
+      position: relative;
+    }
+
+    .nav-links li a {
+      text-decoration: none;
+      color: #e0f7fa;
+      font-weight: 500;
+      transition: color 0.3s ease;
+      font-size: 1rem;
+      padding: 8px 12px;
+      border-radius: 30px;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    .nav-links li a:hover {
+      color: #00ffc3;
+      background-color: rgba(0, 255, 195, 0.3);
+    }
+
+    .nav-links li a.active {
+      background-color: #00ffc3;
+      color: #2f2f2f;
+    }
+
+    .main-container {
+      width: 100%;
+      max-width: 1000px;
+      margin-top: 100px;
+      padding: 1rem;
+      text-align: center;
+    }
+
+    .form-container input, .form-container textarea {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: none;
+    }
+
+    .form-container button {
+      padding: 10px 15px;
+      background-color: #00ffc3;
+      border: none;
+      color: white;
+      font-size: 1.2rem;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .form-container button:hover {
+      background-color: #00b29e;
+    }
+
+    #courseList {
+      margin-top: 50px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    .course {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 15px;
+      padding: 1.5rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      animation: fadeIn 1.5s ease-in-out;
+    }
+
+    .course h3 {
+      font-size: 1.8rem;
+      color: #ffffff;
+      margin-bottom: 15px;
+    }
+
+    .course input, .course textarea {
+      width: 100%;
+      padding: 8px;
+      margin: 8px 0;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: none;
+    }
+
+    .course button {
+      padding: 8px 12px;
+      background-color: #ff4c4c;
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+      border: none;
+    }
+
+    .course button:hover {
+      background-color: #ff1f1f;
+    }
+
+    @keyframes fadeIn {
+      0% { opacity: 0; transform: scale(0.9); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo">CI/CD Learning Platform</div>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="/" class="active">Home</a></li>
+      <li><a href="/courses">Courses</a></li>
+      <li id="manage-courses-link" style="display: none;"><a href="/manageCourses">Manage Courses</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><a href="/signup">Sign Up</a></li>
+      <li><a href="/login">Login</a></li>
+    </ul>
+  </header>
+
+  <div class="main-container">
+    <h1>Manage Courses</h1>
+
+    <div class="form-container">
+      <input type="text" id="title" placeholder="Course Title" />
+      <textarea id="description" placeholder="Course Description"></textarea>
+      <input type="text" id="imageUrl" placeholder="Image URL" />
+      <button onclick="addCourse()">Add Course</button>
+    </div>
+
+    <div id="courseList"></div>
+  </div>
+
+  <script>
+    // Function to render the courses from the database
+    async function renderCoursesFromDB() {
+    const coursesContainer = document.getElementById("courseList");
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      console.error("No token found in localStorage.");
+      alert("You are not authorized. Please login.");
+      return;
+    }
+
+    try {
+      const response = await fetch("/manage-courses", {
+        method: "GET",
+        headers: {
+          "Authorization": "Bearer " + token
+        }
+      });
+
+      if (!response.ok) throw new Error("Failed to fetch courses.");
+
+      const data = await response.json();
+      console.log("Fetched data:", data);
+
+      coursesContainer.innerHTML = "";
+
+      if (data?.courses?.length > 0) {
+        data.courses.forEach(course => {
+        const courseElement = document.createElement("div");
+        courseElement.classList.add("course");
+
+        const courseName = course.courseName || "No Course Name";
+        const description = course.description || "";
+        const imageUrl = course.imageUrl || "";
+
+        courseElement.innerHTML = `
+          <h3>${courseName}</h3>
+          <strong>Description:</strong><br>
+          <textarea onchange="editCourse('${course._id}', 'description', this.value)">${description}</textarea><br>
+          <strong>Image URL:</strong><br>
+          <input value="${imageUrl}" onchange="editCourse('${course._id}', 'imageUrl', this.value)" /><br>
+          ${imageUrl ? `<img src="${imageUrl}" alt="Course Image" style="max-width: 100%; border-radius: 10px; margin-top: 10px;" />` : ""}
+          <br>
+          <button onclick="deleteCourse('${course._id}')">Delete</button>
+        `;
+
+        coursesContainer.appendChild(courseElement);
+      });
+      } else {
+        coursesContainer.innerHTML = "<p>No courses available.</p>";
+      }
+    } catch (error) {
+      console.error("Error fetching courses:", error);
+      coursesContainer.innerHTML = "<p>Error loading courses. Please try again later.</p>";
+    }
+  }
+  async function saveCourse(id) {
+  const token = localStorage.getItem("token");
+  const description = document.getElementById(`desc-${id}`).value;
+  const imageUrl = document.getElementById(`img-${id}`).value;
+
+  try {
+    const response = await fetch(`/api/courses/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + token
+      },
+      body: JSON.stringify({ description, imageUrl })
+    });
+
+    if (!response.ok) throw new Error("Update failed");
+
+    alert("Course updated successfully!");
+    await renderCoursesFromDB();
+  } catch (error) {
+    console.error("Error updating course:", error);
+    alert("Could not update course.");
+  }
+}
+
+    // Function to add a new course
+    async function addCourse() {
+      const courseName = document.getElementById("title").value.trim();
+      const description = document.getElementById("description").value.trim();
+      const imageUrl = document.getElementById("imageUrl").value.trim();
+
+      if (!courseName || !description || !imageUrl) {
+        alert("Please fill in all fields.");
+        return;
+      }
+
+      const token = localStorage.getItem("token");
+
+      try {
+        const response = await fetch("/api/courses", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
+          },
+          body: JSON.stringify({ courseName, description, imageUrl }),
+        });
+
+        if (!response.ok) {
+          const errorText = await response.text();
+          throw new Error(errorText || "Unknown error");
+        }
+
+        // Clear form fields
+        document.getElementById("title").value = "";
+        document.getElementById("description").value = "";
+        document.getElementById("imageUrl").value = "";
+
+        await renderCoursesFromDB(); // Refresh the course list
+      } catch (error) {
+        console.error("Failed to add course:", error);
+        alert("Could not save the course. Please try again.");
+      }
+    }
+
+    // Function to delete a course
+    async function deleteCourse(id) {
+  const token = localStorage.getItem("token");
+
+  try {
+    const response = await fetch(`/api/courses/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Authorization": "Bearer " + token
+      }
+    });
+
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.message || "Delete failed");
+
+    alert("Course deleted successfully");
+    location.reload(); // or remove the course from DOM
+  } catch (err) {
+    console.error("Delete failed:", err);
+    alert("Could not delete course. Please try again.");
+  }
+}
+
+
+
+    // Function to edit course details
+    async function editCourse(id, field, value) {
+    const token = localStorage.getItem("token");
+
+    try {
+      const response = await fetch(`/api/courses/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + token
+        },
+        body: JSON.stringify({ [field]: value })
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to update course.");
+      }
+
+      console.log("Course updated successfully.");
+    } catch (error) {
+      console.error("Error updating course:", error);
+      alert("Failed to update course. Please try again.");
+    }
+  }
+
+    window.onload = function () {
+      renderCoursesFromDB(); // Load courses on page load
+    };
+  </script>
+</body>
+</html>

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Courses</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      color: #ffffff;
+      display: flex;
+      justify-content: center; /* Center content horizontally */
+      align-items: center; /* Center content vertically */
+      height: 100vh;
+      min-height: 100vh;
+      padding: 0;
+      flex-direction: column;
+    }
+
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 1rem 2rem;
+      background-color: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(8px);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-radius: 0 0 10px 10px;
+      z-index: 10;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #00ffc3;
+      letter-spacing: 1px;
+    }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 2rem;
+    }
+
+    .nav-links li {
+      position: relative;
+    }
+
+    .nav-links li a {
+      text-decoration: none;
+      color: #e0f7fa;
+      font-weight: 500;
+      transition: color 0.3s ease;
+      font-size: 1rem;
+      padding: 8px 12px;
+      border-radius: 30px;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    .nav-links li a:hover {
+      color: #00ffc3;
+      background-color: rgba(0, 255, 195, 0.3);
+    }
+
+    .nav-links li a.active {
+      background-color: #00ffc3;
+      color: #2f2f2f;
+    }
+
+    .site-description {
+      background: rgba(0, 0, 0, 0.6);
+      border-radius: 20px;
+      backdrop-filter: blur(15px);
+      padding: 2rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      width: 90%;
+      max-width: 700px;
+      margin-bottom: 50px;
+      text-align: center;
+      color: #ffffff;
+      animation: fadeIn 1.5s ease-in-out;
+    }
+
+    .site-description h2 {
+      font-size: 2.2rem;
+      color: #ffffff;
+      margin-bottom: 20px;
+    }
+
+    .site-description p {
+      font-size: 1rem;
+      color: #d2f8ff;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    .site-description ul {
+      list-style: none;
+      padding-left: 0;
+      font-size: 1.1rem;
+      color: #d2f8ff;
+    }
+
+    .features-section {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-top: 50px;
+    }
+
+    .feature-card {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 2rem;
+      width: 280px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      animation: fadeIn 1.5s ease-in-out;
+    }
+
+    .feature-card img {
+      width: 100%;
+      border-radius: 10px;
+      margin-bottom: 15px;
+    }
+
+    .feature-card h3 {
+      font-size: 1.5rem;
+      color: #ffffff;
+      margin-bottom: 10px;
+    }
+
+    .feature-card p {
+      color: #d2f8ff;
+    }
+
+    @keyframes fadeIn {
+      0% { opacity: 0; transform: scale(0.9); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+
+    #courses-list {
+      margin-top: 100px;
+      width: 90%;
+      max-width: 1000px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+      text-align: center;
+    }
+
+    .course {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 15px;
+      padding: 1.5rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      animation: fadeIn 1.5s ease-in-out;
+    }
+
+    .course h3 {
+      font-size: 1.8rem;
+      color: #ffffff;
+      margin-bottom: 15px;
+    }
+
+    .course p {
+      color: #d2f8ff;
+      line-height: 1.5;
+    }
+
+  </style>
+  <script>
+async function fetchCourses() {
+  try {
+    const response = await fetch("/manage-courses", {
+      method: "GET",
+      headers: {
+        "Authorization": "Bearer " + localStorage.getItem("token") // Ensure token is saved in localStorage after login
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch courses.");
+    }
+
+    const data = await response.json();
+    console.log("Fetched data:", data); // Add this line to check the response
+
+    const coursesContainer = document.getElementById("courses-list"); // Correct target
+
+    // Ensure data structure is correct
+    if (data && data.courses) {
+      data.courses.forEach(course => {
+        const courseElement = document.createElement("div");
+        courseElement.classList.add("course");
+        courseElement.innerHTML = `<h3>${course.courseName}</h3><p>${course.description}</p>`;
+        coursesContainer.appendChild(courseElement);
+      });
+    } else {
+      coursesContainer.innerHTML = "<p>No courses available.</p>";
+    }
+  } catch (error) {
+    console.error("Error fetching courses:", error);
+    document.getElementById("courses-list").innerHTML = "<p>Error loading courses. Please try again later.</p>";
+  }
+}
+
+
+window.onload = function() {
+  fetchCourses(); // Ensure this function is called when the page loads
+};
+
+  </script>
+</head>
+<body>
+  <header>
+    <div class="logo">CI/CD Learning Platform</div>
+    <ul class="nav-links">
+        <li><a href="/" class="active">Home</a></li>
+        <li><a href="/manageCourses">Manage Courses</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><a href="/signup">Sign Up</a></li>
+        <li><a href="/login">Login</a></li>
+    </ul>
+  </header>
+
+  <div class="site-description">
+    <h2>Available Courses</h2>
+    <p>Browse through a variety of courses that will help you grow your skills and knowledge in various fields.</p>
+  </div>
+
+  <div id="courses-list"></div> <!-- This is where courses will be displayed -->
+
+</body>
+</html>

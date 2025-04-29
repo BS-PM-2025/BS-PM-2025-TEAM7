@@ -160,7 +160,9 @@
     <div class="logo">CI/CD Learning Platform</div>
     <ul class="nav-links" id="nav-links">
       <li><a href="#" class="active">Home</a></li>
-      <li><a href="#courses">Courses</a></li>
+      <li><a href="/courses">Courses</a></li>
+      <!-- The Manage Courses link will be shown conditionally -->
+      <li id="manage-courses-link" style="display: none;"><a href="/manageCourses">Manage Courses</a></li>
       <li><a href="#contact">Contact</a></li>
       <li><a href="/signup">Sign Up</a></li>
       <li><a href="/login">Login</a></li>
@@ -188,7 +190,7 @@
       <p>Start your journey by learning the fundamentals of Continuous Integration and Continuous Deployment practices.</p>
     </div>
     <div class="feature-card">
-      <img src="https://images.unsplash.com/photo-1586822473310-b6c040de3b25" alt="Jenkins Pipelines">
+      <img src="https://images.unsplash.com/photo-1611158083575-8763a4a4c02f" alt="Jenkins Pipelines">
       <h3>Jenkins Pipelines</h3>
       <p>Master Jenkins to automate your deployment pipeline and integrate your workflows seamlessly.</p>
     </div>
@@ -255,6 +257,31 @@
         window.onpopstate = () => history.go(1);
       }
     };
+    function parseJwt(token) {
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace('-', '+').replace('_', '/');
+    const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+    return JSON.parse(jsonPayload);
+  }
+
+  // Check if the user has the appropriate role (admin or lecturer)
+  function checkUserRole() {
+    const token = localStorage.getItem("token");
+    if (token) {
+      const user = parseJwt(token);
+      if (user.role === "admin" || user.role === "lecturer") {
+        // Show the "Manage Courses" link if the user is admin or lecturer
+        document.getElementById("manage-courses-link").style.display = "block";
+      }
+    }
+  }
+
+  // Run checkUserRole function when the page is loaded
+  window.onload = function() {
+    checkUserRole();
+  };
   </script>
 </body>
 </html>

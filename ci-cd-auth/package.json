@@ -19,9 +19,10 @@
     "bcryptjs": "^3.0.2",
     "body-parser": "^2.2.0",
     "bootstrap": "^5.3.5",
+    "dotenv": "^16.5.0",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.13.2",
+    "mongoose": "^8.14.0",
     "path": "^0.12.7"
   },
   "devDependencies": {
