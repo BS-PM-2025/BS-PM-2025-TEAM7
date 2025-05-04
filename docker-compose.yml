@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  frontend:
+    build: ./ci-cd-auth
+    ports:
+      - "3000:3000"
+    working_dir: /app
+    command: ["npm", "start"]
+    depends_on:
+      - backend
+
+  backend:
+    build: ./server
+    ports:
+      - "5000:5000"
+    working_dir: /app
+    command: ["npm", "run", "dev"]
