@@ -1,47 +1,55 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'docker:latest'
+            args '-v /var/run/docker.sock:/var/run/docker.sock'
+        }
+    }
 
     environment {
-        REACT_DIR = 'ci-cd-auth'
+        DOCKER_COMPOSE_FILE = 'docker-compose.yml'
     }
 
     stages {
         stage('Checkout') {
             steps {
-                echo '📦 Checking out code...'
-                checkout scm
-            }
-        }
-
-        stage('Install Backend Dependencies') {
-            steps {
-                echo '📦 Installing backend dependencies...'
-                sh 'npm install'
-            }
-        }
-
-        stage('Build React Frontend') {
-            steps {
-                echo '🌐 Building React frontend...'
-                dir("${env.REACT_DIR}") {
-                    sh 'npm install'
-                    sh 'npm run build'
+                timeout(time: 15, unit: 'MINUTES') {
+                    cleanWs()
+                    git credentialsId: 'aaddc4c1-dc3f-496a-8aeb-ab5774c49b86', url: 'https://github.com/BS-PM-2025/BS-PM-2025-TEAM7.git'
                 }
             }
         }
 
-        stage('Test Backend') {
+        stage('Build') {
             steps {
-                echo '🧪 Running backend tests...'
-                sh 'npm test || true'
+                sh 'docker-compose -f $DOCKER_COMPOSE_FILE build'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                sh 'docker-compose -f $DOCKER_COMPOSE_FILE up -d'
+                sh 'docker-compose -f $DOCKER_COMPOSE_FILE exec frontend npm test'
             }
         }
 
         stage('Deploy') {
             steps {
-                echo '🚀 Simulating deployment...'
-                echo 'Build completed and ready for deploy!'
+                sh 'docker-compose -f $DOCKER_COMPOSE_FILE down'
+                sh 'docker-compose -f $DOCKER_COMPOSE_FILE up -d'
             }
+        }
+
+        stage('Cleanup') {
+            steps {
+                sh 'docker-compose -f $DOCKER_COMPOSE_FILE down'
+            }
+        }
+    }
+
+    post {
+        always {
+            cleanWs()
         }
     }
 }
