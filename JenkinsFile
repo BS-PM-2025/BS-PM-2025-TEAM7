@@ -1,28 +1,46 @@
 pipeline {
     agent any
 
+    environment {
+        REACT_DIR = 'ci-cd-auth'
+    }
+
     stages {
-        stage('Build inside Docker') {
+        stage('Checkout') {
             steps {
-                script {
-                    docker.image('node:18').inside {
-                        stage('Install Dependencies') {
-                            sh 'npm install'
-                        }
-                        stage('Build React App') {
-                            dir('ci-cd-auth') {
-                                sh 'npm install'
-                                sh 'npm run build'
-                            }
-                        }
-                        stage('Test') {
-                            sh 'npm test || true'
-                        }
-                        stage('Deploy') {
-                            echo 'Deploying app (simulation)...'
-                        }
-                    }
+                echo '📦 Checking out code...'
+                checkout scm
+            }
+        }
+
+        stage('Install Backend Dependencies') {
+            steps {
+                echo '📦 Installing backend dependencies...'
+                sh 'npm install'
+            }
+        }
+
+        stage('Build React Frontend') {
+            steps {
+                echo '🌐 Building React frontend...'
+                dir("${env.REACT_DIR}") {
+                    sh 'npm install'
+                    sh 'npm run build'
                 }
+            }
+        }
+
+        stage('Test Backend') {
+            steps {
+                echo '🧪 Running backend tests...'
+                sh 'npm test || true'
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                echo '🚀 Simulating deployment...'
+                echo 'Build completed and ready for deploy!'
             }
         }
     }
