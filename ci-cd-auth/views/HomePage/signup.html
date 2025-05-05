@@ -224,7 +224,7 @@
   <!-- Sign Up Form Section -->
   <div class="signup-container">
     <h2>Create Your Account</h2>
-    <form action="/signup" method="POST">
+    <form id="signupForm">
       <label for="username">Username</label>
       <input type="text" id="username" name="username" required placeholder="Enter your username" />
   
@@ -254,41 +254,35 @@
     &copy; 2025 CI/CD Learning Platform | All Rights Reserved
   </footer>
   
-  <!-- Token Behavior Script -->
   <script>
-    function parseJwt(token) {
+    document.getElementById("signupForm").addEventListener("submit", async function (e) {
+      e.preventDefault(); // עצור שליחה רגילה
+  
+      const formData = new FormData(this);
+      const data = Object.fromEntries(formData.entries());
+  
       try {
-        return JSON.parse(atob(token.split('.')[1]));
-      } catch (e) {
-        return null;
+        const response = await fetch("/api/auth/signup", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(data)
+        });
+  
+        const result = await response.json();
+  
+        if (response.ok) {
+          // ✔️ מעבר לדף התחברות אחרי הרשמה מוצלחת
+          window.location.href = "/login";
+        } else {
+          alert(result.message || "Signup failed");
+        }
+      } catch (err) {
+        console.error(err);
+        alert("Something went wrong.");
       }
-    }
-  
-    function logout() {
-      localStorage.removeItem("token");
-      window.location.href = "/login";
-    }
-  
-    const token = localStorage.getItem("token");
-    const user = parseJwt(token);
-    const nav = document.getElementById("nav-links");
-  
-    if (user) {
-      document.querySelectorAll(".auth-link").forEach(link => link.remove());
-  
-      const profileItem = document.createElement("li");
-      profileItem.innerHTML = `<a href="/${user.role === 'student' ? 'StudentProfile' : 'LecturerProfile'}">${user.role.charAt(0).toUpperCase() + user.role.slice(1)} Profile</a>`;
-      nav.appendChild(profileItem);
-  
-      const logoutItem = document.createElement("li");
-      logoutItem.innerHTML = `<a href="#" onclick="logout()">Logout</a>`;
-      nav.appendChild(logoutItem);
-    }
-  
-    if (!token) {
-      history.pushState(null, null, location.href);
-      window.onpopstate = () => history.go(1);
-    }
+    });
   </script>
   
 </body>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      color: #ffffff;
+      padding-top: 100px;
+      text-align: center;
+    }
+
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 1rem 2rem;
+      background-color: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(8px);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-radius: 0 0 10px 10px;
+      z-index: 10;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #00ffc3;
+    }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 2rem;
+    }
+
+    .nav-links li a {
+      color: #e0f7fa;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 1rem;
+      transition: color 0.3s ease;
+    }
+
+    .nav-links li a:hover {
+      color: #00ffc3;
+    }
+
+    .dashboard-box {
+      background: rgba(255, 255, 255, 0.08);
+      padding: 2rem;
+      margin: 2rem auto;
+      border-radius: 12px;
+      max-width: 700px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    }
+
+    .dashboard-box h2 {
+      margin-bottom: 1rem;
+      color: #00ffc3;
+    }
+
+    .dashboard-box p {
+      font-size: 1rem;
+      color: #d2f8ff;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ✅ Navbar -->
+  <header>
+    <div class="logo">Admin Dashboard</div>
+    <ul class="nav-links">
+      <li><a href="/">🏠 Home</a></li>
+      <li><a href="/users-table">👥 View Users</a></li>
+    </ul>
+  </header>
+
+  <!-- ✅ Dashboard content -->
+  <div class="dashboard-box">
+    <h2>Welcome, Admin 👋</h2>
+    <p>Use the navigation above to manage users, view data, and control the platform.</p>
+  </div>
+
+</body>
+</html>

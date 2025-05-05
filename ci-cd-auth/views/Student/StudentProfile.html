@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Lecturer Profile</title>
+  <title>Student Profile</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
     /* General Styling */
@@ -25,7 +25,6 @@
       padding: 0;
     }
 
-    /* Header */
     header {
       position: fixed;
       top: 0;
@@ -150,22 +149,6 @@
     footer a:hover {
       text-decoration: underline;
     }
-
-    /* Responsive Design */
-    @media (max-width: 768px) {
-      .profile-card {
-        padding: 1.5rem;
-      }
-
-      .nav-links {
-        flex-direction: column;
-        gap: 1rem;
-      }
-
-      .logo {
-        margin-bottom: 1rem;
-      }
-    }
   </style>
 </head>
 <body>
@@ -180,7 +163,7 @@
 
   <!-- Main Profile Card -->
   <div class="profile-card">
-    <h2>Lecturer Profile</h2>
+    <h2>Student Profile</h2>
     <p><span class="label">👤 Username:</span> <span id="username"></span></p>
     <p><span class="label">📧 Email:</span> <span id="email"></span></p>
     <p><span class="label">🎓 Role:</span> <span id="role"></span></p>
@@ -189,7 +172,7 @@
 
   <!-- Footer -->
   <footer>
-    <p>&copy; 2025 CI/CD Learning Platform | All Rights Reserved</p>
+    <p>&copy; 2025 CI/CD Learning Platform | All Rights Reserved | <a href="/signup">Sign Up</a></p>
   </footer>
 
   <!-- JS -->
@@ -211,11 +194,11 @@
       }
     }
 
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
     const user = parseJwt(token);
 
-    if (!user || user.role !== "lecturer") {
-      alert("Access denied. Please log in as a lecturer.");
+    if (!user || user.role !== "student") {
+      alert("Access denied. Please log in as a student.");
       window.location.href = "/login";
     } else {
       document.getElementById("username").textContent = user.username;
