@@ -211,7 +211,7 @@
 
   <script>
     function logout() {
-      localStorage.removeItem("token");
+      sessionStorage.removeItem("token");
       window.location.href = "/login";
     }
 
@@ -224,7 +224,7 @@
       return JSON.parse(jsonPayload);
     }
 
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
     const navbar = document.querySelector("#nav-links");
 
     if (token) {
@@ -269,7 +269,7 @@
 
   // Check if the user has the appropriate role (admin or lecturer)
   function checkUserRole() {
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
     if (token) {
       const user = parseJwt(token);
       if (user.role === "admin" || user.role === "lecturer") {
@@ -281,8 +281,116 @@
 
   // Run checkUserRole function when the page is loaded
   window.onload = function() {
+    sessionStorage.removeItem("token");
+
     checkUserRole();
   };
   </script>
+
+  <!-- Feedback Section -->
+<div class="site-description" id="feedback-section">
+  <h2>Leave Your Feedback</h2>
+  <form id="feedback-form">
+    <textarea id="comment" placeholder="Your feedback..." required style="width:100%;height:100px;border-radius:10px;padding:10px;"></textarea>
+    <div style="margin:10px 0;">
+      <label for="rating">Rating:</label>
+      <select id="rating" required style="padding:5px;border-radius:5px;">
+        <option value="">Choose...</option>
+        <option value="1">⭐</option>
+        <option value="2">⭐⭐</option>
+        <option value="3">⭐⭐⭐</option>
+        <option value="4">⭐⭐⭐⭐</option>
+        <option value="5">⭐⭐⭐⭐⭐</option>
+      </select>
+    </div>
+    <button type="submit" style="padding:10px 20px;border:none;border-radius:10px;background:#00ffc3;color:#1f4037;font-weight:600;">Submit</button>
+    <p id="feedback-message" style="margin-top:10px;"></p>
+  </form>
+  <div id="feedback-list" style="margin-top:30px;text-align:left;"></div>
+</div>
+
+<script>
+  let showingAll = false;
+  function toggleFeedback() {
+  showingAll = !showingAll;
+  loadFeedback();
+}
+document.addEventListener("DOMContentLoaded", () => {
+  const token = localStorage.getItem("token");
+  const form = document.getElementById("feedback-form");
+
+  if (!token) {
+    document.getElementById("feedback-section").style.display = "none";
+    return;
+  }
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const comment = document.getElementById("comment").value;
+    const rating = document.getElementById("rating").value;
+
+    try {
+      const res = await fetch("/api/feedback", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token
+        },
+        body: JSON.stringify({ comment, rating })
+      });
+
+      const result = await res.json();
+      document.getElementById("feedback-message").textContent = result.message;
+      form.reset();
+      loadFeedback();
+    } catch (err) {
+      document.getElementById("feedback-message").textContent = "Error submitting feedback.";
+    }
+  });
+
+  
+
+async function loadFeedback() {
+  const res = await fetch("/api/feedback");
+  const data = await res.json();
+  const container = document.getElementById("feedback-list");
+
+  const feedbackToShow = showingAll ? data.feedback : data.feedback.slice(0, 5);
+
+  container.innerHTML = feedbackToShow.map(f =>
+    `<div style="background:rgba(255,255,255,0.1);padding:10px;border-radius:10px;margin-bottom:10px;">
+     <strong>${f.username}</strong> (${renderStars(f.rating)}) 
+     <small style="color:#ccc;">
+     on ${new Date(f.createdAt).toLocaleString()}
+    </small>
+    <br>
+     ${f.comment}
+   </div>`
+  ).join("");
+
+  if (data.feedback.length > 5) {
+    container.innerHTML += `
+       <button id="toggle-feedback-btn" style="margin-top:10px;padding:5px 10px;border:none;border-radius:6px;background:#00ffc3;color:#1f4037;cursor:pointer;">
+       ${showingAll ? "Show Less" : "Show All"}
+      </button>`;
+  }
+  const toggleBtn = document.getElementById("toggle-feedback-btn");
+  if (toggleBtn) {
+     toggleBtn.addEventListener("click", toggleFeedback);
+}
+
+}
+
+
+
+function renderStars(rating) {
+  return '⭐'.repeat(rating);
+}
+
+
+  loadFeedback();
+});
+</script>
+
 </body>
 </html>
