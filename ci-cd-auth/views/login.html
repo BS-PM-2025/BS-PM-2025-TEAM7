@@ -199,7 +199,7 @@
   <script>
     
     // Prevent accessing login page if already logged in
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
     if (token) {
       const user = parseJwt(token);
       if (user && user.role) {
@@ -242,7 +242,7 @@
           return;
         }
 
-        localStorage.setItem("token", result.token);
+        sessionStorage.setItem("token", result.token);
         window.location.href = "/";
       } catch (err) {
         document.getElementById("error-message").textContent = "Server error. Please try again.";

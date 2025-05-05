@@ -281,9 +281,10 @@
 
   // Run checkUserRole function when the page is loaded
   window.onload = function() {
-    sessionStorage.removeItem("token");
-
     checkUserRole();
+    
+
+   
   };
   </script>
 
@@ -316,7 +317,7 @@
   loadFeedback();
 }
 document.addEventListener("DOMContentLoaded", () => {
-  const token = localStorage.getItem("token");
+  const token = sessionStorage.getItem("token");
   const form = document.getElementById("feedback-form");
 
   if (!token) {
