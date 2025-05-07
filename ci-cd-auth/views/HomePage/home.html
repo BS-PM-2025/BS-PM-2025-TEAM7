@@ -229,14 +229,14 @@
     navbar.innerHTML = ''; // Clear existing links
 
     if (user.role === "admin") {
-      navbar.innerHTML += `<li><a href="/AdminDashboard">Admin Dashboard</a></li>`;
+      navbar.innerHTML += `<li><a href="http://localhost:3000/admin-dashboard">Admin Dashboard</a></li>`;
     } else if (user.role === "lecturer") {
       navbar.innerHTML += `<li><a href="/">Home</a></li>`;
       navbar.innerHTML += `<li><a href="/video/courses">Courses</a></li>`; <!-- ✅ נוספה -->
       navbar.innerHTML += `<li><a href="/LecturerProfile">Profile</a></li>`;
     } else if (user.role === "student") {
       navbar.innerHTML += `<li><a href="/">Home</a></li>`;
-      navbar.innerHTML += `<li><a href="/video/courses">Courses</a></li>`; 
+      navbar.innerHTML += `<li><a href="/video/courses">Courses</a></li>`;
       navbar.innerHTML += `<li><a href="/StudentProfile">Profile</a></li>`;
     }
 

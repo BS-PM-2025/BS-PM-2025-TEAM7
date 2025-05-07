@@ -1,5 +1,6 @@
-// controllers/videoController.js
 const Video = require("../models/video");
+const fs = require("fs");
+const path = require("path");
 
 // POST /video/upload
 exports.uploadVideo = async (req, res) => {
@@ -46,5 +47,32 @@ exports.getCoursesPage = async (req, res) => {
     });
   } catch (error) {
     res.status(500).send("Failed to load courses page.");
+  }
+};
+
+// DELETE /api/videos/:id
+exports.deleteVideo = async (req, res) => {
+  try {
+    const video = await Video.findByIdAndDelete(req.params.id);
+
+    if (!video) {
+      return res.status(404).json({ message: 'Video not found' });
+    }
+
+    // ✅ מסלול לקובץ בתוך תיקיית public/uploads
+    const filePath = path.join(__dirname, '..', 'public', 'uploads', video.filename);
+
+    fs.unlink(filePath, (err) => {
+      if (err) {
+        console.error('File deletion failed:', err);
+        return res.status(500).json({ message: 'Video deleted from DB, but failed to delete file' });
+      }
+
+      return res.json({ message: 'Video deleted successfully' });
+    });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error while deleting video' });
   }
 };

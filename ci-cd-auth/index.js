@@ -7,34 +7,34 @@ const dotenv = require("dotenv");
 
 const authRoutes = require("./routes/auth");
 const feedbackRoutes = require("./routes/feedback");
-const videoRoutes = require("./routes/video"); // ✅ נתיב חדש לסרטונים
+const videoRoutes = require("./routes/video");
+const userRoutes = require("./routes/user"); // ✅ Add route for users
 
 dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// ✅ יצירת תיקיית uploads אם לא קיימת
+// ✅ Ensure uploads folder exists
 const uploadPath = path.join(__dirname, "public", "uploads");
 if (!fs.existsSync(uploadPath)) fs.mkdirSync(uploadPath, { recursive: true });
 
 // ✅ Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(express.static(path.join(__dirname, "public"))); // מאפשר גישה לקבצים ב־/public/uploads
+app.use(express.static(path.join(__dirname, "public"))); // Serves /public/uploads
 
 // ✅ API Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/feedback", feedbackRoutes);
-app.use("/api/videos", videoRoutes); // תומך בהעלאת ושליפת סרטונים
+app.use("/api/videos", videoRoutes);
+app.use("/api/users", userRoutes); // ✅ Users API route
 
 // ✅ Frontend HTML Pages
 app.get("/", (req, res) => {
-  // Force logout state: destroy session if user is trying to come back here
   if (req.session) req.session.destroy(() => {});
   res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, private");
   res.sendFile(path.join(__dirname, "views", "HomePage", "home.html"));
 });
-
 
 app.get("/login", (req, res) => {
   res.sendFile(path.join(__dirname, "views", "HomePage", "login.html"));
@@ -55,10 +55,16 @@ app.get("/admin-dashboard", (req, res) => {
 app.get("/LecturerProfile", (req, res) => {
   res.sendFile(path.join(__dirname, "views", "Lecturer", "lecturerProfile.html"));
 });
+
 app.get("/video/courses", (req, res) => {
   res.sendFile(path.join(__dirname, "views", "Courses", "courses.html"));
 });
 
+app.get("/users-table", (req, res) => {
+  res.sendFile(path.join(__dirname, "views", "Admin", "usersTable.html")); // ✅ View Users page
+});
+
+// ✅ Prevent caching for dynamic routes
 app.use((req, res, next) => {
   res.setHeader("Cache-Control", "no-store");
   next();
@@ -66,8 +72,8 @@ app.use((req, res, next) => {
 
 // ✅ MongoDB Connection
 mongoose.connect("mongodb://127.0.0.1:27017/ci_cd_learning", {
-  useNewUrlParser: true,         // ⚠️ מיותר בגרסאות חדשות אך לא גורם נזק
-  useUnifiedTopology: true       // ⚠️ גם זה, אתה יכול להסיר בעתיד
+  useNewUrlParser: true,
+  useUnifiedTopology: true
 })
 .then(() => {
   console.log("✅ Connected to MongoDB");
@@ -75,7 +81,6 @@ mongoose.connect("mongodb://127.0.0.1:27017/ci_cd_learning", {
     console.log(`🚀 Server running at http://localhost:${PORT}`);
   });
 })
-
 .catch((err) => {
   console.error("❌ MongoDB connection error:", err);
 });
