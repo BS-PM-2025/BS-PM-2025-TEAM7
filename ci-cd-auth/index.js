@@ -29,8 +29,12 @@ app.use("/api/videos", videoRoutes); // תומך בהעלאת ושליפת סר�
 
 // ✅ Frontend HTML Pages
 app.get("/", (req, res) => {
+  // Force logout state: destroy session if user is trying to come back here
+  if (req.session) req.session.destroy(() => {});
+  res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, private");
   res.sendFile(path.join(__dirname, "views", "HomePage", "home.html"));
 });
+
 
 app.get("/login", (req, res) => {
   res.sendFile(path.join(__dirname, "views", "HomePage", "login.html"));
@@ -51,6 +55,14 @@ app.get("/admin-dashboard", (req, res) => {
 app.get("/LecturerProfile", (req, res) => {
   res.sendFile(path.join(__dirname, "views", "Lecturer", "lecturerProfile.html"));
 });
+app.get("/video/courses", (req, res) => {
+  res.sendFile(path.join(__dirname, "views", "Courses", "courses.html"));
+});
+
+app.use((req, res, next) => {
+  res.setHeader("Cache-Control", "no-store");
+  next();
+});
 
 // ✅ MongoDB Connection
 mongoose.connect("mongodb://127.0.0.1:27017/ci_cd_learning", {
@@ -63,6 +75,7 @@ mongoose.connect("mongodb://127.0.0.1:27017/ci_cd_learning", {
     console.log(`🚀 Server running at http://localhost:${PORT}`);
   });
 })
+
 .catch((err) => {
   console.error("❌ MongoDB connection error:", err);
 });

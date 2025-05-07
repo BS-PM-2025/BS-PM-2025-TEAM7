@@ -225,37 +225,31 @@
     const navbar = document.querySelector("#nav-links");
   
     if (token) {
-      const user = parseJwt(token);
-      navbar.innerHTML = ''; // Clear existing links
-  
-      if (user.role === "admin") {
-        // ✅ Admin: Dashboard + Logout
-        navbar.innerHTML += `<li><a href="/AdminDashboard">Admin Dashboard</a></li>`;
-      } else if (user.role === "lecturer") {
-        // ✅ Lecturer: Home + Manage Courses + Profile + Logout
-        navbar.innerHTML += `
-          <li><a href="/">Home</a></li>
-          <li><a href="/LecturerProfile">Profile</a></li>
-        `;
-      } else if (user.role === "student") {
-        // ✅ Student: Home + Courses + Profile + Logout
-        navbar.innerHTML += `
-          <li><a href="/">Home</a></li>
-          <li><a href="/StudentProfile">Profile</a></li>
-        `;
-      }
-  
-      // ✅ All roles: Logout
-      navbar.innerHTML += `<li><a href="#" onclick="logout()">Logout</a></li>`;
+    const user = parseJwt(token);
+    navbar.innerHTML = ''; // Clear existing links
+
+    if (user.role === "admin") {
+      navbar.innerHTML += `<li><a href="/AdminDashboard">Admin Dashboard</a></li>`;
+    } else if (user.role === "lecturer") {
+      navbar.innerHTML += `<li><a href="/">Home</a></li>`;
+      navbar.innerHTML += `<li><a href="/video/courses">Courses</a></li>`; <!-- ✅ נוספה -->
+      navbar.innerHTML += `<li><a href="/LecturerProfile">Profile</a></li>`;
+    } else if (user.role === "student") {
+      navbar.innerHTML += `<li><a href="/">Home</a></li>`;
+      navbar.innerHTML += `<li><a href="/video/courses">Courses</a></li>`; 
+      navbar.innerHTML += `<li><a href="/StudentProfile">Profile</a></li>`;
     }
+
+    navbar.innerHTML += `<li><a href="#" onclick="logout()">Logout</a></li>`;
+  }
+   
   
-    // Block back navigation after logout
-    window.onload = () => {
-      if (!token) {
-        history.pushState(null, null, location.href);
-        window.onpopstate = () => history.go(1);
-      }
-    };
+  window.onload = () => {
+    if (!token) {
+      history.pushState(null, null, location.href);
+      window.onpopstate = () => history.go(1);
+    }
+  };
   </script>
   
   <!-- Feedback Section -->
