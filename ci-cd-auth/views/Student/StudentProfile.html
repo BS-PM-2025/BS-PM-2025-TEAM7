@@ -169,7 +169,8 @@
     <p><span class="label">🎓 Role:</span> <span id="role"></span></p>
     <button onclick="goHome()">← Back to Home</button>
   </div>
-
+  <h2>Available Videos</h2>
+  <div id="videoList"></div>
   <!-- Footer -->
   <footer>
     <p>&copy; 2025 CI/CD Learning Platform | All Rights Reserved | <a href="/signup">Sign Up</a></p>
@@ -193,6 +194,23 @@
         return null;
       }
     }
+    fetch("/api/videos/all")
+    .then(res => res.json())
+    .then(videos => {
+      const list = document.getElementById("videoList");
+      videos.forEach(video => {
+        const videoElement = document.createElement("div");
+        videoElement.innerHTML = `
+          <h4>${video.title}</h4>
+          <video width="400" controls>
+            <source src="/uploads/${video.filename}" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+          <hr />
+        `;
+        list.appendChild(videoElement);
+      });
+    });
 
     const token = sessionStorage.getItem("token");
     const user = parseJwt(token);

@@ -186,7 +186,13 @@
     <p><span class="label">🎓 Role:</span> <span id="role"></span></p>
     <button onclick="goHome()">← Back to Home</button>
   </div>
-
+  <h2>Upload a Video</h2>
+  <form action="/api/videos/upload" method="POST" enctype="multipart/form-data">
+    <input type="text" name="title" placeholder="Video Title" required />
+    <input type="file" name="video" accept="video/*" required />
+    <button type="submit">Upload</button>
+  </form>
+  
   <!-- Footer -->
   <footer>
     <p>&copy; 2025 CI/CD Learning Platform | All Rights Reserved</p>
