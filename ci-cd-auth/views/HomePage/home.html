@@ -236,44 +236,56 @@
   }
 
   function parseJwt(token) {
-    const base64Url = token.split('.')[1];
-    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    const jsonPayload = decodeURIComponent(atob(base64).split('').map(c =>
-      '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join(''));
-    return JSON.parse(jsonPayload);
-  }
-
-  const token = sessionStorage.getItem("token");
-  const navbar = document.querySelector("#nav-links");
-
-  if (token) {
-    const user = parseJwt(token);
-    navbar.innerHTML = ''; // Clear existing links
-
-    if (user.role === "admin") {
-      navbar.innerHTML += '<li><a href="http://localhost:3000/admin-dashboard">Admin Dashboard</a></li>';
-    } else if (user.role === "lecturer") {
-      navbar.innerHTML += '<li><a href="/">Home</a></li>';
-      navbar.innerHTML += '<li><a href="/video/courses">Courses</a></li>';
-      navbar.innerHTML += '<li><a href="/LecturerProfile">Profile</a></li>';
-    } else if (user.role === "student") {
-      navbar.innerHTML += '<li><a href="/">Home</a></li>';
-      navbar.innerHTML += '<li><a href="/video/courses">Courses</a></li>';
-      navbar.innerHTML += '<li><a href="/StudentProfile">Profile</a></li>';
+    try {
+      const base64Url = token.split('.')[1];
+      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      const jsonPayload = decodeURIComponent(atob(base64).split('').map(c =>
+        '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join(''));
+      return JSON.parse(jsonPayload);
+    } catch (e) {
+      console.error("Invalid token", e);
+      return null;
     }
-
-    navbar.innerHTML += '<li><a href="#" onclick="logout()">Logout</a></li>';
-  } else {
-    navbar.innerHTML = ''; // Clear links if not authenticated
   }
 
   window.onload = () => {
-    if (!token) {
+    const token = sessionStorage.getItem("token");
+    const navbar = document.querySelector("#nav-links");
+
+    if (token) {
+      const user = parseJwt(token);
+      if (!user) return;
+
+      navbar.innerHTML = ''; // Clear default links
+
+      if (user.role === "admin") {
+        navbar.innerHTML += '<li><a href="/admin-dashboard">Admin Dashboard</a></li>';
+      } else if (user.role === "lecturer") {
+        navbar.innerHTML += '<li><a href="/">Home</a></li>';
+        navbar.innerHTML += '<li><a href="/video/courses">Courses</a></li>';
+        navbar.innerHTML += '<li><a href="/LecturerProfile">Profile</a></li>';
+      } else if (user.role === "student") {
+        navbar.innerHTML += '<li><a href="/">Home</a></li>';
+        navbar.innerHTML += '<li><a href="/video/courses">Courses</a></li>';
+        navbar.innerHTML += '<li><a href="/StudentProfile">Profile</a></li>';
+      }
+
+      navbar.innerHTML += '<li><a href="#" onclick="logout()">Logout</a></li>';
+    } else {
+      // Show default links if not logged in
+      navbar.innerHTML = `
+        <li><a href="/" class="active">Home</a></li>
+        <li><a href="/signup">Sign Up</a></li>
+        <li><a href="/login">Login</a></li>
+      `;
+      
+      // Optional: prevent going back to protected page
       history.pushState(null, null, location.href);
       window.onpopstate = () => history.go(1);
     }
   };
 </script>
+
 
 <!-- Feedback Section -->
 <div class="site-description" id="feedback-section">
