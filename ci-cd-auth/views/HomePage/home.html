@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>CI/CD Learning Platform</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <title>Learn CI/CD</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     * {
       margin: 0;
@@ -14,16 +14,9 @@
 
     body {
       font-family: 'Inter', sans-serif;
-      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
-      color: #ffffff;
-      display: flex;
-      justify-content: center; /* Center content horizontally */
-      align-items: center; /* Center content vertically */
-      height: 100vh;
-      min-height: 100vh;
-      padding: 0;
-      flex-direction: column;
-      margin-top: 280px; /* Remove margin-top */
+      background-color: #ffffff;
+      color: #1f2328;
+      line-height: 1.5;
     }
 
     header {
@@ -31,228 +24,258 @@
       top: 0;
       left: 0;
       width: 100%;
-      padding: 1rem 2rem;
-      background-color: rgba(0, 0, 0, 0.6);
-      backdrop-filter: blur(8px);
+      padding: 16px 10%;
+      background-color: #ffffff;
+      border-bottom: 1px solid #d8dee4;
       display: flex;
-      justify-content: space-between;
+      justify-content: space-between;  /* Ensures space between logo and nav links */
       align-items: center;
-      border-radius: 0 0 10px 10px;
       z-index: 10;
-    }
-
-    .logo {
-      font-size: 1.5rem;
-      font-weight: 600;
-      color: #00ffc3;
-      letter-spacing: 1px;
     }
 
     .nav-links {
       list-style: none;
       display: flex;
-      gap: 2rem;
-    }
-
-    .nav-links li {
-      position: relative;
+      gap: 24px;
+      margin-left: auto;  /* Pushes the nav links to the right */
     }
 
     .nav-links li a {
       text-decoration: none;
-      color: #e0f7fa;
+      color: #1f2328;
       font-weight: 500;
-      transition: color 0.3s ease;
-      font-size: 1rem;
-      padding: 8px 12px;
-      border-radius: 30px;
-      transition: background 0.3s ease, color 0.3s ease;
+      font-size: 14px;
+      padding: 8px 0;
+      position: relative;
     }
 
     .nav-links li a:hover {
-      color: #00ffc3;
-      background-color: rgba(0, 255, 195, 0.3);
+      color: #8b9aeb;
     }
 
     .nav-links li a.active {
-      background-color: #00ffc3;
-      color: #2f2f2f;
+      color: #8b9aeb;
     }
 
-    .site-description {
-      background: rgba(0, 0, 0, 0.6);
-      border-radius: 20px;
-      backdrop-filter: blur(15px);
-      padding: 2rem;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-      width: 90%;
-      max-width: 700px;
-      margin-bottom: 50px;
-      text-align: center;
-      color: #ffffff;
-      animation: fadeIn 1.5s ease-in-out;
-    }
-
-    .site-description h2 {
-      font-size: 2.2rem;
-      color: #ffffff;
-      margin-bottom: 20px;
-    }
-
-    .site-description p {
-      font-size: 1rem;
-      color: #d2f8ff;
-      line-height: 1.6;
-      margin-bottom: 20px;
-    }
-
-    .site-description ul {
-      list-style: none;
-      padding-left: 0;
-      font-size: 1.1rem;
-      color: #d2f8ff;
-    }
-
-    .features-section {
-      display: flex;
-      justify-content: space-around;
-      flex-wrap: wrap;
-      gap: 20px;
-      margin-top: 50px;
-    }
-
-    .feature-card {
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 20px;
-      padding: 2rem;
-      width: 280px;
-      text-align: center;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-      animation: fadeIn 1.5s ease-in-out;
-    }
-
-    .feature-card img {
+    .nav-links li a.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
       width: 100%;
-      border-radius: 10px;
-      margin-bottom: 15px;
+      height: 2px;
+      background-color: #8b9aeb;
     }
 
-    .feature-card h3 {
-      font-size: 1.5rem;
-      color: #ffffff;
-      margin-bottom: 10px;
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 12px;
     }
 
-    .feature-card p {
-      color: #d2f8ff;
+    .logo-img {
+      height: 32px;
+      width: 32px;
     }
 
-    @keyframes fadeIn {
-      0% { opacity: 0; transform: scale(0.9); }
-      100% { opacity: 1; transform: scale(1); }
+    .logo-text {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #8b9aeb;
+    }
+
+    .hero {
+      padding: 140px 10% 80px;  /* Add padding on left and right */
+      max-width: 100%;
+      margin: 0 auto;
+      text-align: left;  /* Align text to the left */
+      background-color: #8b9aeb;  /* Set background color */
+      color: white;  /* Set text color to white */
+      border: 2px solid #d8dee4;
+      border-radius: 12px;
+      
+
+    }
+
+    .hero h1 {
+      font-size: 48px;
+      font-weight: 700;
+      margin-bottom: 24px;
+      line-height: 1.25;
+    }
+
+    .hero p {
+      font-size: 20px;
+      color: white;  /* Ensure paragraphs are white */
+      max-width: 700px;
+      margin-bottom: 20px;
+    }
+
+
+    .features-container {
+      display: flex;
+      justify-content: space-between;  /* Spread items across the page */
+      gap: 4px;  /* Reduce the gap to make items closer */
+      max-width: 80%;
+      margin: 0 auto 40px;
+    }
+
+    .feature-item {
+      display: flex;
+      align-items: center;
+      gap: 4px;  /* Reduce the gap between the text and the checkmark */
+      font-size: 16px;
+      font-weight: 500;
+      color: #1f2328;  /* Black text color */
+    }
+
+    .feature-item::before {
+      content: '✔';
+      color: #4CAF50;  /* Green checkmark color */
+      font-weight: bold;
+    }
+
+
+
+    .cta-wrapper {
+      display: flex;
+      justify-content: center;  /* Centers horizontally */
+      margin-top: 40px;  /* Optional: Add some space above the button */
+    }
+    .cta-button {
+      display: inline-block;
+      background-color: #8b9aeb;
+      color: white;
+      font-weight: 600;
+      padding: 12px 24px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 16px;
+      transition: background-color 0.2s;
+    }
+
+    .cta-button:hover {
+      background-color: #7a88d1;
+    }
+
+    @media (max-width: 768px) {
+      header {
+        padding: 16px 5%;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .nav-links {
+        gap: 16px;
+        margin-bottom: 8px;
+      }
+
+      .hero {
+        padding: 120px 5% 60px;
+      }
+
+      .hero h1 {
+        font-size: 36px;
+      }
+
+      .hero p {
+        font-size: 18px;
+      }
+
+      .features-container {
+        flex-direction: column;
+        align-items: center;
+      }
     }
   </style>
 </head>
 
 <body>
-
   <header>
-    <div class="logo">CI/CD Learning Platform</div>
-    <ul class="nav-links" id="nav-links">
+        <div class="logo-container">
+      <svg class="logo-img" viewBox="0 0 24 24" fill="#8b9aeb" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.652.242 2.873.118 3.176.77.84 1.235 1.91 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
+      </svg>
+      <span class="logo-text">CI/CD</span>
+          <ul class="nav-links" id="nav-links">
       <li><a href="#" class="active">Home</a></li>
-
-      <!-- The Manage Courses link will be shown conditionally -->
-      <li><a href="#contact">Contact</a></li>
       <li><a href="/signup">Sign Up</a></li>
       <li><a href="/login">Login</a></li>
     </ul>
+    </div>
+
   </header>
 
-  <!-- Site Description Section -->
-  <div class="site-description">
-    <h2>Welcome to Our CI/CD Learning Platform</h2>
-    <p>Our platform offers a comprehensive learning experience for both beginners and advanced learners in Continuous Integration and Continuous Deployment (CI/CD) practices. Whether you're looking to get started with CI/CD or deepen your understanding, we provide courses tailored to your needs.</p>
-    <p>Courses include topics such as:</p>
-    <ul>
-      <li>Introduction to CI/CD</li>
-      <li>Advanced Jenkins Pipelines</li>
-      <li>Docker & Kubernetes in CI/CD</li>
-      <li>CI/CD for Web Applications</li>
-    </ul>
-  </div>
+    <main>
+      <section class="hero">
+        <h1>Learn CI/CD</h1>
+        <p>Master Continuous Integration and Deployment easily, at your own pace.</p>
+        <p>Join our interactive learning platform that explains, practices, and advances you into the real-world of software development.</p>
+      </section>
 
-  <!-- Courses Section -->
-  <div id="courses" class="features-section">
-    <div class="feature-card">
-      <img src="https://images.unsplash.com/photo-1582929178177-c881af84e8a6" alt="CI/CD Basics">
-      <h3>CI/CD Basics</h3>
-      <p>Start your journey by learning the fundamentals of Continuous Integration and Continuous Deployment practices.</p>
-    </div>
-    <div class="feature-card">
-      <img src="https://images.unsplash.com/photo-1611158083575-8763a4a4c02f" alt="Jenkins Pipelines">
-      <h3>Jenkins Pipelines</h3>
-      <p>Master Jenkins to automate your deployment pipeline and integrate your workflows seamlessly.</p>
-    </div>
-    <div class="feature-card">
-      <img src="https://images.unsplash.com/photo-1598155174743-cfcff3e8d8a0" alt="Docker & Kubernetes">
-      <h3>Docker & Kubernetes</h3>
-      <p>Learn how Docker and Kubernetes power modern CI/CD pipelines, containerizing and scaling your apps.</p>
-    </div>
-  </div>
+      <div class="features-container">
+        <div class="feature-item">Interactive Practice</div>
+        <div class="feature-item">Immediate Feedback</div>
+        <div class="feature-item">Clear Explanations</div>
+        <div class="feature-item">Self-Paced Progress</div>
+      </div>
 
-  <!-- Contact Section -->
-  <div id="contact" class="site-description">
-    <h2>Contact Us</h2>
-    <p>If you have any questions or need further information, feel free to reach out to us. We're here to help you with your CI/CD learning journey!</p>
-    <p>Email: support@cicdplatform.com</p>
-  </div>
+      <!-- Centering the button -->
+      <div class="cta-wrapper">
+        <a href="/courses" class="cta-button">Get Started</a>
+      </div>
 
-  <script>
-    function logout() {
-      sessionStorage.removeItem("token");
-      window.location.href = "/login";
-    }
-  
-    function parseJwt(token) {
-      const base64Url = token.split('.')[1];
-      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-      const jsonPayload = decodeURIComponent(atob(base64).split('').map(c =>
-        '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join(''));
-      return JSON.parse(jsonPayload);
-    }
-  
-    const token = sessionStorage.getItem("token");
-    const navbar = document.querySelector("#nav-links");
-  
-    if (token) {
+    </main>
+    
+<!-- Navbar & Scripts for Token-Based Role Handling -->
+<script>
+  function logout() {
+    sessionStorage.removeItem("token");
+    window.location.href = "/login";
+  }
+
+  function parseJwt(token) {
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const jsonPayload = decodeURIComponent(atob(base64).split('').map(c =>
+      '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join(''));
+    return JSON.parse(jsonPayload);
+  }
+
+  const token = sessionStorage.getItem("token");
+  const navbar = document.querySelector("#nav-links");
+
+  if (token) {
     const user = parseJwt(token);
     navbar.innerHTML = ''; // Clear existing links
 
     if (user.role === "admin") {
-      navbar.innerHTML += `<li><a href="http://localhost:3000/admin-dashboard">Admin Dashboard</a></li>`;
+      navbar.innerHTML += '<li><a href="http://localhost:3000/admin-dashboard">Admin Dashboard</a></li>';
     } else if (user.role === "lecturer") {
-      navbar.innerHTML += `<li><a href="/">Home</a></li>`;
-      navbar.innerHTML += `<li><a href="/video/courses">Courses</a></li>`; <!-- ✅ נוספה -->
-      navbar.innerHTML += `<li><a href="/LecturerProfile">Profile</a></li>`;
+      navbar.innerHTML += '<li><a href="/">Home</a></li>';
+      navbar.innerHTML += '<li><a href="/video/courses">Courses</a></li>';
+      navbar.innerHTML += '<li><a href="/LecturerProfile">Profile</a></li>';
     } else if (user.role === "student") {
-      navbar.innerHTML += `<li><a href="/">Home</a></li>`;
-      navbar.innerHTML += `<li><a href="/video/courses">Courses</a></li>`;
-      navbar.innerHTML += `<li><a href="/StudentProfile">Profile</a></li>`;
+      navbar.innerHTML += '<li><a href="/">Home</a></li>';
+      navbar.innerHTML += '<li><a href="/video/courses">Courses</a></li>';
+      navbar.innerHTML += '<li><a href="/StudentProfile">Profile</a></li>';
     }
 
-    navbar.innerHTML += `<li><a href="#" onclick="logout()">Logout</a></li>`;
+    navbar.innerHTML += '<li><a href="#" onclick="logout()">Logout</a></li>';
+  } else {
+    navbar.innerHTML = ''; // Clear links if not authenticated
   }
-   
-  
+
   window.onload = () => {
     if (!token) {
       history.pushState(null, null, location.href);
       window.onpopstate = () => history.go(1);
     }
   };
-  </script>
-  
-  <!-- Feedback Section -->
+</script>
+
+<!-- Feedback Section -->
 <div class="site-description" id="feedback-section">
   <h2>Leave Your Feedback</h2>
   <form id="feedback-form">
@@ -274,87 +297,88 @@
   <div id="feedback-list" style="margin-top:30px;text-align:left;"></div>
 </div>
 
+<!-- Feedback Script -->
 <script>
   let showingAll = false;
   function toggleFeedback() {
-  showingAll = !showingAll;
-  loadFeedback();
-}
-document.addEventListener("DOMContentLoaded", () => {
-  const token = sessionStorage.getItem("token");
-  const form = document.getElementById("feedback-form");
-
-  if (!token) {
-    document.getElementById("feedback-section").style.display = "none";
-    return;
+    showingAll = !showingAll;
+    loadFeedback();
   }
 
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const comment = document.getElementById("comment").value;
-    const rating = document.getElementById("rating").value;
+  document.addEventListener("DOMContentLoaded", () => {
+    const token = sessionStorage.getItem("token");
+    const form = document.getElementById("feedback-form");
 
-    try {
-      const res = await fetch("/api/feedback", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token
-        },
-        body: JSON.stringify({ comment, rating })
-      });
-
-      const result = await res.json();
-      document.getElementById("feedback-message").textContent = result.message;
-      form.reset();
-      loadFeedback();
-    } catch (err) {
-      document.getElementById("feedback-message").textContent = "Error submitting feedback.";
+    if (!token) {
+      document.getElementById("feedback-section").style.display = "none";
+      return;
     }
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const comment = document.getElementById("comment").value;
+      const rating = document.getElementById("rating").value;
+
+      try {
+        const res = await fetch("/api/feedback", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token
+          },
+          body: JSON.stringify({ comment, rating })
+        });
+
+        const result = await res.json();
+        document.getElementById("feedback-message").textContent = result.message;
+        form.reset();
+        loadFeedback();
+      } catch (err) {
+        document.getElementById("feedback-message").textContent = "Error submitting feedback.";
+      }
+    });
+
+    async function loadFeedback() {
+      try {
+        const res = await fetch("/api/feedback");
+        const data = await res.json();
+        const container = document.getElementById("feedback-list");
+
+        const feedbackToShow = showingAll ? data.feedback : data.feedback.slice(0, 5);
+
+        container.innerHTML = feedbackToShow.map(f =>
+          <div style="background:rgba(255,255,255,0.1);padding:10px;border-radius:10px;margin-bottom:10px;">
+             <strong>${f.username}</strong> (${renderStars(f.rating)}) 
+             <small style="color:#ccc;">
+             on ${new Date(f.createdAt).toLocaleString()}
+             </small>
+             <br>
+             ${f.comment}
+           </div>
+        ).join("");
+
+        if (data.feedback.length > 5) {
+          container.innerHTML += 
+            <button id="toggle-feedback-btn" style="margin-top:10px;padding:5px 10px;border:none;border-radius:6px;background:#00ffc3;color:#1f4037;cursor:pointer;">
+              ${showingAll ? "Show Less" : "Show All"}
+            </button>;
+        }
+
+        const toggleBtn = document.getElementById("toggle-feedback-btn");
+        if (toggleBtn) {
+          toggleBtn.addEventListener("click", toggleFeedback);
+        }
+      } catch (err) {
+        document.getElementById("feedback-list").textContent = "Failed to load feedback.";
+      }
+    }
+
+    function renderStars(rating) {
+      return '⭐'.repeat(rating);
+    }
+
+    loadFeedback();
   });
-
-  
-
-async function loadFeedback() {
-  const res = await fetch("/api/feedback");
-  const data = await res.json();
-  const container = document.getElementById("feedback-list");
-
-  const feedbackToShow = showingAll ? data.feedback : data.feedback.slice(0, 5);
-
-  container.innerHTML = feedbackToShow.map(f =>
-    `<div style="background:rgba(255,255,255,0.1);padding:10px;border-radius:10px;margin-bottom:10px;">
-     <strong>${f.username}</strong> (${renderStars(f.rating)}) 
-     <small style="color:#ccc;">
-     on ${new Date(f.createdAt).toLocaleString()}
-    </small>
-    <br>
-     ${f.comment}
-   </div>`
-  ).join("");
-
-  if (data.feedback.length > 5) {
-    container.innerHTML += `
-       <button id="toggle-feedback-btn" style="margin-top:10px;padding:5px 10px;border:none;border-radius:6px;background:#00ffc3;color:#1f4037;cursor:pointer;">
-       ${showingAll ? "Show Less" : "Show All"}
-      </button>`;
-  }
-  const toggleBtn = document.getElementById("toggle-feedback-btn");
-  if (toggleBtn) {
-     toggleBtn.addEventListener("click", toggleFeedback);
-}
-
-}
-
-
-
-function renderStars(rating) {
-  return '⭐'.repeat(rating);
-}
-
-
-  loadFeedback();
-});
 </script>
 
 </body>

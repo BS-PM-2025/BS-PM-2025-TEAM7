@@ -3,198 +3,275 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Log In - CI/CD Learning Platform</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <title>Sign in to CI/CD Learning</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
     }
 
     body {
-      font-family: 'Inter', sans-serif;
-      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
-      color: #ffffff;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      height: 100vh;
+      background-color: #f6f8fa;
+      color: #24292f;
       min-height: 100vh;
-      padding: 120px;
     }
 
+    /* Navbar Styles - Matching your homepage */
     header {
-      position: absolute;
-      top: 20px;
-      left: 20px;
-      padding: 1.5rem;
-      background-color: rgba(0, 0, 0, 0.4);
-      backdrop-filter: blur(8px);
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 16px 10%;
+      background-color: #ffffff;
+      border-bottom: 1px solid #d8dee4;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-radius: 10px;
-      width: calc(100% - 40px);
+      z-index: 10;
     }
 
-    .logo {
-      font-size: 1.6rem;
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-img {
+      height: 32px;
+      width: 32px;
+    }
+
+    .logo-text {
+      font-size: 1.25rem;
       font-weight: 600;
-      color: #00ffc3;
+      color: #8b9aeb;
     }
 
     .nav-links {
       list-style: none;
       display: flex;
-      gap: 1.5rem;
+      gap: 24px;
+      margin-left: auto;
     }
 
     .nav-links li a {
       text-decoration: none;
-      color: #e0f7fa;
+      color: #1f2328;
       font-weight: 500;
-      transition: color 0.3s ease;
+      font-size: 14px;
+      padding: 8px 0;
+      position: relative;
     }
 
     .nav-links li a:hover {
-      color: #00ffc3;
+      color: #8b9aeb;
     }
 
-    .login-form {
-      background: rgba(255, 255, 255, 0.05);
-      border-radius: 20px;
-      backdrop-filter: blur(15px);
-      padding: 3rem;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-      max-width: 500px;
+    .nav-links li a.active {
+      color: #8b9aeb;
+    }
+
+    .nav-links li a.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
       width: 100%;
+      height: 2px;
+      background-color: #8b9aeb;
+    }
+
+    /* Login Container Styles */
+    .login-wrapper {
+      padding-top: 100px; /* To account for fixed navbar */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 16px;
+    }
+
+    .login-container {
+      width: 100%;
+      max-width: 340px;
       text-align: center;
-      margin: auto;
-      animation: fadeIn 1.5s ease-in-out;
     }
 
-    .login-form h2 {
-      font-size: 2rem;
-      color: #ffffff;
-      margin-bottom: 20px;
+    .login-header {
+      margin-bottom: 16px;
     }
 
-    .login-form label {
-      font-size: 1rem;
-      color: #d2f8ff;
-      margin-bottom: 8px;
-      display: block;
+    .login-header h1 {
+      font-size: 24px;
+      font-weight: 300;
+      letter-spacing: -0.5px;
+      margin-bottom: 16px;
+    }
+
+    .login-box {
+      background-color: #ffffff;
+      border: 1px solid #d8dee4;
+      border-radius: 6px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
       text-align: left;
     }
 
-    .login-form input {
-      width: 100%;
-      padding: 15px;
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      color: #ffffff;
-      border-radius: 8px;
-      margin-bottom: 15px;
-      font-size: 1rem;
-      transition: all 0.3s ease;
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 14px;
+      font-weight: 500;
     }
 
-    .login-form input:focus {
-      border-color: #00ffc3;
+    .form-group input {
+      width: 100%;
+      padding: 5px 12px;
+      font-size: 14px;
+      line-height: 20px;
+      color: #24292f;
+      background-color: #bdede3;
+      background-repeat: no-repeat;
+      background-position: right 8px center;
+      border: 3px solid #bdede3;
+      border-radius: 6px;
+      box-shadow: inset 0 1px 0 rgba(208,215,222,0.2);
+      height: 32px;
+      transition: all 0.2s ease;
+    }
+
+    .form-group input:focus {
+      border-color: #bdede3;
       outline: none;
-      background: rgba(255, 255, 255, 0.15);
+      box-shadow: 0 0 0 3px rgba(139, 154, 235, 0.3);
+      background-color: #e0f7f3;
     }
 
-    .login-form button {
+    .login-button {
       width: 100%;
-      padding: 15px;
-      background: #00ffc3;
+      background-color: #8b9aeb;
+      color: white;
       border: none;
-      border-radius: 8px;
-      font-size: 1.1rem;
-      font-weight: 600;
-      color: #1f4037;
+      border-radius: 6px;
+      padding: 5px 16px;
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 20px;
       cursor: pointer;
-      transition: background-color 0.3s ease;
+      height: 32px;
+      transition: background-color 0.2s ease;
     }
 
-    .login-form button:hover {
-      background: #00c0a2;
+    .login-button:hover {
+      background-color: #7a8ad8;
     }
 
-    .login-form p {
-      margin-top: 15px;
-      color: #e0f7fa;
-    }
-
-    .login-form a {
-      color: #00ffc3;
+    .forgot-password {
+      display: block;
+      font-size: 12px;
+      color: #8b9aeb;
       text-decoration: none;
-      font-weight: 600;
+      margin-top: 4px;
+      text-align: left;
+      transition: color 0.2s ease;
     }
 
-    .login-form a:hover {
-      color: #00c0a2;
+    .forgot-password:hover {
+      text-decoration: underline;
     }
 
-    footer {
-      text-align: center;
-      padding: 1rem;
-      background: rgba(0, 0, 0, 0.4);
-      backdrop-filter: blur(8px);
-      margin-top: 50px;
-      border-radius: 10px;
+    .create-account {
+      border: 1px solid #d8dee4;
+      border-radius: 6px;
+      padding: 16px;
+      font-size: 14px;
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(30px); }
-      to { opacity: 1; transform: translateY(0); }
+    .create-account a {
+      color: #8b9aeb;
+      text-decoration: none;
+      transition: color 0.2s ease;
     }
 
-    @media (max-width: 600px) {
-      .login-form {
-        padding: 2rem;
+    .create-account a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 768px) {
+      header {
+        padding: 16px 5%;
+        flex-direction: column;
+        align-items: flex-start;
       }
 
-      .login-form h2 {
-        font-size: 1.6rem;
+      .nav-links {
+        gap: 16px;
+        margin-top: 8px;
+        margin-left: 0;
+      }
+
+      .login-wrapper {
+        padding-top: 150px;
       }
     }
   </style>
 </head>
 <body>
-  <!-- Header with Navbar -->
+  <!-- Navbar matching the homepage -->
   <header>
-    <div class="logo">CI/CD Learning</div>
-    <ul class="nav-links">
-      <li><a href="/">Home</a></li>
+        <div class="logo-container">
+      <svg class="logo-img" viewBox="0 0 24 24" fill="#8b9aeb" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.652.242 2.873.118 3.176.77.84 1.235 1.91 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
+      </svg>
+      <span class="logo-text">CI/CD</span>
+          <ul class="nav-links" id="nav-links">
+      <li><a href="/" class="active">Home</a></li>
+      <li><a href="/signup">Sign Up</a></li>
+      <li><a href="/login">Login</a></li>
     </ul>
+    </div>
   </header>
 
-  <!-- Main login section -->
-  <main>
-    <div class="login-form">
-      <h2>Log In</h2>
-      <form id="login-form">
-        <label for="username">Username</label>
-        <input type="text" id="username" name="username" required placeholder="Enter your username" />
+  <!-- Login Form -->
+  <div class="login-wrapper">
+    <div class="login-container">
+      <div class="login-header">
+        <h1>Sign in to CI/CD Learning</h1>
+      </div>
 
-        <label for="password">Password</label>
-        <input type="password" id="password" name="password" required placeholder="Enter your password" />
+      <div class="login-box">
+        <form id="login-form">
+          <div class="form-group">
+            <label for="username">Username or Email</label>
+            <input type="text" id="username" name="username" required />
+          </div>
 
-        <button type="submit">Log In</button>
-        <p id="error-message" style="color: red; font-weight: bold;"></p>
-      </form>
-      <p>Back To Home? <a href="/">Click here</a></p>
-      <p>You don't have an account? <a href="/signup">Signup here</a></p>
+          <div class="form-group">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <label for="password">Password</label>
+              <a href="#" class="forgot-password">Forgot password?</a>
+            </div>
+            <input type="password" id="password" name="password" required />
+          </div>
+
+          <button type="submit" class="login-button">Log in</button>
+          <p id="error-message" style="color: #cf222e; font-size: 12px; margin-top: 8px;"></p>
+        </form>
+      </div>
+
+      <div class="create-account">
+        Don't have an account? <a href="/signup">Sign up</a>
+      </div>
     </div>
-  </main>
-
-  <!-- Footer -->
-  <footer>
-    <p>&copy; 2025 CI/CD Learning Platform | All Rights Reserved</p>
-  </footer>
+  </div>
 
   <script>
     document.getElementById("login-form").addEventListener("submit", async function (e) {
@@ -233,7 +310,42 @@
         document.getElementById("error-message").textContent = "Server error. Please try again.";
       }
     });
-    </script>
-    
+
+    // Navbar role-based handling
+    function parseJwt(token) {
+      const base64Url = token.split('.')[1];
+      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      const jsonPayload = decodeURIComponent(atob(base64).split('').map(c =>
+        '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join(''));
+      return JSON.parse(jsonPayload);
+    }
+
+    const token = sessionStorage.getItem("token");
+    const navbar = document.querySelector(".nav-links");
+
+    if (token) {
+      const user = parseJwt(token);
+      navbar.innerHTML = ''; // Clear existing links
+
+      if (user.role === "admin") {
+        navbar.innerHTML += '<li><a href="/admin-dashboard">Admin Dashboard</a></li>';
+      } else if (user.role === "lecturer") {
+        navbar.innerHTML += '<li><a href="/">Home</a></li>';
+        navbar.innerHTML += '<li><a href="/video/courses">Courses</a></li>';
+        navbar.innerHTML += '<li><a href="/LecturerProfile">Profile</a></li>';
+      } else if (user.role === "student") {
+        navbar.innerHTML += '<li><a href="/">Home</a></li>';
+        navbar.innerHTML += '<li><a href="/video/courses">Courses</a></li>';
+        navbar.innerHTML += '<li><a href="/StudentProfile">Profile</a></li>';
+      }
+
+      navbar.innerHTML += '<li><a href="#" onclick="logout()">Logout</a></li>';
+    }
+
+    function logout() {
+      sessionStorage.removeItem("token");
+      window.location.href = "/login";
+    }
+  </script>
 </body>
 </html>
