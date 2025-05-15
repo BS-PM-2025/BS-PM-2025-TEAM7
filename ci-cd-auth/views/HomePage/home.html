@@ -136,6 +136,12 @@
       font-weight: bold;
     }
 
+.role-label {
+  font-size: 0.75rem;
+  color: #666;
+  font-weight: 400;
+  margin-left: 6px;
+}
 
 
     .cta-wrapper {
@@ -154,10 +160,44 @@
       font-size: 16px;
       transition: background-color 0.2s;
     }
-
-    .cta-button:hover {
-      background-color: #7a88d1;
+.edit-btn {
+  background-color: #8b9aeb;   /* צבע הרקע של ה-hero */
+  color: #ffffff;              /* טקסט לבן */
+  border: none;
+  border-radius: 6px;
+  padding: 4px 12px;
+  font-size: 0.875rem;
+  cursor: pointer;  
+  transition: background-color 0.2s, transform 0.1s;
+}
+.edit-btn:hover {
+  background-color: #7a88d1;   /* מעט כהה יותר בריחוף */
+  transform: translateY(-1px);
+}
+#toggle-btn {
+      margin-top: 10px;
+      padding: 5px 10px;
+      border: none;
+      border-radius: 6px;
+      background: #00ffc3;
+      color: #1f4037;
+      cursor: pointer;
     }
+/* כפתור מחיקה – טורקיז כמו כפתור ה-Submit */
+.delete-btn {
+  background-color: #00ffc3;   /* צבע כפתור ה-Submit */
+  color: #1f4037;              /* טקסט כהה */
+  border: none;
+  border-radius: 6px;
+  padding: 4px 12px;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+}
+.delete-btn:hover {
+  background-color: #00e0b2;   /* מעט כהה יותר בריחוף */
+  transform: translateY(-1px);
+}
 
     @media (max-width: 768px) {
       header {
@@ -286,112 +326,220 @@
   };
 </script>
 
+<div
+    class="site-description"
+    id="feedback-section"
+    style="padding:40px 10%; background:#f9f9f9;"
+  >
+    <h2>Leave Your Feedback</h2>
+    <form id="feedback-form" style="margin-top:20px;">
+      <textarea
+        id="comment"
+        placeholder="Your feedback..."
+        required
+        style="width:100%; height:100px; border-radius:10px; padding:10px;"
+      ></textarea>
+      <div style="margin:10px 0;">
+        <label for="rating">Rating:</label>
+        <select
+          id="rating"
+          required
+          style="padding:5px; border-radius:5px;"
+        >
+          <option value="">Choose...</option>
+          <option value="1">⭐</option>
+          <option value="2">⭐⭐</option>
+          <option value="3">⭐⭐⭐</option>
+          <option value="4">⭐⭐⭐⭐</option>
+          <option value="5">⭐⭐⭐⭐⭐</option>
+        </select>
+      </div>
+      <button
+        type="submit"
+        style="
+          padding:10px 20px;
+          border:none;
+          border-radius:10px;
+          background:#00ffc3;
+          color:#1f4037;
+          font-weight:600;
+          cursor:pointer;
+        "
+      >Submit</button>
+      <p id="feedback-message" style="margin-top:10px; color:#d00;"></p>
+    </form>
 
-<!-- Feedback Section -->
-<div class="site-description" id="feedback-section">
-  <h2>Leave Your Feedback</h2>
-  <form id="feedback-form">
-    <textarea id="comment" placeholder="Your feedback..." required style="width:100%;height:100px;border-radius:10px;padding:10px;"></textarea>
-    <div style="margin:10px 0;">
-      <label for="rating">Rating:</label>
-      <select id="rating" required style="padding:5px;border-radius:5px;">
-        <option value="">Choose...</option>
-        <option value="1">⭐</option>
-        <option value="2">⭐⭐</option>
-        <option value="3">⭐⭐⭐</option>
-        <option value="4">⭐⭐⭐⭐</option>
-        <option value="5">⭐⭐⭐⭐⭐</option>
-      </select>
-    </div>
-    <button type="submit" style="padding:10px 20px;border:none;border-radius:10px;background:#00ffc3;color:#1f4037;font-weight:600;">Submit</button>
-    <p id="feedback-message" style="margin-top:10px;"></p>
-  </form>
-  <div id="feedback-list" style="margin-top:30px;text-align:left;"></div>
-</div>
+    <div id="feedback-list" style="margin-top:30px; text-align:left;"></div>
+  </div>
 
-<!-- Feedback Script -->
-<script>
-  let showingAll = false;
-  function toggleFeedback() {
-    showingAll = !showingAll;
-    loadFeedback();
-  }
-
+  <script>
   document.addEventListener("DOMContentLoaded", () => {
+    const API_BASE = window.location.origin;
     const token = sessionStorage.getItem("token");
-    const form = document.getElementById("feedback-form");
+    const section = document.getElementById("feedback-section");
+    const form    = document.getElementById("feedback-form");
+    const msgEl   = document.getElementById("feedback-message");
+    const listEl  = document.getElementById("feedback-list");
+    let showingAll = false;
 
+    // hide if not logged in
     if (!token) {
-      document.getElementById("feedback-section").style.display = "none";
+      section.style.display = "none";
       return;
     }
 
+    // helper to parse JWT
+    function parseJwt(t) {
+      try {
+        const base64Url = t.split(".")[1];
+        const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+        const json = atob(base64);
+        return JSON.parse(decodeURIComponent(
+          json.split("")
+              .map(c => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2))
+              .join("")
+        ));
+      } catch {
+        return null;
+      }
+    }
+    const currentUser = parseJwt(token);
+
+    // submit feedback
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
-      const comment = document.getElementById("comment").value;
-      const rating = document.getElementById("rating").value;
+      msgEl.textContent = "";
+
+      const comment = document.getElementById("comment").value.trim();
+      const rating  = document.getElementById("rating").value;
+      if (!comment || !rating) {
+        msgEl.textContent = "Please enter feedback and a rating.";
+        return;
+      }
 
       try {
-        const res = await fetch("/api/feedback", {
+        const res = await fetch(`${API_BASE}/api/feedback/submit`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: "Bearer " + token
+            "Authorization": "Bearer " + token
           },
           body: JSON.stringify({ comment, rating })
         });
-
-        const result = await res.json();
-        document.getElementById("feedback-message").textContent = result.message;
-        form.reset();
-        loadFeedback();
-      } catch (err) {
-        document.getElementById("feedback-message").textContent = "Error submitting feedback.";
+        const data = await res.json();
+        if (res.ok) {
+          msgEl.style.color = "green";
+          msgEl.textContent = data.message;
+          form.reset();
+          loadFeedback();
+        } else {
+          msgEl.style.color = "#d00";
+          msgEl.textContent = data.message || "Submission failed.";
+        }
+      } catch {
+        msgEl.style.color = "#d00";
+        msgEl.textContent = "Network error.";
       }
     });
 
-    async function loadFeedback() {
-      try {
-        const res = await fetch("/api/feedback");
-        const data = await res.json();
-        const container = document.getElementById("feedback-list");
+    // delegate edit/delete clicks
+    listEl.addEventListener("click", async (e) => {
+      const btn = e.target;
+      const id  = btn.dataset.id;
+      if (!id) return;
 
-        const feedbackToShow = showingAll ? data.feedback : data.feedback.slice(0, 5);
-
-        container.innerHTML = feedbackToShow.map(f =>
-          <div style="background:rgba(255,255,255,0.1);padding:10px;border-radius:10px;margin-bottom:10px;">
-             <strong>${f.username}</strong> (${renderStars(f.rating)}) 
-             <small style="color:#ccc;">
-             on ${new Date(f.createdAt).toLocaleString()}
-             </small>
-             <br>
-             ${f.comment}
-           </div>
-        ).join("");
-
-        if (data.feedback.length > 5) {
-          container.innerHTML += 
-            <button id="toggle-feedback-btn" style="margin-top:10px;padding:5px 10px;border:none;border-radius:6px;background:#00ffc3;color:#1f4037;cursor:pointer;">
-              ${showingAll ? "Show Less" : "Show All"}
-            </button>;
-        }
-
-        const toggleBtn = document.getElementById("toggle-feedback-btn");
-        if (toggleBtn) {
-          toggleBtn.addEventListener("click", toggleFeedback);
-        }
-      } catch (err) {
-        document.getElementById("feedback-list").textContent = "Failed to load feedback.";
+      // ➖ Delete
+      if (btn.matches(".delete-btn")) {
+        if (!confirm("Delete this feedback?")) return;
+        const res = await fetch(`${API_BASE}/api/feedback/${id}`, {
+          method: "DELETE",
+          headers: { "Authorization": "Bearer " + token }
+        });
+        if (res.ok) loadFeedback();
+        else console.error("Delete failed", await res.json());
       }
-    }
 
-    function renderStars(rating) {
-      return '⭐'.repeat(rating);
+      // ✏️ Edit
+      else if (btn.matches(".edit-btn")) {
+        const newComment = prompt("New comment:");
+        const newRating  = prompt("New rating (1–5):");
+        if (!newComment || !newRating) {
+          return alert("Invalid input");
+        }
+        const res = await fetch(`${API_BASE}/api/feedback/${id}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + token
+          },
+          body: JSON.stringify({ comment: newComment, rating: newRating })
+        });
+        if (res.ok) loadFeedback();
+        else console.error("Update failed", await res.json());
+      }
+    });
+
+    // load & render
+    async function loadFeedback() {
+      listEl.innerHTML = "";
+      try {
+        const res = await fetch(`${API_BASE}/api/feedback`, {
+          headers: { "Authorization": "Bearer " + token }
+        });
+        const payload = await res.json();
+        const all = Array.isArray(payload.feedback) ? payload.feedback : [];
+        const chunk = showingAll ? all : all.slice(0, 5);
+
+        listEl.innerHTML = chunk.map(f => {
+          const stars = "★".repeat(f.rating) + "☆".repeat(5 - f.rating);
+          const isLecturer = currentUser.role === "lecturer";
+          return `
+            <div style="
+              background: rgba(255,255,255,0.1);
+              padding: 10px;
+              border-radius: 10px;
+              margin-bottom: 10px;
+            ">
+              <strong>
+                ${f.username || "Anonymous"}
+                <span class="role-label">(${f.role})</span>
+              </strong>
+              <span style="margin-left:8px;">(${stars})</span><br>
+              <small style="color:#666">
+                on ${new Date(f.createdAt).toLocaleString()}
+              </small>
+              <p style="margin-top:5px;">${f.comment}</p>
+              ${
+                isLecturer
+                  ? `<button data-id="${f._id}" class="edit-btn">Edit</button>
+                     <button data-id="${f._id}" class="delete-btn">Delete</button>`
+                  : ``
+              }
+            </div>
+          `;
+        }).join("");
+
+        // show toggle if needed
+        if (all.length > 5) {
+          listEl.innerHTML += `
+            <button id="toggle-btn">
+              ${showingAll ? "Show Less" : "Show All"}
+            </button>`;
+          document.getElementById("toggle-btn")
+            .addEventListener("click", () => {
+              showingAll = !showingAll;
+              loadFeedback();
+            });
+        }
+      } catch {
+        listEl.textContent = "Failed to load feedback.";
+      }
     }
 
     loadFeedback();
   });
-</script>
+  </script>
+
 
 </body>
 </html>
