@@ -3,10 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Student Profile</title>
+  <title>Student Dashboard</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-  <style>
-    /* General Styling */
+ <style>
     * {
       margin: 0;
       padding: 0;
@@ -15,14 +14,9 @@
 
     body {
       font-family: 'Inter', sans-serif;
-      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
-      color: #ffffff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      flex-direction: column;
-      padding: 0;
+      background-color: #f6f8fa;
+      color: #1f2328;
+      line-height: 1.5;
     }
 
     header {
@@ -30,158 +24,316 @@
       top: 0;
       left: 0;
       width: 100%;
-      padding: 1rem 2rem;
-      background-color: rgba(0, 0, 0, 0.6);
-      backdrop-filter: blur(8px);
+      padding: 16px 10%;
+      background-color: #ffffff;
+      border-bottom: 1px solid #d8dee4;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-radius: 0 0 10px 10px;
       z-index: 10;
     }
 
-    .logo {
-      font-size: 1.5rem;
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-img {
+      height: 32px;
+      width: 32px;
+    }
+
+    .logo-text {
+      font-size: 1.25rem;
       font-weight: 600;
-      color: #00ffc3;
-      letter-spacing: 1px;
+      color: #8b9aeb;
     }
 
     .nav-links {
       list-style: none;
       display: flex;
-      gap: 2rem;
-    }
-
-    .nav-links li {
-      position: relative;
+      gap: 24px;
     }
 
     .nav-links li a {
       text-decoration: none;
-      color: #e0f7fa;
+      color: #1f2328;
       font-weight: 500;
-      transition: color 0.3s ease;
-      font-size: 1rem;
-      padding: 8px 12px;
-      border-radius: 30px;
-      transition: background 0.3s ease, color 0.3s ease;
+      font-size: 14px;
+      padding: 8px 0;
+      position: relative;
     }
 
     .nav-links li a:hover {
-      color: #00ffc3;
-      background-color: rgba(0, 255, 195, 0.3);
+      color: #8b9aeb;
     }
 
-    /* Profile Card */
-    .profile-card {
-      background: rgba(0, 0, 0, 0.6);
-      border-radius: 20px;
-      backdrop-filter: blur(15px);
-      padding: 2rem;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-      width: 90%;
-      max-width: 700px;
-      text-align: center;
-      color: #ffffff;
-      animation: fadeIn 1.5s ease-in-out;
+    .nav-links li a.active {
+      color: #8b9aeb;
     }
 
-    .profile-card h2 {
-      font-size: 2.2rem;
-      margin-bottom: 20px;
-      color: #ffffff;
-    }
-
-    .profile-card p {
-      font-size: 1rem;
-      color: #d2f8ff;
-      line-height: 1.6;
-      margin-bottom: 20px;
-    }
-
-    .profile-card .label {
-      font-weight: bold;
-      color: #00ffc3;
-    }
-
-    .profile-card button {
-      margin-top: 1.5rem;
-      padding: 0.7rem 1.2rem;
-      background-color: #00ffc3;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-
-    .profile-card button:hover {
-      background-color: #005f80;
-    }
-
-    @keyframes fadeIn {
-      0% { opacity: 0; transform: scale(0.9); }
-      100% { opacity: 1; transform: scale(1); }
-    }
-
-    footer {
-      background-color: #000;
-      text-align: center;
-      color: #b0b0b0;
-      font-size: 0.9rem;
-      padding: 1rem 0;
-      width: 100%;
-      position: fixed;
+    .nav-links li a.active::after {
+      content: '';
+      position: absolute;
       bottom: 0;
       left: 0;
+      width: 100%;
+      height: 2px;
+      background-color: #8b9aeb;
     }
 
-    footer p {
-      font-weight: 400;
+    .page-container {
+      display: flex;
+      padding-top: 80px;
+      min-height: calc(100vh - 80px);
     }
 
-    footer a {
-      color: #00ffc3;
-      text-decoration: none;
+    .sidebar {
+      width: 300px;
+      background-color: white;
+      padding: 40px 20px;
+      border-right: 1px solid #d8dee4;
+    }
+
+    .user-profile {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .profile-pic {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background-color: #8b9aeb;
+      margin: 0 auto 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 32px;
+      font-weight: bold;
+    }
+
+    .user-info {
+      margin-bottom: 20px;
+    }
+
+    .user-info h3 {
+      font-size: 18px;
+      margin-bottom: 5px;
+    }
+
+    .user-info p {
+      font-size: 14px;
+      color: #656d76;
+    }
+
+    .progress-container {
+      background-color: #f6f8fa;
+      border-radius: 6px;
+      padding: 15px;
+      margin-bottom: 30px;
+    }
+
+    .progress-title {
+      font-size: 14px;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .progress-bar {
+      height: 8px;
+      background-color: #e1e4e8;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background-color: #8b9aeb;
+      width: 70%;
+    }
+
+    .main-content {
+      flex: 1;
+      padding: 40px;
+      background-color: #f6f8fa;
+    }
+
+    .welcome-section {
+      background-color: #8b9aeb;
+      color: white;
+      padding: 40px;
+      border-radius: 12px;
+      margin-bottom: 30px;
+    }
+
+    .welcome-section h1 {
+      font-size: 32px;
+      margin-bottom: 15px;
+    }
+
+    .welcome-section p {
+      margin-bottom: 15px;
+      max-width: 700px;
+    }
+
+    .start-button {
+      display: inline-block;
+      background-color: white;
+      color: #8b9aeb;
       font-weight: 600;
+      padding: 12px 24px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 16px;
+      margin-top: 15px;
     }
 
-    footer a:hover {
-      text-decoration: underline;
+    .games-section h2 {
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+
+    .game-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    .game-card {
+      background-color: white;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .game-card h3 {
+      font-size: 18px;
+      margin-bottom: 10px;
+      color: #8b9aeb;
+    }
+
+    .game-card p {
+      font-size: 14px;
+      color: #656d76;
+      margin-bottom: 15px;
+    }
+
+    .last-activity {
+      font-size: 12px;
+      color: #8b959f;
+    }
+
+    .view-all {
+      display: inline-block;
+      margin-top: 20px;
+      color: #8b9aeb;
+      font-weight: 500;
+      text-decoration: none;
+    }
+
+    @media (max-width: 768px) {
+      .page-container {
+        flex-direction: column;
+      }
+      
+      .sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid #d8dee4;
+      }
+      
+      .main-content {
+        padding: 20px;
+      }
+      
+      .nav-links {
+        gap: 16px;
+      }
     }
   </style>
 </head>
 <body>
-  <!-- Header -->
-  <header>
-    <div class="logo">CI/CD Learning Platform</div>
-    <ul class="nav-links">
+ <header>
+        <div class="logo-container">
+      <svg class="logo-img" viewBox="0 0 24 24" fill="#8b9aeb" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.652.242 2.873.118 3.176.77.84 1.235 1.91 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
+      </svg>
+      <span class="logo-text">CI/CD</span>
+          <ul class="nav-links" id="nav-links">
+      
       <li><a href="/">Home</a></li>
       <li><a href="#" onclick="logout()">Logout</a></li>
     </ul>
+    </div>
+
   </header>
 
-  <!-- Main Profile Card -->
-  <div class="profile-card">
-    <h2>Student Profile</h2>
-    <p><span class="label">👤 Username:</span> <span id="username"></span></p>
-    <p><span class="label">📧 Email:</span> <span id="email"></span></p>
-    <p><span class="label">🎓 Role:</span> <span id="role"></span></p>
-    <button onclick="goHome()">← Back to Home</button>
-  </div>
-  <!-- Footer -->
-  <footer>
-    <p>&copy; 2025 CI/CD Learning Platform | All Rights Reserved | <a href="/signup">Sign Up</a></p>
-  </footer>
+  <div class="page-container">
+    <aside class="sidebar">
+      <div class="user-profile">
+        <div class="profile-pic">YL</div>
+        <div class="user-info">
+      <h1>Good Morning <span id="username">Yair</span></h1>
+      <p><strong>Username:</strong> <span id="username2"></span></p>
+      <p><strong>Email:</strong> <span id="email"></span></p>
+        </div>
+        <div class="level-info">
+          <p>Level: Beginner</p>
+          <a href="#" style="color: #8b9aeb; font-size: 14px;">Learn more</a>
+        </div>
+      </div>
 
-  <!-- JS -->
+    <div class="progress-container">
+        <div class="progress-title">
+          <span>Completion</span>
+          <span>70%</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill"></div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <section class="welcome-section">
+        <h1>Ready to Play, Learn, and Level Up?</h1>
+        <p>Learn CI/CD the fun way through interactive memory games and quick trivia challenges! You'll match terms with their meanings, answer real world coding questions, and build confidence as you go.</p>
+        <p>The experience is short, smart, and stress free - perfect for beginners and curious minds alike.</p>
+        <p>So go ahead choose a topic, start a game, and level up your skills with every move</p>
+        <a href="#" class="start-button">Start here</a>
+      </section>
+
+      <section class="games-section">
+        <h2>Game Categories</h2>
+        <div class="game-cards">
+          <div class="game-card">
+            <h3>CI/CD Basics Match</h3>
+            <p>Match CI/CD terms with their definitions</p>
+            <p class="last-activity">Last activity: 3 days ago</p>
+          </div>
+          <div class="game-card">
+            <h3>DevOps Match Up</h3>
+            <p>Connect DevOps concepts with their implementations</p>
+            <p class="last-activity">Last activity: 8 days ago</p>
+          </div>
+        </div>
+        <a href="#" class="view-all">View all</a>
+      </section>
+    </main>
+  </div>
+
+
   <script>
     function goHome() {
       window.location.href = "/";
     }
 
     function logout() {
-      localStorage.removeItem("token");
+      sessionStorage.removeItem("token");
       window.location.href = "/login";
     }
 
@@ -192,7 +344,6 @@
         return null;
       }
     }
-    
 
     const token = sessionStorage.getItem("token");
     const user = parseJwt(token);
@@ -202,8 +353,8 @@
       window.location.href = "/login";
     } else {
       document.getElementById("username").textContent = user.username;
+      document.getElementById("username2").textContent = user.username;
       document.getElementById("email").textContent = user.email || "Not provided";
-      document.getElementById("role").textContent = user.role;
     }
   </script>
 </body>
