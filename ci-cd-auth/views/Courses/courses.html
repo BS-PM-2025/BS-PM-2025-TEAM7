@@ -2,106 +2,166 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Courses</title>
+  <title>Courses - CI/CD Learning</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     body {
       font-family: 'Inter', sans-serif;
-      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
-      color: #ffffff;
-      margin: 0;
-      padding-top: 80px;
+      background-color: #ffffff;
+      color: #1f2328;
+      line-height: 1.5;
     }
 
     header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  padding: 1rem 2rem;
-  background-color: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(8px);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-radius: 0 0 10px 10px;
-  z-index: 10;
-  box-sizing: border-box;
-  overflow-x: hidden; /* prevents cutoffs */
-}
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 16px 10%;
+      background-color: #ffffff;
+      border-bottom: 1px solid #d8dee4;
+      display: flex;
+      justify-content: space-between;  /* Ensures space between logo and nav links */
+      align-items: center;
+      z-index: 10;
+    }
 
-.logo {
-  font-size: 1.3rem;
-  font-weight: 600;
-  color: #00ffc3;
-  white-space: nowrap;
-}
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
 
-.nav-links {
-  display: flex;
-  flex-wrap: nowrap;
-  gap: 1.5rem;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
+    .logo-img {
+      height: 32px;
+      width: 32px;
+    }
 
-.nav-links li a {
-  color: #e0f7fa;
-  text-decoration: none;
-  font-weight: 500;
-  font-size: 1rem;
-  transition: color 0.3s ease;
-  white-space: nowrap;
-}
+    .logo-text {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #8b9aeb;
+    }
 
-.nav-links li a:hover {
-  color: #00ffc3;
-}
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 24px;
+      margin-left: auto;
+    }
+
+    .nav-links li a {
+      text-decoration: none;
+      color: #1f2328;
+      font-weight: 500;
+      font-size: 14px;
+      padding: 8px 0;
+      position: relative;
+    }
+
+    .nav-links li a:hover {
+      color: #8b9aeb;
+    }
+
+    .nav-links li a.active {
+      color: #8b9aeb;
+    }
+
+    .nav-links li a.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background-color: #8b9aeb;
+    }
 
     main {
-      max-width: 800px;
-      margin: auto;
-      padding: 20px;
+      padding: 140px 10% 80px;
+      max-width: 1200px;
+      margin: 0 auto;
     }
 
-    h1, h2 {
+    .page-header {
       text-align: center;
-      color: #00ffc3;
+      margin-bottom: 40px;
     }
 
-    .video-section {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-      margin-top: 20px;
+    .page-header h1 {
+      font-size: 36px;
+      font-weight: 700;
+      color: #8b9aeb;
+      margin-bottom: 16px;
+    }
+
+    .page-header p {
+      font-size: 18px;
+      color: #1f2328;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 30px;
+      margin-top: 40px;
     }
 
     .video-card {
-      background: rgba(0, 0, 0, 0.6);
-      border-radius: 16px;
-      padding: 1rem;
-      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
-      color: #fff;
-      text-align: center;
+      background: #ffffff;
+      border: 1px solid #d8dee4;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      transition: transform 0.2s, box-shadow 0.2s;
     }
 
-    .video-card h3 {
-      margin-bottom: 10px;
-      color: #00ffc3;
+    .video-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    }
+
+    .video-card video {
+      width: 100%;
+      border-bottom: 1px solid #d8dee4;
+    }
+
+    .video-info {
+      padding: 20px;
+    }
+
+    .video-info h3 {
+      font-size: 18px;
+      font-weight: 600;
+      color: #1f2328;
+      margin-bottom: 8px;
+    }
+
+    .video-actions {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 15px;
     }
 
     .delete-btn {
-      margin-top: 10px;
-      padding: 8px 12px;
-      border: none;
-      border-radius: 6px;
       background-color: #ff4c4c;
       color: white;
-      font-weight: bold;
+      border: none;
+      border-radius: 6px;
+      padding: 8px 16px;
+      font-size: 14px;
+      font-weight: 500;
       cursor: pointer;
+      transition: background-color 0.2s;
     }
 
     .delete-btn:hover {
@@ -109,54 +169,105 @@
     }
 
     #uploadForm {
-      display: none;
-      background: rgba(255, 255, 255, 0.1);
+      background: #ffffff;
+      border: 1px solid #d8dee4;
       border-radius: 12px;
-      padding: 1rem;
-      margin-bottom: 30px;
+      padding: 30px;
+      margin-bottom: 40px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     }
 
-    #uploadForm input, #uploadForm button {
-      margin: 10px 0;
-      padding: 10px;
-      border: none;
-      border-radius: 6px;
+    #uploadForm h2 {
+      font-size: 24px;
+      color: #8b9aeb;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    #uploadForm input,
+    #uploadForm button {
       width: 100%;
+      padding: 12px 16px;
+      margin-bottom: 15px;
+      border: 1px solid #d8dee4;
+      border-radius: 6px;
+      font-size: 16px;
     }
 
     #uploadForm button {
-      background-color: #00ffc3;
-      color: #1f4037;
-      font-weight: bold;
+      background-color: #8b9aeb;
+      color: white;
+      font-weight: 600;
       cursor: pointer;
+      transition: background-color 0.2s;
     }
 
     #uploadForm button:hover {
-      background-color: #019b85;
+      background-color: #7a88d1;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: #1f2328;
+    }
+
+    .empty-state p {
+      font-size: 18px;
+      margin-bottom: 20px;
+    }
+
+    @media (max-width: 768px) {
+      header {
+        padding: 16px 5%;
+      }
+
+      .nav-links {
+        gap: 16px;
+      }
+
+      main {
+        padding: 120px 5% 60px;
+      }
+
+      .video-grid {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
 <body>
-
   <header>
-    <div class="logo">CI/CD Learning Platform</div>
-    <ul class="nav-links" id="nav-links"></ul>
+        <div class="logo-container">
+      <svg class="logo-img" viewBox="0 0 24 24" fill="#8b9aeb" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.652.242 2.873.118 3.176.77.84 1.235 1.91 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
+      </svg>
+      <span class="logo-text">CI/CD</span>
+          <ul class="nav-links" id="nav-links">
+
+    </ul>
+    </div>
+
   </header>
 
   <main>
-    <h1>Courses Page</h1>
-
-    <div id="uploadForm">
+    <div class="page-header">
+      <h1>Course Videos</h1>
+      <p>Browse our collection of CI/CD tutorial videos and enhance your learning experience</p>
+    </div>
+<ul class="nav-links" id="nav-links"></ul>
+    <div id="uploadForm" style="display: none;">
       <h2>Upload New Video</h2>
       <form action="/api/videos/upload" method="POST" enctype="multipart/form-data">
         <input type="text" name="title" placeholder="Video Title" required />
         <input type="file" name="video" accept="video/*" required />
-        <button type="submit">Upload</button>
+        <button type="submit">Upload Video</button>
       </form>
     </div>
 
-    <h2>Available Videos</h2>
-    <div id="videoList" class="video-section"></div>
+    <div id="videoList" class="video-grid">
+      <!-- Videos will be loaded here -->
+    </div>
   </main>
 
   <script>
@@ -184,22 +295,28 @@
 
     if (token) {
       user = parseJwt(token);
-      navbar.innerHTML = "";
+      navbar.innerHTML = '';
 
       if (user.role === "admin") {
-        navbar.innerHTML += `<li><a href="/AdminDashboard">Admin Dashboard</a></li>`;
+        navbar.innerHTML += '<li><a href="/admin-dashboard">Admin Dashboard</a></li>';
       } else if (user.role === "lecturer") {
-        navbar.innerHTML += `<li><a href="/">Home</a></li>`;
-        navbar.innerHTML += `<li><a href="/video/courses">Courses</a></li>`;
-        navbar.innerHTML += `<li><a href="/LecturerProfile">Profile</a></li>`;
+        navbar.innerHTML += '<li><a href="/">Home</a></li>';
+        navbar.innerHTML += '<li><a href="/video/courses" class="active">Courses</a></li>';
+        navbar.innerHTML += '<li><a href="/LecturerProfile">Profile</a></li>';
         uploadForm.style.display = "block";
       } else if (user.role === "student") {
-        navbar.innerHTML += `<li><a href="/">Home</a></li>`;
-        navbar.innerHTML += `<li><a href="/video/courses">Courses</a></li>`;
-        navbar.innerHTML += `<li><a href="/StudentProfile">Profile</a></li>`;
+        navbar.innerHTML += '<li><a href="/">Home</a></li>';
+        navbar.innerHTML += '<li><a href="/video/courses" class="active">Courses</a></li>';
+        navbar.innerHTML += '<li><a href="/StudentProfile">Profile</a></li>';
       }
 
-      navbar.innerHTML += `<li><a href="#" onclick="logout()">Logout</a></li>`;
+      navbar.innerHTML += '<li><a href="#" onclick="logout()">Logout</a></li>';
+    } else {
+      navbar.innerHTML = `
+        <li><a href="/">Home</a></li>
+        <li><a href="/signup">Sign Up</a></li>
+        <li><a href="/login">Login</a></li>
+      `;
     }
 
     function fetchVideos() {
@@ -210,26 +327,38 @@
           container.innerHTML = "";
 
           if (!videos || videos.length === 0) {
-            container.innerHTML = "<p>No videos available.</p>";
+            container.innerHTML = `
+              <div class="empty-state">
+                <p>No videos available yet. Check back later!</p>
+              </div>
+            `;
             return;
           }
 
           videos.forEach(video => {
-            const div = document.createElement("div");
-            div.className = "video-card";
-            div.innerHTML = `
-              <h3>${video.title}</h3>
-              <video width="480" controls>
+            const card = document.createElement("div");
+            card.className = "video-card";
+            card.innerHTML = `
+              <video controls>
                 <source src="/uploads/${video.filename}" type="video/mp4">
-                Your browser does not support the video tag.
+                Your browser does not support HTML5 video.
               </video>
-              ${user?.role === "lecturer" ? `<button class="delete-btn" onclick="deleteVideo('${video._id}')">Delete</button>` : ""}
+              <div class="video-info">
+                <h3>${video.title}</h3>
+                <div class="video-actions">
+                  ${user?.role === "lecturer" ? `<button class="delete-btn" onclick="deleteVideo('${video._id}')">Delete</button>` : ""}
+                </div>
+              </div>
             `;
-            container.appendChild(div);
+            container.appendChild(card);
           });
         })
         .catch(() => {
-          document.getElementById("videoList").innerHTML = "<p>❌ Failed to load videos.</p>";
+          document.getElementById("videoList").innerHTML = `
+            <div class="empty-state">
+              <p>Failed to load videos. Please try again later.</p>
+            </div>
+          `;
         });
     }
 
@@ -245,9 +374,9 @@
       .then(res => res.json())
       .then(data => {
         alert(data.message);
-        fetchVideos(); // Refresh list
+        fetchVideos();
       })
-      .catch(() => alert("❌ Failed to delete video."));
+      .catch(() => alert("Failed to delete video. Please try again."));
     }
 
     fetchVideos();
