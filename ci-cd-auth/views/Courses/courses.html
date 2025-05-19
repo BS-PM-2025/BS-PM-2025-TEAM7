@@ -216,6 +216,35 @@
       font-size: 18px;
       margin-bottom: 20px;
     }
+    .search-container {
+  display: flex;
+  gap: 10px;
+  margin: 20px auto 30px;
+  max-width: 600px;
+}
+
+.search-container input {
+  flex: 1;
+  padding: 12px 16px;
+  border: 1px solid #d8dee4;
+  border-radius: 6px;
+  font-size: 16px;
+}
+
+.search-container button {
+  padding: 12px 20px;
+  background-color: #8b9aeb;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.search-container button:hover {
+  background-color: #7a88d1;
+}
 
     @media (max-width: 768px) {
       header {
@@ -255,6 +284,11 @@
       <h1>Course Videos</h1>
       <p>Browse our collection of CI/CD tutorial videos and enhance your learning experience</p>
     </div>
+    <div class="search-container">
+  <input type="text" id="searchInput" placeholder="Search videos by title..." />
+  <button id="searchButton">Search</button>
+  <button id="clearSearch" style="display: none;">Clear</button>
+</div>
 <ul class="nav-links" id="nav-links"></ul>
     <div id="uploadForm" style="display: none;">
       <h2>Upload New Video</h2>
@@ -271,115 +305,163 @@
   </main>
 
   <script>
-    function logout() {
-      sessionStorage.removeItem("token");
-      window.location.href = "/login";
-    }
+function logout() {
+  sessionStorage.removeItem("token");
+  window.location.href = "/login";
+}
 
-    function parseJwt(token) {
-      try {
-        const base64Url = token.split('.')[1];
-        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-        const jsonPayload = decodeURIComponent(atob(base64).split('').map(c =>
-          '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join(''));
-        return JSON.parse(jsonPayload);
-      } catch (e) {
-        return null;
-      }
-    }
+function parseJwt(token) {
+  try {
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const jsonPayload = decodeURIComponent(atob(base64).split('').map(c =>
+      '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join(''));
+    return JSON.parse(jsonPayload);
+  } catch (e) {
+    return null;
+  }
+}
 
-    const token = sessionStorage.getItem("token");
-    const navbar = document.getElementById("nav-links");
-    const uploadForm = document.getElementById("uploadForm");
-    let user = null;
+// DOM elements
+const token = sessionStorage.getItem("token");
+const navbar = document.getElementById("nav-links");
+const uploadForm = document.getElementById("uploadForm");
+const searchInput = document.getElementById("searchInput");
+const searchButton = document.getElementById("searchButton");
+const clearSearch = document.getElementById("clearSearch");
 
-    if (token) {
-      user = parseJwt(token);
-      navbar.innerHTML = '';
+// Global variables
+let user = null;
+let allVideos = [];
 
-      if (user.role === "admin") {
-        navbar.innerHTML += '<li><a href="/admin-dashboard">Admin Dashboard</a></li>';
-      } else if (user.role === "lecturer") {
-        navbar.innerHTML += '<li><a href="/">Home</a></li>';
-        navbar.innerHTML += '<li><a href="/video/courses" class="active">Courses</a></li>';
-        navbar.innerHTML += '<li><a href="/LecturerProfile">Profile</a></li>';
-        uploadForm.style.display = "block";
-      } else if (user.role === "student") {
-        navbar.innerHTML += '<li><a href="/">Home</a></li>';
-        navbar.innerHTML += '<li><a href="/video/courses" class="active">Courses</a></li>';
-        navbar.innerHTML += '<li><a href="/StudentProfile">Profile</a></li>';
-      }
+// Initialize page
+if (token) {
+  user = parseJwt(token);
+  navbar.innerHTML = '';
 
-      navbar.innerHTML += '<li><a href="#" onclick="logout()">Logout</a></li>';
-    } else {
-      navbar.innerHTML = `
-        <li><a href="/">Home</a></li>
-        <li><a href="/signup">Sign Up</a></li>
-        <li><a href="/login">Login</a></li>
+  if (user.role === "admin") {
+    navbar.innerHTML += '<li><a href="/admin-dashboard">Admin Dashboard</a></li>';
+  } else if (user.role === "lecturer") {
+    navbar.innerHTML += '<li><a href="/">Home</a></li>';
+    navbar.innerHTML += '<li><a href="/video/courses" class="active">Courses</a></li>';
+    navbar.innerHTML += '<li><a href="/LecturerProfile">Profile</a></li>';
+    uploadForm.style.display = "block";
+  } else if (user.role === "student") {
+    navbar.innerHTML += '<li><a href="/">Home</a></li>';
+    navbar.innerHTML += '<li><a href="/video/courses" class="active">Courses</a></li>';
+    navbar.innerHTML += '<li><a href="/StudentProfile">Profile</a></li>';
+  }
+
+  navbar.innerHTML += '<li><a href="#" onclick="logout()">Logout</a></li>';
+} else {
+  navbar.innerHTML = `
+    <li><a href="/">Home</a></li>
+    <li><a href="/signup">Sign Up</a></li>
+    <li><a href="/login">Login</a></li>
+  `;
+}
+
+// Video functions
+function fetchVideos() {
+  fetch("/api/videos/all")
+    .then(res => res.json())
+    .then(videos => {
+      allVideos = videos || [];
+      displayVideos(allVideos);
+    })
+    .catch(() => {
+      document.getElementById("videoList").innerHTML = `
+        <div class="empty-state">
+          <p>Failed to load videos. Please try again later.</p>
+        </div>
       `;
-    }
+    });
+}
 
-    function fetchVideos() {
-      fetch("/api/videos/all")
-        .then(res => res.json())
-        .then(videos => {
-          const container = document.getElementById("videoList");
-          container.innerHTML = "";
+function displayVideos(videos) {
+  const container = document.getElementById("videoList");
+  container.innerHTML = "";
 
-          if (!videos || videos.length === 0) {
-            container.innerHTML = `
-              <div class="empty-state">
-                <p>No videos available yet. Check back later!</p>
-              </div>
-            `;
-            return;
-          }
+  if (!videos || videos.length === 0) {
+    container.innerHTML = `
+      <div class="empty-state">
+        <p>${searchInput.value.trim() ? "No videos found matching your search." : "No videos available yet. Check back later!"}</p>
+      </div>
+    `;
+    return;
+  }
 
-          videos.forEach(video => {
-            const card = document.createElement("div");
-            card.className = "video-card";
-            card.innerHTML = `
-              <video controls>
-                <source src="/uploads/${video.filename}" type="video/mp4">
-                Your browser does not support HTML5 video.
-              </video>
-              <div class="video-info">
-                <h3>${video.title}</h3>
-                <div class="video-actions">
-                  ${user?.role === "lecturer" ? `<button class="delete-btn" onclick="deleteVideo('${video._id}')">Delete</button>` : ""}
-                </div>
-              </div>
-            `;
-            container.appendChild(card);
-          });
-        })
-        .catch(() => {
-          document.getElementById("videoList").innerHTML = `
-            <div class="empty-state">
-              <p>Failed to load videos. Please try again later.</p>
-            </div>
-          `;
-        });
-    }
+  videos.forEach(video => {
+    const card = document.createElement("div");
+    card.className = "video-card";
+    card.innerHTML = `
+      <video controls>
+        <source src="/uploads/${video.filename}" type="video/mp4">
+        Your browser does not support HTML5 video.
+      </video>
+      <div class="video-info">
+        <h3>${video.title}</h3>
+        <div class="video-actions">
+          ${user?.role === "lecturer" ? `<button class="delete-btn" onclick="deleteVideo('${video._id}')">Delete</button>` : ""}
+        </div>
+      </div>
+    `;
+    container.appendChild(card);
+  });
+}
 
-    function deleteVideo(id) {
-      if (!confirm("Are you sure you want to delete this video?")) return;
+function deleteVideo(id) {
+  if (!confirm("Are you sure you want to delete this video?")) return;
 
-      fetch(`/api/videos/${id}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: "Bearer " + token,
-        },
-      })
-      .then(res => res.json())
-      .then(data => {
-        alert(data.message);
-        fetchVideos();
-      })
-      .catch(() => alert("Failed to delete video. Please try again."));
-    }
+  fetch(`/api/videos/${id}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: "Bearer " + token,
+    },
+  })
+  .then(res => res.json())
+  .then(data => {
+    alert(data.message);
+    fetchVideos(); // Refresh the video list
+  })
+  .catch(() => alert("Failed to delete video. Please try again."));
+}
 
-    fetchVideos();
+// Search functionality
+function handleSearch() {
+  const searchTerm = searchInput.value.toLowerCase();
+  
+  if (searchTerm.trim() === "") {
+    displayVideos(allVideos);
+    clearSearch.style.display = "none";
+    return;
+  }
+
+  const filteredVideos = allVideos.filter(video => 
+    video.title.toLowerCase().includes(searchTerm)
+  );
+  
+  displayVideos(filteredVideos);
+  clearSearch.style.display = "inline-block";
+}
+
+function clearSearchResults() {
+  searchInput.value = "";
+  displayVideos(allVideos);
+  clearSearch.style.display = "none";
+}
+
+// Event listeners
+searchButton.addEventListener("click", handleSearch);
+searchInput.addEventListener("keyup", (e) => {
+  if (e.key === "Enter") {
+    handleSearch();
+  }
+});
+clearSearch.addEventListener("click", clearSearchResults);
+
+// Initialize the page
+fetchVideos();
   </script>
 </body>
 </html>
