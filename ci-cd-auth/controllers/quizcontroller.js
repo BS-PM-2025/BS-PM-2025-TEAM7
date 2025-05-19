@@ -1,5 +1,5 @@
 // controllers/quizController.js
-const Quiz = require("../models/quiz");
+const Quiz = require("../models/Quiz");
 
 /* ───────────── GET /api/videos/:videoId/quiz ───────────── */
 exports.getQuiz = async (req, res) => {
