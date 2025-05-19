@@ -6,57 +6,487 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    /* ---------- reset + layout ---------- */
-    *{margin:0;padding:0;box-sizing:border-box}
-    body{font-family:'Inter',sans-serif;background:#fff;color:#1f2328;line-height:1.5}
-    header{position:fixed;top:0;left:0;width:100%;padding:16px 10%;background:#fff;
-           border-bottom:1px solid #d8dee4;display:flex;align-items:center;z-index:10}
-    .logo-container{display:flex;align-items:center;gap:12px}
-    .logo-img{height:32px;width:32px}.logo-text{font-size:1.25rem;font-weight:600;color:#8b9aeb}
-    .nav-links{list-style:none;display:flex;gap:24px;margin-left:auto}
-    .nav-links a{color:#1f2328;font-weight:500;font-size:14px;text-decoration:none;padding:8px 0;position:relative}
-    .nav-links a:hover{color:#8b9aeb}.nav-links .active{color:#8b9aeb}
-    .nav-links .active::after{content:'';position:absolute;bottom:0;left:0;width:100%;height:2px;background:#8b9aeb}
-    main{padding:140px 10% 80px;max-width:1200px;margin:0 auto}
-    .page-header{text-align:center;margin-bottom:40px}
-    .page-header h1{font-size:36px;font-weight:700;color:#8b9aeb;margin-bottom:16px}
-    .page-header p{font-size:18px;color:#1f2328;max-width:700px;margin:0 auto}
+    /* ---------- Base Styles ---------- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #fff;
+      color: #1f2328;
+      line-height: 1.5;
+    }
+    
+    /* ---------- Header Styles ---------- */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 16px 10%;
+      background: #fff;
+      border-bottom: 1px solid #d8dee4;
+      display: flex;
+      align-items: center;
+      z-index: 10;
+    }
+    
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .logo-img {
+      height: 32px;
+      width: 32px;
+    }
+    
+    .logo-text {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #8b9aeb;
+    }
+    
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 24px;
+      margin-left: auto;
+    }
+    
+    .nav-links a {
+      color: #1f2328;
+      font-weight: 500;
+      font-size: 14px;
+      text-decoration: none;
+      padding: 8px 0;
+      position: relative;
+    }
+    
+    .nav-links a:hover {
+      color: #8b9aeb;
+    }
+    
+    .nav-links .active {
+      color: #8b9aeb;
+    }
+    
+    .nav-links .active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: #8b9aeb;
+    }
+    
+    main {
+      padding: 140px 10% 80px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .page-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    
+    .page-header h1 {
+      font-size: 36px;
+      font-weight: 700;
+      color: #8b9aeb;
+      margin-bottom: 16px;
+    }
+    
+    .page-header p {
+      font-size: 18px;
+      color: #1f2328;
+      max-width: 700px;
+      margin: 0 auto;
+    }
 
-    /* ---------- cards ---------- */
-    .video-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(350px,1fr));gap:30px;margin-top:40px}
-    .video-card{background:#fff;border:1px solid #d8dee4;border-radius:12px;overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,.05);transition:.2s}
-    .video-card:hover{transform:translateY(-5px);box-shadow:0 8px 24px rgba(0,0,0,.1)}
-    .video-card video{width:100%;border-bottom:1px solid #d8dee4}
-    .video-info{padding:20px}.video-info h3{font-size:18px;font-weight:600;margin-bottom:8px}
-    .video-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:15px}
-    .btn{border:none;border-radius:6px;padding:8px 16px;font-size:14px;font-weight:500;cursor:pointer;transition:.2s}
-    .delete-btn{background:#ff4c4c;color:#fff}.delete-btn:hover{background:#d93636}
-    .quiz-btn{background:#8b9aeb;color:#fff}.quiz-btn:hover{background:#7a88d1}
+    /* ---------- Search Bar Styles ---------- */
+    .search-container {
+      max-width: 600px;
+      margin: 0 auto 40px;
+      position: relative;
+    }
 
-    /* ---------- upload form ---------- */
-    #uploadForm{background:#fff;border:1px solid #d8dee4;border-radius:12px;padding:30px;margin-bottom:40px;box-shadow:0 4px 12px rgba(0,0,0,.05)}
-    #uploadForm h2{font-size:24px;color:#8b9aeb;margin-bottom:20px;text-align:center}
-    #uploadForm input,#uploadForm button{width:100%;padding:12px 16px;margin-bottom:15px;border:1px solid #d8dee4;border-radius:6px;font-size:16px}
-    #uploadForm button{background:#8b9aeb;color:#fff;font-weight:600}.uploadForm button:hover{background:#7a88d1}
+    .search-input {
+      width: 100%;
+      padding: 12px 20px;
+      padding-right: 50px;
+      border: 1px solid #d8dee4;
+      border-radius: 30px;
+      font-size: 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      transition: all 0.3s ease;
+    }
 
-    /* ---------- quiz (student) ---------- */
-    .quiz-section{border-top:1px solid #d8dee4;padding-top:15px;margin-top:15px}
-    .quiz-section p{margin-bottom:6px;font-weight:500}
-    .quiz-section label{display:block;margin-bottom:4px;cursor:pointer}
-    .quiz-section button{margin-top:10px}
+    .search-input:focus {
+      outline: none;
+      border-color: #8b9aeb;
+      box-shadow: 0 2px 12px rgba(139, 154, 235, 0.2);
+    }
 
-    /* ---------- modal (lecturer) ---------- */
-    .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;justify-content:center;align-items:center;z-index:20}
-    .modal{background:#fff;padding:24px 32px;border-radius:12px;max-width:600px;width:90%;max-height:90vh;overflow:auto}
-    .q-block{border:1px solid #d8dee4;border-radius:8px;padding:12px;margin-bottom:16px}
-    .modal input[type=text]{width:100%;padding:8px;border:1px solid #d8dee4;border-radius:6px;margin-bottom:8px}
-    .opt-row{display:flex;gap:8px;margin-bottom:6px}.opt-row input{flex:1}
-    .close-modal{background:#ff4c4c;color:#fff;margin-left:auto}.close-modal:hover{background:#d93636}
-    .save-quiz{background:#8b9aeb;color:#fff;margin-top:12px}.save-quiz:hover{background:#7a88d1}
+    .search-icon {
+      position: absolute;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #8b9aeb;
+    }
+    
+    /* ---------- Upload Form Styles ---------- */
+    .upload-container {
+      background: #fff;
+      border-radius: 12px;
+      padding: 30px;
+      margin-bottom: 40px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      border: 1px solid #e6edff;
+      max-width: 600px;
+      margin: 0 auto 40px;
+    }
 
-    .empty-state{text-align:center;padding:60px 20px}.empty-state p{font-size:18px}
+    .upload-container h2 {
+      color: #8b9aeb;
+      margin-bottom: 20px;
+      text-align: center;
+      font-size: 24px;
+    }
 
-    @media(max-width:768px){header{padding:16px 5%}.nav-links{gap:16px}main{padding:120px 5% 60px}.video-grid{grid-template-columns:1fr}}
+    .upload-form-group {
+      margin-bottom: 20px;
+    }
+
+    .upload-form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: #1f2328;
+    }
+
+    .upload-form-group input[type="text"],
+    .upload-form-group input[type="file"] {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1px solid #d8dee4;
+      border-radius: 8px;
+      font-size: 16px;
+      transition: all 0.3s ease;
+    }
+
+    .upload-form-group input[type="text"]:focus {
+      outline: none;
+      border-color: #8b9aeb;
+      box-shadow: 0 0 0 2px rgba(139, 154, 235, 0.2);
+    }
+
+    .file-upload-wrapper {
+      position: relative;
+      margin-bottom: 20px;
+    }
+
+    .file-upload-label {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+      border: 2px dashed #d8dee4;
+      border-radius: 8px;
+      background: #f8faff;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .file-upload-label:hover {
+      border-color: #8b9aeb;
+      background: #f0f4ff;
+    }
+
+    .file-upload-icon {
+      font-size: 48px;
+      color: #8b9aeb;
+      margin-bottom: 16px;
+    }
+
+    .file-upload-text {
+      text-align: center;
+      color: #6b7280;
+    }
+
+    .file-upload-text strong {
+      color: #8b9aeb;
+    }
+
+    .upload-btn {
+      width: 100%;
+      padding: 14px;
+      background: #8b9aeb;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .upload-btn:hover {
+      background: #7a88d1;
+      transform: translateY(-2px);
+    }
+
+    .upload-btn:active {
+      transform: translateY(0);
+    }
+    
+    /* ---------- Video Card Styles ---------- */
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 30px;
+      margin-top: 40px;
+    }
+    
+    .video-card {
+      background: #fff;
+      border: 1px solid #d8dee4;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,.05);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    
+    .video-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 24px rgba(0,0,0,.1);
+    }
+    
+    .video-card video {
+      width: 100%;
+      border-bottom: 1px solid #d8dee4;
+      border-radius: 12px 12px 0 0;
+    }
+    
+    .video-info {
+      padding: 20px;
+    }
+    
+    .video-info h3 {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #1f2328;
+    }
+    
+    .video-actions {
+      display: flex;
+      gap: 8px;
+      justify-content: flex-end;
+      margin-top: 15px;
+    }
+    
+    .btn {
+      border: none;
+      border-radius: 6px;
+      padding: 8px 16px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    
+    .delete-btn {
+      background: #ff4c4c;
+      color: #fff;
+    }
+    
+    .delete-btn:hover {
+      background: #d93636;
+      transform: translateY(-1px);
+    }
+    
+    .quiz-btn {
+      background: #8b9aeb;
+      color: #fff;
+    }
+    
+    .quiz-btn:hover {
+      background: #7a88d1;
+      transform: translateY(-1px);
+    }
+    
+    /* ---------- Quiz Modal ---------- */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.5);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 20;
+    }
+    
+    .quiz-modal {
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      max-width: 600px;
+      width: 90%;
+      max-height: 90vh;
+      overflow: auto;
+      box-shadow: 0 10px 25px rgba(0,0,0,.1);
+    }
+    
+    .quiz-modal h2 {
+      color: #8b9aeb;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .quiz-modal h2::before {
+      content: "📝";
+    }
+    
+    .quiz-question {
+      margin-bottom: 20px;
+      padding-bottom: 15px;
+      border-bottom: 1px dashed #d8dee4;
+    }
+    
+    .quiz-question:last-child {
+      border-bottom: none;
+      margin-bottom: 15px;
+    }
+    
+    .quiz-question p {
+      font-weight: 500;
+      margin-bottom: 12px;
+      color: #1f2328;
+    }
+    
+    .quiz-option {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+      padding: 8px 12px;
+      border-radius: 6px;
+      background: #fff;
+      border: 1px solid #e6edff;
+      transition: all 0.2s ease;
+    }
+    
+    .quiz-option:hover {
+      border-color: #8b9aeb;
+      background: #f0f4ff;
+    }
+    
+    .quiz-option input[type="radio"] {
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      border: 2px solid #d8dee4;
+      border-radius: 50%;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      position: relative;
+    }
+    
+    .quiz-option input[type="radio"]:checked {
+      border-color: #8b9aeb;
+      background: #8b9aeb;
+    }
+    
+    .quiz-option input[type="radio"]:checked::after {
+      content: "";
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 8px;
+      height: 8px;
+      background: white;
+      border-radius: 50%;
+    }
+    
+    .quiz-option label {
+      flex: 1;
+      cursor: pointer;
+    }
+    
+    .submit-quiz-btn {
+      width: 100%;
+      margin-top: 15px;
+      padding: 12px;
+      font-weight: 600;
+    }
+    
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 20px;
+    }
+    
+    .close-modal {
+      background: #6b7280;
+      color: #fff;
+    }
+    
+    .close-modal:hover {
+      background: #4b5563;
+      transform: translateY(-1px);
+    }
+    
+    /* ---------- Empty State ---------- */
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+    }
+    
+    .empty-state p {
+      font-size: 18px;
+      color: #6b7280;
+    }
+    
+    .save-quiz {
+      background: #8b9aeb;
+      color: #fff;
+      padding: 10px 20px;
+    }
+    
+    .save-quiz:hover {
+      background: #7a88d1;
+      transform: translateY(-1px);
+    }
+    
+    /* ---------- Responsive ---------- */
+    @media (max-width: 768px) {
+      header {
+        padding: 16px 5%;
+      }
+      
+      .nav-links {
+        gap: 16px;
+      }
+      
+      main {
+        padding: 120px 5% 60px;
+      }
+      
+      .video-grid {
+        grid-template-columns: 1fr;
+      }
+    }
   </style>
 </head>
 <body>
@@ -76,13 +506,36 @@
       <p>Browse our collection of CI/CD tutorial videos and enhance your learning experience</p>
     </div>
 
-    <!-- upload form -->
-    <div id="uploadForm" style="display:none">
+    <!-- Search Bar -->
+    <div class="search-container">
+      <input type="text" id="searchInput" class="search-input" placeholder="Search videos by title...">
+      <span class="search-icon">🔍</span>
+    </div>
+
+    <!-- Upload Form -->
+    <div id="uploadForm" style="display:none" class="upload-container">
       <h2>Upload New Video</h2>
       <form action="/api/videos/upload" method="POST" enctype="multipart/form-data">
-        <input type="text" name="title" placeholder="Video Title" required>
-        <input type="file" name="video" accept="video/*" required>
-        <button type="submit">Upload Video</button>
+        <div class="upload-form-group">
+          <label for="videoTitle">Video Title</label>
+          <input type="text" id="videoTitle" name="title" placeholder="Enter video title" required>
+        </div>
+        
+        <div class="upload-form-group">
+          <label>Video File</label>
+          <div class="file-upload-wrapper">
+            <input type="file" id="videoFile" name="video" accept="video/*" required style="display: none;">
+            <label for="videoFile" class="file-upload-label">
+              <span class="file-upload-icon">📁</span>
+              <span class="file-upload-text">
+                <strong>Click to upload</strong> or drag and drop<br>
+                MP4, MOV, or AVI (Max 100MB)
+              </span>
+            </label>
+          </div>
+        </div>
+        
+        <button type="submit" class="upload-btn">Upload Video</button>
       </form>
     </div>
 
@@ -90,155 +543,409 @@
     <div id="videoList" class="video-grid"></div>
   </main>
 
-  <!-- QUIZ MODAL (lecturer) -->
+  <!-- QUIZ MODAL -->
   <div class="modal-overlay" id="quizModal">
-    <div class="modal">
-      <button class="btn close-modal" onclick="closeQuizModal()">X</button>
-      <h2>Create / Edit Quiz</h2>
-      <div id="questionsContainer"></div>
-      <button class="btn save-quiz" onclick="saveQuiz()">Save Quiz</button>
-      <button class="btn quiz-btn" onclick="addQuestionBlock()">+ Question</button>
+    <div class="quiz-modal">
+      <h2 id="quizTitle">Video Quiz</h2>
+      <div id="quizContent"></div>
+      <div class="modal-actions">
+        <button class="btn close-modal" onclick="closeQuizModal()">Close</button>
+        <button class="btn save-quiz" id="saveQuizBtn" style="display:none" onclick="saveQuiz()">Save Quiz</button>
+        <button class="btn quiz-btn submit-quiz-btn" id="submitQuizBtn" style="display:none">Submit Quiz</button>
+      </div>
     </div>
   </div>
 
   <script>
-    /* ---------- auth & navbar ---------- */
-    function logout(){sessionStorage.removeItem("token");location.href="/login";}
-    function parseJwt(t){try{const b=t.split('.')[1];return JSON.parse(atob(b.replace(/-/g,'+').replace(/_/g,'/')))}catch(e){return null}}
-    const token=sessionStorage.getItem("token");
-    const navbar=document.getElementById("nav-links");
-    const uploadForm=document.getElementById("uploadForm");
-    let user=null;
-    if(token){
-      user=parseJwt(token);navbar.innerHTML='';
-      if(user.role==="admin") navbar.innerHTML+='<li><a href="/admin-dashboard">Admin Dashboard</a></li>';
-      else if(user.role==="lecturer"){
-        navbar.innerHTML+=`
+    /* ---------- Global Variables ---------- */
+    const token = sessionStorage.getItem("token");
+    const navbar = document.getElementById("nav-links");
+    const uploadForm = document.getElementById("uploadForm");
+    const searchInput = document.getElementById("searchInput");
+    let user = null;
+    let currentVideoId = null;
+    let allVideos = [];
+
+    /* ---------- Initialize Page ---------- */
+    function init() {
+      setupAuth();
+      setupSearch();
+      fetchVideos();
+    }
+
+    /* ---------- Authentication ---------- */
+    function setupAuth() {
+      if(token) {
+        user = parseJwt(token);
+        updateNavbar();
+        if(user?.role === "lecturer") {
+          uploadForm.style.display = "block";
+        }
+      } else {
+        navbar.innerHTML = `
+          <li><a href="/">Home</a></li>
+          <li><a href="/signup">Sign Up</a></li>
+          <li><a href="/login">Login</a></li>`;
+      }
+    }
+
+    function parseJwt(token) {
+      try {
+        return JSON.parse(atob(token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')));
+      } catch(e) {
+        return null;
+      }
+    }
+
+    function updateNavbar() {
+      navbar.innerHTML = '';
+      
+      if(user.role === "admin") {
+        navbar.innerHTML += '<li><a href="/admin-dashboard">Admin Dashboard</a></li>';
+      } else if(user.role === "lecturer") {
+        navbar.innerHTML += `
           <li><a href="/">Home</a></li>
           <li><a href="/video/courses" class="active">Courses</a></li>
           <li><a href="/LecturerProfile">Profile</a></li>`;
-        uploadForm.style.display="block";
-      }else if(user.role==="student"){
-        navbar.innerHTML+=`
+      } else if(user.role === "student") {
+        navbar.innerHTML += `
           <li><a href="/">Home</a></li>
           <li><a href="/video/courses" class="active">Courses</a></li>
           <li><a href="/StudentProfile">Profile</a></li>`;
       }
-      navbar.innerHTML+='<li><a href="#" onclick="logout()">Logout</a></li>';
-    }else{
-      navbar.innerHTML='<li><a href="/">Home</a></li><li><a href="/signup">Sign Up</a></li><li><a href="/login">Login</a></li>';
+      
+      navbar.innerHTML += '<li><a href="#" onclick="logout()">Logout</a></li>';
     }
 
-    /* ---------- fetch & render videos ---------- */
-    function fetchVideos(){
+    function logout() {
+      sessionStorage.removeItem("token");
+      location.href = "/login";
+    }
+
+    /* ---------- Search Functionality ---------- */
+    function setupSearch() {
+      searchInput.addEventListener('input', () => {
+        const searchTerm = searchInput.value.toLowerCase();
+        filterVideos(searchTerm);
+      });
+    }
+
+    function filterVideos(searchTerm) {
+      const filteredVideos = searchTerm 
+        ? allVideos.filter(video => video.title.toLowerCase().includes(searchTerm))
+        : allVideos;
+      
+      renderVideos(filteredVideos);
+    }
+
+    /* ---------- Video Management ---------- */
+    function fetchVideos() {
       fetch("/api/videos/all")
-        .then(r=>r.json())
-        .then(videos=>{
-          const list=document.getElementById("videoList");list.innerHTML='';
-          if(!videos.length){list.innerHTML='<div class="empty-state"><p>No videos yet.</p></div>';return;}
-          videos.forEach(v=>{
-            const card=document.createElement("div");card.className="video-card";
-            card.innerHTML=`
-              <video controls><source src="/uploads/${v.filename}" type="video/mp4"></video>
-              <div class="video-info">
-                <h3>${v.title}</h3>
-                <div class="video-actions">
-                  ${user?.role==="lecturer" ?
-                    `<button class="btn delete-btn" onclick="deleteVideo('${v._id}')">Delete</button>
-                     <button class="btn quiz-btn"   onclick="openQuizModal('${v._id}')">Add / Edit Quiz</button>`:''
-                  }
-                </div>
-              </div>`;
-            list.appendChild(card);
-            if(user?.role==="student") loadQuizForStudent(v._id,card);
-          });
+        .then(response => response.json())
+        .then(videos => {
+          allVideos = videos || [];
+          renderVideos(allVideos);
         })
-        .catch(()=>document.getElementById("videoList").innerHTML='<div class="empty-state"><p>Error loading videos.</p></div>');
-    }
-    function deleteVideo(id){
-      if(!confirm("Delete video?"))return;
-      fetch(`/api/videos/${id}`,{method:"DELETE",headers:{Authorization:"Bearer "+token}})
-        .then(r=>r.json()).then(()=>fetchVideos()).catch(()=>alert("Delete failed"));
-    }
-
-    /* ---------- student: load + submit quiz ---------- */
-    function loadQuizForStudent(videoId,card){
-      fetch(`/api/videos/${videoId}/quiz`)
-        .then(r=>r.ok?r.json():null)
-        .then(quiz=>{
-          if(!quiz) return;
-          const sec=document.createElement("div");sec.className="quiz-section";
-          quiz.questions.forEach((q,i)=>{
-            const opts=q.options.map((o,idx)=>`
-              <label>
-                <input type="radio" name="q_${q._id}" value="${idx}">
-                ${o.text}
-              </label>`).join('');
-            sec.innerHTML+=`<p>${i+1}. ${q.prompt}</p>${opts}<br>`;
-          });
-          sec.innerHTML+=`<button class="btn quiz-btn" onclick="submitQuiz('${videoId}',this)">Submit</button>`;
-          card.appendChild(sec);
+        .catch(() => {
+          document.getElementById("videoList").innerHTML = `
+            <div class="empty-state">
+              <p>Failed to load videos. Please try again later.</p>
+            </div>`;
         });
     }
-    function submitQuiz(videoId,btn){
-      const section=btn.parentElement;
-      const answers=[...section.querySelectorAll('input[type=radio]:checked')]
-        .map(r=>({questionId:r.name.slice(2),optionIndex:+r.value}));
-      fetch(`/api/videos/${videoId}/quiz/submit`,{
-        method:"POST",
-        headers:{"Content-Type":"application/json",Authorization:"Bearer "+token},
-        body:JSON.stringify({answers})
-      })
-      .then(r=>r.json())
-      .then(res=>alert(`${res.score===100?'✅ Correct!':'❌ Some answers wrong.'}  Score: ${res.score}%`))
-      .catch(()=>alert("Submit failed"));
-    }
 
-    /* ---------- lecturer: modal ---------- */
-    let currentVideoId=null;
-    function openQuizModal(videoId){
-      currentVideoId=videoId;
-      document.getElementById("quizModal").style.display="flex";
-      const qc=document.getElementById("questionsContainer");qc.innerHTML='';
-      fetch(`/api/videos/${videoId}/quiz`).then(r=>r.ok?r.json():null).then(q=>{
-        if(q) q.questions.forEach(addQuestionBlock);
-      });
-    }
-    function closeQuizModal(){document.getElementById("quizModal").style.display="none";currentVideoId=null;}
-    function addQuestionBlock(qObj=null){
-      const qc=document.getElementById("questionsContainer");
-      const group=`correct_${Date.now()}_${Math.random()}`;
-      const q=document.createElement("div");q.className="q-block";
-      q.innerHTML=`<input type="text" class="prompt" placeholder="Question" value="${qObj?.prompt||''}">`;
-      const opts=qObj?.options||[{text:'',isCorrect:true},{text:'',isCorrect:false},{text:'',isCorrect:false},{text:'',isCorrect:false}];
-      opts.forEach(o=>{
-        q.innerHTML+=`
-          <div class="opt-row">
-            <input type="radio" name="${group}" ${o.isCorrect?'checked':''}>
-            <input type="text" class="opt" placeholder="Option" value="${o.text}">
+    function renderVideos(videos) {
+      const videoList = document.getElementById("videoList");
+      videoList.innerHTML = '';
+      
+      if(!videos || videos.length === 0) {
+        videoList.innerHTML = `
+          <div class="empty-state">
+            <p>${searchInput.value ? "No matching videos found" : "No videos available yet"}</p>
           </div>`;
+        return;
+      }
+      
+      videos.forEach(video => {
+        const card = document.createElement("div");
+        card.className = "video-card";
+        card.innerHTML = `
+          <video controls>
+            <source src="/uploads/${video.filename}" type="video/mp4">
+            Your browser does not support HTML5 video.
+          </video>
+          <div class="video-info">
+            <h3>${video.title}</h3>
+            <div class="video-actions">
+              ${user?.role === "lecturer" ? `
+                <button class="btn delete-btn" onclick="deleteVideo('${video._id}')">Delete</button>
+              ` : ''}
+              <button class="btn quiz-btn" onclick="showQuiz('${video._id}', '${video.title}')">
+                ${user?.role === "lecturer" ? "Edit Quiz" : "Take Quiz"}
+              </button>
+            </div>
+          </div>`;
+        
+        videoList.appendChild(card);
       });
-      qc.appendChild(q);
-    }
-    function saveQuiz(){
-      const qs=[...document.querySelectorAll(".q-block")].map(b=>{
-        const prompt=b.querySelector(".prompt").value.trim();
-        if(!prompt) return null;
-        const radios=[...b.querySelectorAll('input[type=radio]')];
-        const texts=[...b.querySelectorAll('.opt')];
-        return {prompt,options:texts.map((inp,i)=>({text:inp.value.trim(),isCorrect:radios[i].checked}))};
-      }).filter(Boolean);
-      fetch(`/api/videos/${currentVideoId}/quiz`,{
-        method:"POST",
-        headers:{"Content-Type":"application/json",Authorization:"Bearer "+token},
-        body:JSON.stringify({questions:qs})
-      })
-      .then(r=>r.json()).then(()=>{alert("Quiz saved!");closeQuizModal();fetchVideos();})
-      .catch(()=>alert("Save failed"));
     }
 
-    /* ---------- init ---------- */
-    fetchVideos();
+    function deleteVideo(id) {
+      if(!confirm("Are you sure you want to delete this video?")) return;
+      
+      fetch(`/api/videos/${id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: "Bearer " + token
+        }
+      })
+      .then(response => response.json())
+      .then(() => {
+        fetchVideos();
+      })
+      .catch(() => alert("Failed to delete video. Please try again."));
+    }
+
+    /* ---------- Quiz Modal Functions ---------- */
+    function showQuiz(videoId, videoTitle) {
+      currentVideoId = videoId;
+      const modal = document.getElementById("quizModal");
+      const quizTitle = document.getElementById("quizTitle");
+      const quizContent = document.getElementById("quizContent");
+      const submitBtn = document.getElementById("submitQuizBtn");
+      const saveBtn = document.getElementById("saveQuizBtn");
+      
+      quizTitle.textContent = `${videoTitle} Quiz`;
+      quizContent.innerHTML = '<p>Loading quiz...</p>';
+      submitBtn.style.display = "none";
+      saveBtn.style.display = "none";
+      modal.style.display = "flex";
+      
+      fetch(`/api/videos/${videoId}/quiz`)
+        .then(response => response.ok ? response.json() : null)
+        .then(quiz => {
+          if(!quiz || !quiz.questions || quiz.questions.length === 0) {
+            quizContent.innerHTML = `
+              <div class="empty-state">
+                <p>${user?.role === "lecturer" ? "No quiz available. Create one below." : "No quiz available for this video yet."}</p>
+              </div>`;
+            
+            if(user?.role === "lecturer") {
+              quizContent.innerHTML += `
+                <div id="quizEditor">
+                  <div id="questionsContainer"></div>
+                  <button class="btn quiz-btn" onclick="addQuestionBlock()" style="margin-top: 15px;">
+                    + Add Question
+                  </button>
+                </div>`;
+              saveBtn.style.display = "block";
+            }
+            return;
+          }
+          
+          if(user?.role === "student") {
+            let quizHTML = '';
+            
+            quiz.questions.forEach((question, index) => {
+              quizHTML += `
+                <div class="quiz-question">
+                  <p>${index + 1}. ${question.prompt}</p>
+                  ${question.options.map((option, optionIndex) => `
+                    <div class="quiz-option">
+                      <input type="radio" id="q_${question._id}_${optionIndex}" name="q_${question._id}" value="${optionIndex}">
+                      <label for="q_${question._id}_${optionIndex}">${option.text}</label>
+                    </div>
+                  `).join('')}
+                </div>
+              `;
+            });
+            
+            quizContent.innerHTML = quizHTML;
+            submitBtn.style.display = "block";
+          } 
+          else if(user?.role === "lecturer") {
+            quizContent.innerHTML = `
+              <div id="quizEditor">
+                <div id="questionsContainer"></div>
+                <button class="btn quiz-btn" onclick="addQuestionBlock()" style="margin-top: 15px;">
+                  + Add Question
+                </button>
+              </div>`;
+            
+            const questionsContainer = document.getElementById("questionsContainer");
+            quiz.questions.forEach(question => {
+              addQuestionBlock(question);
+            });
+            
+            saveBtn.style.display = "block";
+          }
+        })
+        .catch(() => {
+          quizContent.innerHTML = '<p>Failed to load quiz. Please try again.</p>';
+        });
+    }
+
+    function closeQuizModal() {
+      document.getElementById("quizModal").style.display = "none";
+      currentVideoId = null;
+    }
+
+    function addQuestionBlock(question = null) {
+      const questionsContainer = document.getElementById("questionsContainer");
+      const questionId = Date.now();
+      
+      const questionBlock = document.createElement("div");
+      questionBlock.className = "q-block";
+      questionBlock.style.background = "#f8faff";
+      questionBlock.style.padding = "16px";
+      questionBlock.style.borderRadius = "8px";
+      questionBlock.style.marginBottom = "16px";
+      questionBlock.style.border = "1px solid #e6edff";
+      
+      questionBlock.innerHTML = `
+        <input type="text" class="prompt" placeholder="Enter question text" 
+               value="${question ? question.prompt : ''}" 
+               style="width: 100%; padding: 10px; margin-bottom: 12px; border: 1px solid #d8dee4; border-radius: 6px;">
+      `;
+      
+      const options = question ? question.options : [
+        { text: '', isCorrect: true },
+        { text: '', isCorrect: false },
+        { text: '', isCorrect: false },
+        { text: '', isCorrect: false }
+      ];
+      
+      options.forEach((option, index) => {
+        questionBlock.innerHTML += `
+          <div style="display: flex; gap: 10px; margin-bottom: 8px; align-items: center;">
+            <input type="radio" name="correct_${questionId}" 
+                   ${option.isCorrect ? 'checked' : ''} 
+                   style="flex-shrink: 0;">
+            <input type="text" class="opt" placeholder="Option ${index + 1}" 
+                   value="${option.text}" 
+                   style="flex: 1; padding: 8px; border: 1px solid #d8dee4; border-radius: 6px;">
+          </div>
+        `;
+      });
+      
+      questionBlock.innerHTML += `
+        <button class="btn delete-btn" 
+                onclick="this.parentElement.remove()" 
+                style="margin-top: 10px; padding: 6px 12px; font-size: 13px">
+          Remove Question
+        </button>
+      `;
+      
+      questionsContainer.appendChild(questionBlock);
+    }
+
+    function saveQuiz() {
+      const questionsContainer = document.getElementById("questionsContainer");
+      const questionBlocks = [...questionsContainer.querySelectorAll('.q-block')];
+      
+      const questions = questionBlocks.map(block => {
+        const prompt = block.querySelector('.prompt').value.trim();
+        const optionInputs = [...block.querySelectorAll('.opt')];
+        const radioInputs = [...block.querySelectorAll('input[type="radio"]')];
+        
+        const options = optionInputs.map((input, index) => ({
+          text: input.value.trim(),
+          isCorrect: radioInputs[index].checked
+        }));
+        
+        return { prompt, options };
+      }).filter(q => q.prompt && q.options.every(o => o.text));
+      
+      if(questions.length === 0) {
+        alert("Please add at least one valid question before saving.");
+        return;
+      }
+      
+      fetch(`/api/videos/${currentVideoId}/quiz`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + token
+        },
+        body: JSON.stringify({ questions })
+      })
+      .then(response => response.json())
+      .then(() => {
+        alert("Quiz saved successfully!");
+        closeQuizModal();
+      })
+      .catch(() => {
+        alert("Failed to save quiz. Please try again.");
+      });
+    }
+
+    document.getElementById("submitQuizBtn").addEventListener("click", function() {
+      const quizContent = document.getElementById("quizContent");
+      const submitBtn = this;
+      
+      const answers = [...quizContent.querySelectorAll('input[type=radio]:checked')]
+        .map(radio => ({
+          questionId: radio.name.slice(2),
+          optionIndex: parseInt(radio.value)
+        }));
+      
+      if(answers.length === 0) {
+        alert("Please answer at least one question before submitting.");
+        return;
+      }
+      
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Submitting...";
+      
+      fetch(`/api/videos/${currentVideoId}/quiz/submit`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + token
+        },
+        body: JSON.stringify({ answers })
+      })
+      .then(response => response.json())
+      .then(result => {
+        let message = "";
+        if(result.score === 100) {
+          message = `🎉 Perfect! You got ${result.score}% - All answers correct!`;
+        } else if(result.score >= 70) {
+          message = `👍 Good job! You scored ${result.score}%`;
+        } else {
+          message = `📚 Keep learning! You scored ${result.score}%`;
+        }
+        alert(message);
+        closeQuizModal();
+      })
+      .catch(() => {
+        alert("Failed to submit quiz. Please try again.");
+      })
+      .finally(() => {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Submit Quiz";
+      });
+    });
+
+    /* ---------- Initialize ---------- */
+    init();
+
+    /* ---------- File Upload Preview ---------- */
+    document.getElementById('videoFile').addEventListener('change', function(e) {
+      const fileInput = e.target;
+      const fileUploadLabel = document.querySelector('.file-upload-label');
+      
+      if(fileInput.files.length > 0) {
+        const fileName = fileInput.files[0].name;
+        fileUploadLabel.innerHTML = `
+          <span class="file-upload-icon">🎥</span>
+          <span class="file-upload-text">
+            <strong>${fileName}</strong><br>
+            Ready to upload
+          </span>
+        `;
+      }
+    });
   </script>
 </body>
 </html>
