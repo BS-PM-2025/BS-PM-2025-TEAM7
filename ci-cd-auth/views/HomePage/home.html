@@ -325,44 +325,52 @@
   };
 </script>
 
-<div
-    class="site-description"
-    id="feedback-section"
-    style="padding:40px 10%; background:#f9f9f9;"
-  >
-    <h2>Leave Your Feedback</h2>
-    <form id="feedback-form" style="margin-top:20px;">
-      <textarea
-        id="comment"
-        placeholder="Your feedback..."
-        required
-        style="width:100%; height:100px; border-radius:10px; padding:10px;"
-      ></textarea>
-      <div style="margin:10px 0;">
-        <label for="rating">Rating:</label>
-        <select
-          id="rating"
-          required
-          style="padding:5px; border-radius:5px;"
-        >
-          <option value="">Choose...</option>
-          <option value="1">⭐</option>
-          <option value="2">⭐⭐</option>
-          <option value="3">⭐⭐⭐</option>
-          <option value="4">⭐⭐⭐⭐</option>
-          <option value="5">⭐⭐⭐⭐⭐</option>
-        </select>
-      </div>
-      <button
-        type="submit"
-        class="submit-btn"
-
-      >Submit</button>
-      <p id="feedback-message" style="margin-top:10px; color:#d00;"></p>
-    </form>
-
-    <div id="feedback-list" style="margin-top:30px; text-align:left;"></div>
+<div class="feedback-container" id="feedback-section">
+  <div class="feedback-header">
+    <h2>Share Your Experience</h2>
+    <p class="feedback-subtitle">We value your input to help us improve</p>
   </div>
+  
+  <form id="feedback-form" class="feedback-form">
+    <div class="form-group">
+      <label for="comment" class="form-label">Your Feedback</label>
+      <textarea 
+        id="comment" 
+        class="form-textarea"
+        placeholder="What did you think about our platform?"
+        required
+      ></textarea>
+    </div>
+    
+    <div class="form-group rating-group">
+      <label class="form-label">Rating</label>
+      <div class="star-rating">
+        <input type="radio" id="star5" name="rating" value="5" />
+        <label for="star5" title="5 stars">★</label>
+        <input type="radio" id="star4" name="rating" value="4" />
+        <label for="star4" title="4 stars">★</label>
+        <input type="radio" id="star3" name="rating" value="3" />
+        <label for="star3" title="3 stars">★</label>
+        <input type="radio" id="star2" name="rating" value="2" />
+        <label for="star2" title="2 stars">★</label>
+        <input type="radio" id="star1" name="rating" value="1" />
+        <label for="star1" title="1 star">★</label>
+      </div>
+    </div>
+    
+    <button type="submit" class="submit-btn">
+      Submit Feedback
+    </button>
+    
+    <p id="feedback-message" class="feedback-message"></p>
+  </form>
+  
+  <div class="feedback-list-container">
+    <h3 class="feedback-list-title">Community Feedback</h3>
+    <div id="feedback-list" class="feedback-list"></div>
+  </div>
+</div>
+
 <style>
 /* Feedback Section Styles */
 .feedback-container {
@@ -587,170 +595,224 @@
 </style>
   <script>
   document.addEventListener("DOMContentLoaded", () => {
-    const API_BASE = window.location.origin;
-    const token = sessionStorage.getItem("token");
-    const section = document.getElementById("feedback-section");
-    const form    = document.getElementById("feedback-form");
-    const msgEl   = document.getElementById("feedback-message");
-    const listEl  = document.getElementById("feedback-list");
-    let showingAll = false;
+  const API_BASE = window.location.origin;
+  const token = sessionStorage.getItem("token");
+  const section = document.getElementById("feedback-section");
+  const form = document.getElementById("feedback-form");
+  const msgEl = document.getElementById("feedback-message");
+  const listEl = document.getElementById("feedback-list");
+  let showingAll = false;
 
-    // hide if not logged in
-    if (!token) {
-      section.style.display = "none";
+  // Hide feedback section if not logged in
+  if (!token) {
+    section.style.display = "none";
+    return;
+  }
+
+  // Parse JWT helper function
+  function parseJwt(t) {
+    try {
+      const base64Url = t.split(".")[1];
+      const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+      const json = atob(base64);
+      return JSON.parse(decodeURIComponent(
+        json.split("")
+            .map(c => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2))
+            .join("")
+      ));
+    } catch {
+      return null;
+    }
+  }
+  
+  const currentUser = parseJwt(token);
+  const isLecturer = currentUser?.role === "lecturer";
+
+  // Submit feedback handler
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    msgEl.textContent = "";
+    msgEl.className = "feedback-message";
+
+    const comment = document.getElementById("comment").value.trim();
+    const rating = document.querySelector("input[name='rating']:checked")?.value;
+    
+    if (!comment || !rating) {
+      msgEl.textContent = "Please provide both feedback and a rating.";
+      msgEl.classList.add("error");
       return;
     }
 
-    // helper to parse JWT
-    function parseJwt(t) {
-      try {
-        const base64Url = t.split(".")[1];
-        const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
-        const json = atob(base64);
-        return JSON.parse(decodeURIComponent(
-          json.split("")
-              .map(c => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2))
-              .join("")
-        ));
-      } catch {
-        return null;
+    try {
+      const res = await fetch(`${API_BASE}/api/feedback/submit`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + token
+        },
+        body: JSON.stringify({ comment, rating })
+      });
+      
+      const data = await res.json();
+      
+      if (res.ok) {
+        msgEl.textContent = "Thank you for your feedback!";
+        msgEl.classList.add("success");
+        form.reset();
+        loadFeedback();
+      } else {
+        msgEl.textContent = data.message || "Submission failed. Please try again.";
+        msgEl.classList.add("error");
       }
+    } catch (err) {
+      msgEl.textContent = "Network error. Please try again later.";
+      msgEl.classList.add("error");
+      console.error("Feedback submission error:", err);
     }
-    const currentUser = parseJwt(token);
+  });
 
-    // submit feedback
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      msgEl.textContent = "";
+  // Delegate edit/delete actions
+  listEl.addEventListener("click", async (e) => {
+    const btn = e.target.closest("button");
+    if (!btn) return;
+    
+    const id = btn.dataset.id;
+    if (!id) return;
 
-      const comment = document.getElementById("comment").value.trim();
-      const rating  = document.getElementById("rating").value;
-      if (!comment || !rating) {
-        msgEl.textContent = "Please enter feedback and a rating.";
-        return;
-      }
-
+    // Delete feedback
+    if (btn.classList.contains("delete-btn")) {
+      if (!confirm("Are you sure you want to delete this feedback?")) return;
+      
       try {
-        const res = await fetch(`${API_BASE}/api/feedback/submit`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": "Bearer " + token
-          },
-          body: JSON.stringify({ comment, rating })
-        });
-        const data = await res.json();
-        if (res.ok) {
-          msgEl.style.color = "green";
-          msgEl.textContent = data.message;
-          form.reset();
-          loadFeedback();
-        } else {
-          msgEl.style.color = "#d00";
-          msgEl.textContent = data.message || "Submission failed.";
-        }
-      } catch {
-        msgEl.style.color = "#d00";
-        msgEl.textContent = "Network error.";
-      }
-    });
-
-    // delegate edit/delete clicks
-    listEl.addEventListener("click", async (e) => {
-      const btn = e.target;
-      const id  = btn.dataset.id;
-      if (!id) return;
-
-      // ➖ Delete
-      if (btn.matches(".delete-btn")) {
-        if (!confirm("Delete this feedback?")) return;
         const res = await fetch(`${API_BASE}/api/feedback/${id}`, {
           method: "DELETE",
           headers: { "Authorization": "Bearer " + token }
         });
-        if (res.ok) loadFeedback();
-        else console.error("Delete failed", await res.json());
+        
+        if (res.ok) {
+          loadFeedback();
+        } else {
+          const error = await res.json();
+          alert(error.message || "Failed to delete feedback");
+        }
+      } catch (err) {
+        console.error("Delete error:", err);
+        alert("Network error. Please try again.");
+      }
+    }
+    // Edit feedback
+    else if (btn.classList.contains("edit-btn")) {
+      const item = btn.closest(".feedback-item");
+      const currentComment = item.querySelector(".feedback-content").textContent;
+      const currentRating = item.querySelector(".feedback-stars").textContent.length;
+      
+      const newComment = prompt("Edit your feedback:", currentComment);
+      if (newComment === null) return;
+      
+      const newRating = prompt("Edit your rating (1-5):", currentRating);
+      if (newRating === null || !newRating.match(/^[1-5]$/)) {
+        alert("Please enter a valid rating between 1 and 5");
+        return;
       }
 
-      // ✏️ Edit
-      else if (btn.matches(".edit-btn")) {
-        const newComment = prompt("New comment:");
-        const newRating  = prompt("New rating (1–5):");
-        if (!newComment || !newRating) {
-          return alert("Invalid input");
-        }
+      try {
         const res = await fetch(`${API_BASE}/api/feedback/${id}`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
             "Authorization": "Bearer " + token
           },
-          body: JSON.stringify({ comment: newComment, rating: newRating })
+          body: JSON.stringify({ 
+            comment: newComment.trim(), 
+            rating: parseInt(newRating) 
+          })
         });
-        if (res.ok) loadFeedback();
-        else console.error("Update failed", await res.json());
-      }
-    });
-
-    // load & render
-    async function loadFeedback() {
-      listEl.innerHTML = "";
-      try {
-        const res = await fetch(`${API_BASE}/api/feedback`, {
-          headers: { "Authorization": "Bearer " + token }
-        });
-        const payload = await res.json();
-        const all = Array.isArray(payload.feedback) ? payload.feedback : [];
-        const chunk = showingAll ? all : all.slice(0, 5);
-
-        listEl.innerHTML = chunk.map(f => {
-          const stars = "★".repeat(f.rating) + "☆".repeat(5 - f.rating);
-          const isLecturer = currentUser.role === "lecturer";
-          return `
-            <div style="
-              background: rgba(255,255,255,0.1);
-              padding: 10px;
-              border-radius: 10px;
-              margin-bottom: 10px;
-            ">
-              <strong>
-                ${f.username || "Anonymous"}
-                <span class="role-label">(${f.role})</span>
-              </strong>
-              <span style="margin-left:8px;">(${stars})</span><br>
-              <small style="color:#666">
-                on ${new Date(f.createdAt).toLocaleString()}
-              </small>
-              <p style="margin-top:5px;">${f.comment}</p>
-              ${
-                isLecturer
-                  ? `<button data-id="${f._id}" class="edit-btn">Edit</button>
-                     <button data-id="${f._id}" class="delete-btn">Delete</button>`
-                  : ``
-              }
-            </div>
-          `;
-        }).join("");
-
-        // show toggle if needed
-        if (all.length > 5) {
-          listEl.innerHTML += `
-            <button id="toggle-btn">
-              ${showingAll ? "Show Less" : "Show All"}
-            </button>`;
-          document.getElementById("toggle-btn")
-            .addEventListener("click", () => {
-              showingAll = !showingAll;
-              loadFeedback();
-            });
+        
+        if (res.ok) {
+          loadFeedback();
+        } else {
+          const error = await res.json();
+          alert(error.message || "Failed to update feedback");
         }
-      } catch {
-        listEl.textContent = "Failed to load feedback.";
+      } catch (err) {
+        console.error("Update error:", err);
+        alert("Network error. Please try again.");
       }
     }
-
-    loadFeedback();
   });
+
+  // Load and render feedback
+  async function loadFeedback() {
+    listEl.innerHTML = '<div class="loading">Loading feedback...</div>';
+    
+    try {
+      const res = await fetch(`${API_BASE}/api/feedback`, {
+        headers: { "Authorization": "Bearer " + token }
+      });
+      
+      if (!res.ok) {
+        throw new Error(await res.text());
+      }
+      
+      const payload = await res.json();
+      const allFeedback = Array.isArray(payload.feedback) ? payload.feedback : [];
+      const feedbackToShow = showingAll ? allFeedback : allFeedback.slice(0, 5);
+      
+      if (allFeedback.length === 0) {
+        listEl.innerHTML = '<div class="no-feedback">No feedback yet. Be the first to share!</div>';
+        return;
+      }
+      
+      listEl.innerHTML = feedbackToShow.map(feedback => `
+        <div class="feedback-item">
+          <div class="feedback-meta">
+            <div>
+              <span class="feedback-user">${feedback.username || "Anonymous"}</span>
+              <span class="feedback-role">(${feedback.role})</span>
+            </div>
+            <div class="feedback-date">
+              ${new Date(feedback.createdAt).toLocaleString()}
+            </div>
+          </div>
+          <div class="feedback-stars">
+            ${"★".repeat(feedback.rating)}${"☆".repeat(5 - feedback.rating)}
+          </div>
+          <div class="feedback-content">
+            ${feedback.comment}
+          </div>
+          ${isLecturer ? `
+            <div class="feedback-actions">
+              <button data-id="${feedback._id}" class="edit-btn">Edit</button>
+              <button data-id="${feedback._id}" class="delete-btn">Delete</button>
+            </div>
+          ` : ''}
+        </div>
+      `).join("");
+      
+      // Add show more/less toggle if needed
+      if (allFeedback.length > 5) {
+        const toggleBtn = document.createElement("button");
+        toggleBtn.className = "toggle-btn";
+        toggleBtn.textContent = showingAll ? "Show Less" : "Show All";
+        toggleBtn.addEventListener("click", () => {
+          showingAll = !showingAll;
+          loadFeedback();
+        });
+        listEl.appendChild(toggleBtn);
+      }
+    } catch (err) {
+      console.error("Error loading feedback:", err);
+      listEl.innerHTML = `
+        <div class="error-message">
+          Failed to load feedback. Please try again later.
+        </div>
+      `;
+    }
+  }
+
+  // Initial load
+  loadFeedback();
+});
   </script>
 
 
