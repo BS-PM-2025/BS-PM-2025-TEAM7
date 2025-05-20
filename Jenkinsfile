@@ -1,10 +1,5 @@
 pipeline {
-    agent {
-        docker {
-            image 'node:18'
-            args '-u root --privileged'  // run container as root with full access
-        }
-    }
+    agent any
 
     environment {
         NPM_CONFIG_LOGLEVEL = 'warn'
@@ -12,11 +7,14 @@ pipeline {
         CI = 'true'
     }
 
+    options {
+        timeout(time: 15, unit: 'MINUTES')
+    }
+
     stages {
         stage('Install All Dependencies') {
             steps {
-                echo '📦 Installing root, backend, and frontend dependencies...'
-
+                echo '📦 Installing dependencies for root, backend, and frontend...'
                 sh '''
                     npm install --unsafe-perm || true
                     cd server && npm install --unsafe-perm || true
@@ -27,8 +25,10 @@ pipeline {
 
         stage('Run Backend Tests') {
             steps {
-                echo '🧪 Running unit tests...'
-                sh 'npm test || true'  // don’t fail the pipeline just because tests fail
+                echo '🧪 Running backend unit tests...'
+                dir('server') {
+                    sh 'npm test || true'
+                }
             }
         }
     }
