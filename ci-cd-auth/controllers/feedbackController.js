@@ -18,7 +18,10 @@ exports.submitFeedback = async (req, res) => {
       rating,
     });
     await feedback.save();
-    res.status(201).json({ message: "Feedback submitted successfully." });
+    res.status(201).json({
+      message: "Feedback submitted successfully.",
+      _id:     feedback._id
+    });
   } catch (err) {
     res.status(500).json({ message: "Failed to save feedback." });
   }
