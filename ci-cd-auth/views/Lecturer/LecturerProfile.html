@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Lecturer Profile</title>
+  <title>Lecturer Dashboard</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
     * {
@@ -87,255 +87,433 @@
       display: flex;
       padding-top: 80px;
       min-height: calc(100vh - 80px);
-    }
-
-    .sidebar {
-      width: 300px;
-      background-color: white;
-      padding: 40px 20px;
-      border-right: 1px solid #d8dee4;
-    }
-
-    .user-profile {
-      text-align: center;
-      margin-bottom: 30px;
-    }
-
-    .profile-pic {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      background-color: #8b9aeb;
-      margin: 0 auto 15px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-size: 32px;
-      font-weight: bold;
-    }
-
-    .user-info {
-      margin-bottom: 20px;
-    }
-
-    .user-info h3 {
-      font-size: 18px;
-      margin-bottom: 5px;
-    }
-
-    .user-info p {
-      font-size: 14px;
-      color: #656d76;
-    }
-
-    .progress-container {
-      background-color: #f6f8fa;
-      border-radius: 6px;
-      padding: 15px;
-      margin-bottom: 30px;
-    }
-
-    .progress-title {
-      font-size: 14px;
-      margin-bottom: 10px;
-      display: flex;
-      justify-content: space-between;
-    }
-
-    .progress-bar {
-      height: 8px;
-      background-color: #e1e4e8;
-      border-radius: 4px;
-      overflow: hidden;
-    }
-
-    .progress-fill {
-      height: 100%;
-      background-color: #8b9aeb;
-      width: 70%;
+      gap: 20px;
+      padding: 80px 20px 20px;
+      max-width: 1200px;
+      margin: 0 auto;
     }
 
     .main-content {
+      display: flex;
+      flex-direction: column;
       flex: 1;
-      padding: 40px;
-      background-color: #f6f8fa;
+      gap: 20px;
     }
 
-    .welcome-section {
+    /* Profile Card Styles */
+    .profile-card {
       background-color: #8b9aeb;
+      border-radius: 16px;
+      padding: 30px;
       color: white;
-      padding: 40px;
-      border-radius: 12px;
-      margin-bottom: 30px;
+      width: 100%;
+      position: relative;
+      box-shadow: 0 4px 12px rgba(91, 118, 247, 0.2);
     }
 
-    .welcome-section h1 {
+    .profile-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 20px;
+    }
+
+    .profile-title {
       font-size: 32px;
-      margin-bottom: 15px;
+      font-weight: 600;
+      margin-bottom: 20px;
     }
 
-    .welcome-section p {
-      margin-bottom: 15px;
-      max-width: 700px;
+    .profile-info {
+      margin-bottom: 10px;
+    }
+
+    .profile-info p {
+      margin-bottom: 5px;
+      font-size: 16px;
+    }
+
+    .edit-icon {
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      color: white;
+      font-size: 20px;
+    }
+
+    .avatar-container {
+      display: flex;
+      align-items: center;
+      margin-top: 20px;
+    }
+
+    .avatar {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background-color: #e99f6b;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 20px;
+      position: relative;
+    }
+
+    .avatar-decoration {
+      position: absolute;
+      bottom: -10px;
+      width: 100%;
+      height: 20px;
+      background-color: #4cceac;
+      border-radius: 10px;
+      z-index: -1;
+    }
+
+    .level-container {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .level-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+
+    .level-value {
+      color: #4cceac;
+      font-weight: 600;
+    }
+
+    .learn-more {
+      color: white;
+      font-size: 14px;
+      text-decoration: none;
+      opacity: 0.8;
+    }
+
+    .learn-more:hover {
+      opacity: 1;
+      text-decoration: underline;
+    }
+
+    /* Content Card */
+    .content-card {
+      background-color: white;
+      border-radius: 16px;
+      padding: 30px;
+      width: 100%;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    .content-title {
+      font-size: 24px;
+      font-weight: 600;
+      color: #8b9aeb;
+      margin-bottom: 20px;
+    }
+
+    .content-text {
+      color: #333;
+      margin-bottom: 20px;
     }
 
     .start-button {
       display: inline-block;
-      background-color: white;
-      color: #8b9aeb;
+      background-color: #8b9aeb;
+      color: white;
       font-weight: 600;
       padding: 12px 24px;
-      border-radius: 6px;
+      border-radius: 8px;
       text-decoration: none;
       font-size: 16px;
-      margin-top: 15px;
+      transition: background-color 0.3s;
     }
 
-    .games-section h2 {
-      font-size: 24px;
+    .start-button:hover {
+      background-color: #4a65e6;
+    }
+
+    /* Game Categories Card */
+    .stats-card {
+      background-color: white;
+      border-radius: 16px;
+      padding: 30px;
+      width: 100%;
+      max-width: 300px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .completion-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 30px;
+      width: 100%;
+    }
+
+    .progress-circle {
+      position: relative;
+      width: 150px;
+      height: 150px;
       margin-bottom: 20px;
     }
 
-    .game-cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 20px;
+    .progress-circle svg {
+      width: 100%;
+      height: 100%;
+      transform: rotate(-90deg);
     }
 
-    .game-card {
-      background-color: white;
-      border-radius: 8px;
-      padding: 20px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    .progress-circle-bg {
+      fill: none;
+      stroke: #f0f0f0;
+      stroke-width: 12;
     }
 
-    .game-card h3 {
-      font-size: 18px;
-      margin-bottom: 10px;
+    .progress-circle-fill {
+      fill: none;
+      stroke: #4cceac;
+      stroke-width: 12;
+      stroke-linecap: round;
+      stroke-dasharray: 283;
+      stroke-dashoffset: calc(283 - (283 * var(--progress-percent)) / 100);
+      transition: stroke-dashoffset 0.5s ease-out;
+    }
+
+    .progress-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+    }
+
+    .progress-percentage {
+      font-size: 24px;
+      font-weight: 600;
       color: #8b9aeb;
     }
 
-    .game-card p {
+    .progress-label {
       font-size: 14px;
-      color: #656d76;
-      margin-bottom: 15px;
+      color: #666;
     }
 
-    .last-activity {
-      font-size: 12px;
-      color: #8b959f;
-    }
-
-    .view-all {
-      display: inline-block;
-      margin-top: 20px;
+    .categories-title {
+      font-size: 20px;
+      font-weight: 600;
       color: #8b9aeb;
-      font-weight: 500;
-      text-decoration: none;
+      margin-bottom: 20px;
+      text-align: center;
+      width: 100%;
     }
 
-    @media (max-width: 768px) {
+    .category-list {
+      width: 100%;
+    }
+
+    .category-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #f0f0f0;
+      width: 100%;
+    }
+
+    .category-info {
+      flex: 1;
+    }
+
+    .category-name {
+      font-size: 16px;
+      font-weight: 500;
+      color: #8b9aeb;
+      margin-bottom: 5px;
+    }
+
+    .category-progress {
+      width: 100%;
+      height: 6px;
+      background-color: #f0f0f0;
+      border-radius: 3px;
+      margin-top: 8px;
+      overflow: hidden;
+    }
+
+    .category-progress-fill {
+      height: 100%;
+      background-color: #4cceac;
+      border-radius: 3px;
+    }
+
+    .category-activity {
+      font-size: 12px;
+      color: #888;
+      margin-top: 5px;
+    }
+
+    .category-arrow {
+      color: #8b9aeb;
+      font-size: 20px;
+      margin-left: 10px;
+    }
+
+    .view-all-link {
+      display: block;
+      text-align: right;
+      color: #8b9aeb;
+      font-size: 14px;
+      text-decoration: none;
+      margin-top: 10px;
+      width: 100%;
+    }
+
+    .view-all-link:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 1024px) {
       .page-container {
         flex-direction: column;
       }
       
-      .sidebar {
-        width: 100%;
-        border-right: none;
-        border-bottom: 1px solid #d8dee4;
+      .stats-card {
+        max-width: 100%;
+        margin-top: 20px;
+        order: 3;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .page-container {
+        padding: 80px 15px 20px;
       }
       
-      .main-content {
-        padding: 20px;
+      .profile-header {
+        flex-direction: column;
       }
       
-      .nav-links {
-        gap: 16px;
+      .avatar-container {
+        margin-top: 20px;
       }
     }
   </style>
 </head>
 <body>
-  <!-- Header -->
   <header>
-        <div class="logo-container">
+    <div class="logo-container">
       <svg class="logo-img" viewBox="0 0 24 24" fill="#8b9aeb" xmlns="http://www.w3.org/2000/svg">
         <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.652.242 2.873.118 3.176.77.84 1.235 1.91 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
       </svg>
       <span class="logo-text">CI/CD</span>
-          <ul class="nav-links" id="nav-links">
-      
-      <li><a href="/">Home</a></li>
-      <li><a href="#" onclick="logout()">Logout</a></li>
-    </ul>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="#" onclick="logout()">Logout</a></li>
+      </ul>
     </div>
-
   </header>
 
-  <!-- Main Profile Card -->
   <div class="page-container">
-    <aside class="sidebar">
-      <div class="user-profile">
-        <div class="profile-pic">YL</div>
-        <div class="user-info">
-    <p><span class="label">👤 Username:</span> <span id="username"></span></p>
-    <p><span class="label">📧 Email:</span> <span id="email"></span></p>
-    <p><span class="label">🎓 Role:</span> <span id="role"></span></p>
-     </div>
-        <div class="level-info">
-          <p>Level: Beginner</p>
-          <a href="#" style="color: #8b9aeb; font-size: 14px;">Learn more</a>
+    <!-- Main Content (Left) -->
+    <div class="main-content">
+      <!-- Profile Card -->
+      <div class="profile-card">
+        <div class="profile-header">
+          <h1 class="profile-title">Welcome, <span id="username">Lecturer</span></h1>
+          <button class="edit-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M16.293 2.293L17.707 3.707L9 12.414L7.586 11L16.293 2.293ZM19.707 6.707L18.293 5.293L20 3.586L21.414 5L19.707 6.707ZM3 13V16H6L17.586 4.414L14.586 1.414L3 13ZM0 21H24V23H0V21Z" fill="white"/>
+            </svg>
+          </button>
         </div>
-      </div>
-
-    <div class="progress-container">
-        <div class="progress-title">
-          <span>Completion</span>
-          <span>70%</span>
+        
+        <div class="profile-info">
+          <p><strong>Username:</strong> <span id="username2"></span></p>
+          <p><strong>Email:</strong> <span id="email"></span></p>
+          <p><strong>Role:</strong> <span id="role">Lecturer</span></p>
         </div>
-        <div class="progress-bar">
-          <div class="progress-fill"></div>
-        </div>
-      </div>
-    </aside>
-
-    <main class="main-content">
-      <section class="welcome-section">
-        <h1>Ready to Play, Learn, and Level Up?</h1>
-        <p>Learn CI/CD the fun way through interactive memory games and quick trivia challenges! You'll match terms with their meanings, answer real world coding questions, and build confidence as you go.</p>
-        <p>The experience is short, smart, and stress free - perfect for beginners and curious minds alike.</p>
-        <p>So go ahead choose a topic, start a game, and level up your skills with every move</p>
-        <a href="#" class="start-button">Start here</a>
-      </section>
-
-      <section class="games-section">
-        <h2>Game Categories</h2>
-        <div class="game-cards">
-          <div class="game-card">
-            <h3>CI/CD Basics Match</h3>
-            <p>Match CI/CD terms with their definitions</p>
-            <p class="last-activity">Last activity: 3 days ago</p>
+        
+        <div class="avatar-container">
+          <div class="avatar">
+            <div style="color: white; font-size: 24px; font-weight: bold;" id="avatarInitials"></div>
+            <div class="avatar-decoration"></div>
           </div>
-          <div class="game-card">
-            <h3>DevOps Match Up</h3>
-            <p>Connect DevOps concepts with their implementations</p>
-            <p class="last-activity">Last activity: 8 days ago</p>
+          
+          <div class="level-container">
+            <div class="level-title">Status: <span class="level-value">Active</span></div>
+            <a href="#" class="learn-more">Account settings</a>
           </div>
         </div>
-        <a href="#" class="view-all">View all</a>
-      </section>
-    </main>
+      </div>
+      
+      <!-- Content Card (Under Profile Card) -->
+      <div class="content-card">
+        <h2 class="content-title">Ready to Teach, Engage, and Inspire?</h2>
+        <p class="content-text">Teach CI/CD the fun way through interactive memory games and quick trivia challenges! You'll help students match terms with their meanings, answer real world coding questions, and build their confidence as they learn.</p>
+        <p class="content-text">The experience is short, smart, and effective - perfect for modern learning environments.</p>
+        <p class="content-text">So go ahead choose a topic, start a game, and watch your students level up their skills with every move</p>
+        <a href="#" class="start-button">Create new game</a>
+      </div>
+    </div>
+    
+    <!-- Game Categories Card (Right) -->
+    <div class="stats-card">
+      <div class="completion-container">
+        <div class="progress-circle">
+          <svg viewBox="0 0 100 100">
+            <circle class="progress-circle-bg" cx="50" cy="50" r="45"></circle>
+            <circle class="progress-circle-fill" cx="50" cy="50" r="45" style="--progress-percent: 70;"></circle>
+          </svg>
+          <div class="progress-text">
+            <div class="progress-percentage">70%</div>
+            <div class="progress-label">Engagement</div>
+          </div>
+        </div>
+      </div>
+      
+      <h2 class="categories-title">Game Categories</h2>
+      
+      <div class="category-list">
+        <div class="category-item">
+          <div class="category-info">
+            <div class="category-name">CI/CD Basics Match</div>
+            <div class="category-progress">
+              <div class="category-progress-fill" style="width: 70%;"></div>
+            </div>
+            <div class="category-activity">Last activity: 3 days ago</div>
+          </div>
+          <div class="category-arrow">▶</div>
+        </div>
+        
+        <div class="category-item">
+          <div class="category-info">
+            <div class="category-name">DevOps Match Up</div>
+            <div class="category-progress">
+              <div class="category-progress-fill" style="width: 45%;"></div>
+            </div>
+            <div class="category-activity">Last activity: 8 days ago</div>
+          </div>
+          <div class="category-arrow">▶</div>
+        </div>
+        
+        <a href="#" class="view-all-link">View all</a>
+      </div>
+    </div>
   </div>
 
-  <!-- JS -->
   <script>
     function goHome() {
       window.location.href = "/";
     }
 
     function logout() {
-      localStorage.removeItem("token");
+      sessionStorage.removeItem("token");
       window.location.href = "/login";
     }
 
@@ -347,16 +525,31 @@
       }
     }
 
-    const token = sessionStorage.getItem("token");
-    const user = parseJwt(token);
+    function getInitials(name) {
+      if (!name) return 'L';
+      const parts = name.split(' ');
+      if (parts.length === 1) return parts[0].charAt(0).toUpperCase();
+      return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase();
+    }
 
-    if (!user || user.role !== "lecturer") {
-      alert("Access denied. Please log in as a lecturer.");
-      window.location.href = "/login";
+    // Check if token exists in session storage
+    const token = sessionStorage.getItem("token");
+    
+    // If token exists, parse it and update user info
+    if (token) {
+      const user = parseJwt(token);
+      
+      if (user && user.role === "lecturer") {
+        document.getElementById("username").textContent = user.username || "Lecturer";
+        document.getElementById("username2").textContent = user.username || "Lecturer";
+        document.getElementById("email").textContent = user.email || "Not provided";
+        document.getElementById("avatarInitials").textContent = getInitials(user.username);
+      } else {
+        alert("Access denied. Please log in as a lecturer.");
+        window.location.href = "/login";
+      }
     } else {
-      document.getElementById("username").textContent = user.username;
-      document.getElementById("email").textContent = user.email || "Not provided";
-      document.getElementById("role").textContent = user.role;
+      window.location.href = "/login";
     }
   </script>
 </body>
