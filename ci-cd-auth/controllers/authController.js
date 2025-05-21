@@ -51,10 +51,17 @@ exports.login = async (req, res) => {
   }
 
   const token = jwt.sign(
-    { username: user.username, email: user.email, role: user.role },
-    JWT_SECRET,
-    { expiresIn: "2h" }
-  );
+  {
+    id: user._id,
+    username: user.username,
+    email: user.email,      // ← שים לב לשורה הזו!
+    role: user.role
+  },
+  JWT_SECRET,
+  { expiresIn: "1h" }
+);
+
+
 
   res.status(200).json({ token });
 };

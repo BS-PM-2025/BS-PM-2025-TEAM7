@@ -1,7 +1,9 @@
-const Video = require("../models/video");
+const Video = require("../models/Video");
+const Quiz = require("../models/Quiz");
+const QuizSubmission = require("../models/QuizSubmission");
+const Progress = require("../models/Progress");
 const fs = require("fs");
 const path = require("path");
-
 // POST /video/upload
 exports.uploadVideo = async (req, res) => {
   const { title } = req.body;
@@ -50,29 +52,34 @@ exports.getCoursesPage = async (req, res) => {
   }
 };
 
-// DELETE /api/videos/:id
 exports.deleteVideo = async (req, res) => {
-  try {
-    const video = await Video.findByIdAndDelete(req.params.id);
+  const { id } = req.params;
 
-    if (!video) {
-      return res.status(404).json({ message: 'Video not found' });
+  try {
+    const video = await Video.findById(id);
+    if (!video) return res.status(404).json({ message: "Video not found" });
+
+    // 🗑 Delete video file
+    const filePath = path.join(__dirname, "..", "public", "uploads", video.filename);
+    if (fs.existsSync(filePath)) {
+      fs.unlinkSync(filePath);
     }
 
-    // ✅ מסלול לקובץ בתוך תיקיית public/uploads
-    const filePath = path.join(__dirname, '..', 'public', 'uploads', video.filename);
+    // 🧠 Delete associated quiz
+    const quiz = await Quiz.findOneAndDelete({ video: id });
 
-    fs.unlink(filePath, (err) => {
-      if (err) {
-        console.error('File deletion failed:', err);
-        return res.status(500).json({ message: 'Video deleted from DB, but failed to delete file' });
-      }
+    if (quiz) {
+      // 🧼 Delete submissions & progress for this quiz
+      await QuizSubmission.deleteMany({ quiz: quiz._id });
+      await Progress.deleteMany({ quiz: quiz._id });
+    }
 
-      return res.json({ message: 'Video deleted successfully' });
-    });
+    // 🗑 Delete the video document
+    await video.deleteOne();
 
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Server error while deleting video' });
+    res.json({ message: "Video and associated quiz deleted" });
+  } catch (err) {
+    console.error("❌ Error deleting video:", err);
+    res.status(500).json({ message: "Failed to delete video" });
   }
 };

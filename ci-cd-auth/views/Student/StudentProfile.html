@@ -221,6 +221,38 @@
       color: #656d76;
       margin-bottom: 15px;
     }
+    .quiz-result-card {
+  background-color: #ffffff;
+  border-left: 5px solid #8b9aeb;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.quiz-result-card h4 {
+  font-size: 16px;
+  color: #1f2328;
+  margin-bottom: 10px;
+}
+
+.quiz-result-card p {
+  font-size: 14px;
+  color: #444;
+  margin: 4px 0;
+}
+
+.correct {
+  color: green;
+  font-weight: bold;
+}
+
+.incorrect {
+  color: red;
+  font-weight: bold;
+}
+
+
 
     .last-activity {
       font-size: 12px;
@@ -280,6 +312,8 @@
       <h1>Good Morning <span id="username">Yair</span></h1>
       <p><strong>Username:</strong> <span id="username2"></span></p>
       <p><strong>Email:</strong> <span id="email"></span></p>
+      <p><strong>Role:</strong> <span id="role"></span></p>
+
         </div>
         <div class="level-info">
           <p>Level: Beginner</p>
@@ -287,15 +321,17 @@
         </div>
       </div>
 
-    <div class="progress-container">
-        <div class="progress-title">
-          <span>Completion</span>
-          <span>70%</span>
-        </div>
-        <div class="progress-bar">
-          <div class="progress-fill"></div>
-        </div>
+          <div class="progress-title">
+        <span>Completion</span>
+        <span id="progressPercent">0%</span>
       </div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill" style="width: 0%;"></div>
+      </div>
+<section>
+  <h2 style="margin-top: 40px;">📊 Your Quiz Submissions</h2>
+  <div id="quizResultsContainer"></div>
+</section>
     </aside>
 
     <main class="main-content">
@@ -355,7 +391,82 @@
       document.getElementById("username").textContent = user.username;
       document.getElementById("username2").textContent = user.username;
       document.getElementById("email").textContent = user.email || "Not provided";
+        document.getElementById("role").textContent = user.role;
+        fetchStudentProgress(); 
     }
+    function fetchStudentProgress() {
+  fetch(`/api/progress/${user.id}`, {
+    headers: {
+      Authorization: "Bearer " + token
+    }
+  })
+  .then(res => res.json())
+  .then(data => {
+    let percentage = 0;
+
+    // Case 1: list of quizzes with scores -> calculate average
+    if (Array.isArray(data) && data.length > 0) {
+      const total = data.reduce((sum, entry) => sum + entry.percentage, 0);
+      percentage = Math.round(total / data.length);
+    }
+
+    // Case 2: single value from backend
+    if (data.averagePercentage) {
+      percentage = Math.round(data.averagePercentage);
+    }
+
+    // Update UI
+    document.getElementById("progressPercent").textContent = `${percentage}%`;
+    document.getElementById("progressFill").style.width = `${percentage}%`;
+  })
+  .catch(err => {
+    console.error("Failed to fetch progress:", err);
+  });
+}
+fetchStudentProgress();
+
+// 🔁 Call it after user is verified
+function fetchQuizHistory() {
+  fetch("/api/submissions", {
+    headers: {
+      Authorization: "Bearer " + token
+    }
+  })
+    .then(res => res.json())
+    .then(data => {
+      const container = document.getElementById("quizResultsContainer");
+      if (!Array.isArray(data) || data.length === 0) {
+        container.innerHTML = `<p>No quiz history found.</p>`;
+        return;
+      }
+
+      data.forEach(entry => {
+        const card = document.createElement("div");
+        card.className = "quiz-result-card";
+
+        let questionsHtml = entry.results.map(result => `
+          <p><strong>${result.prompt}</strong></p>
+          <p>Your Answer: <span class="${result.isCorrect ? 'correct' : 'incorrect'}">${result.studentAnswer}</span></p>
+          <p>Correct Answer: <strong>${result.correctAnswer}</strong></p>
+          <hr>
+        `).join("");
+
+        card.innerHTML = `
+          <h4>Video ID: ${entry.videoTitle || entry.videoId}</h4>
+          <p>Score: <strong>${entry.score}%</strong></p>
+          ${questionsHtml}
+        `;
+
+        container.appendChild(card);
+      });
+    })
+    .catch(err => {
+      console.error("Error loading quiz history:", err);
+    });
+}
+
+fetchQuizHistory();
+
   </script>
 </body>
 </html>

@@ -11,6 +11,8 @@ const authRoutes     = require("./routes/auth");
 const feedbackRoutes = require("./routes/feedback");
 const videoRoutes    = require("./routes/video");
 const userRoutes     = require("./routes/user");
+const progressRoutes = require("./routes/progress");
+const quizRoutes = require("./routes/quiz");
 
 const app  = express();
 const PORT = process.env.PORT || 3000;
@@ -31,6 +33,8 @@ app.use("/api/auth", authRoutes);
 app.use("/api/feedback", feedbackRoutes);
 app.use("/api/videos", videoRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/progress", progressRoutes);
+app.use("/api", require("./routes/quiz")); // תומך ב־/api/submissions
 
 // ---------- Frontend Pages ----------
 app.get("/", (req, res) => {

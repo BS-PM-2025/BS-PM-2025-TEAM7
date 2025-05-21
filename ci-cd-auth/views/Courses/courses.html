@@ -720,7 +720,7 @@
       const saveBtn = document.getElementById("saveQuizBtn");
       
       quizTitle.textContent = `${videoTitle} Quiz`;
-      quizContent.innerHTML = '<p>Loading quiz...</p>';
+     quizContent.innerHTML = ''; // Reset quiz modal to avoid reusing old radios
       submitBtn.style.display = "none";
       saveBtn.style.display = "none";
       modal.style.display = "flex";
@@ -748,25 +748,27 @@
           }
           
           if(user?.role === "student") {
-            let quizHTML = '';
-            
-            quiz.questions.forEach((question, index) => {
-              quizHTML += `
-                <div class="quiz-question">
-                  <p>${index + 1}. ${question.prompt}</p>
-                  ${question.options.map((option, optionIndex) => `
-                    <div class="quiz-option">
-                      <input type="radio" id="q_${question._id}_${optionIndex}" name="q_${question._id}" value="${optionIndex}">
-                      <label for="q_${question._id}_${optionIndex}">${option.text}</label>
-                    </div>
-                  `).join('')}
-                </div>
-              `;
-            });
-            
-            quizContent.innerHTML = quizHTML;
-            submitBtn.style.display = "block";
-          } 
+  let quizHTML = '';
+
+  quiz.questions.forEach((question, index) => {
+    const qid = question._id || `q${index}`;
+    quizHTML += `
+      <div class="quiz-question">
+        <p>${index + 1}. ${question.prompt}</p>
+        ${question.options.map((option, optionIndex) => `
+          <div class="quiz-option">
+            <input type="radio" id="q_${qid}_${optionIndex}" name="q_${qid}" value="${optionIndex}">
+            <label for="q_${qid}_${optionIndex}">${option.text}</label>
+          </div>
+        `).join('')}
+      </div>
+    `;
+  });
+
+  quizContent.innerHTML = quizHTML;
+  submitBtn.style.display = "block";
+}
+
           else if(user?.role === "lecturer") {
             quizContent.innerHTML = `
               <div id="quizEditor">
@@ -794,54 +796,54 @@
       currentVideoId = null;
     }
 
-    function addQuestionBlock(question = null) {
-      const questionsContainer = document.getElementById("questionsContainer");
-      const questionId = Date.now();
-      
-      const questionBlock = document.createElement("div");
-      questionBlock.className = "q-block";
-      questionBlock.style.background = "#f8faff";
-      questionBlock.style.padding = "16px";
-      questionBlock.style.borderRadius = "8px";
-      questionBlock.style.marginBottom = "16px";
-      questionBlock.style.border = "1px solid #e6edff";
-      
-      questionBlock.innerHTML = `
-        <input type="text" class="prompt" placeholder="Enter question text" 
-               value="${question ? question.prompt : ''}" 
-               style="width: 100%; padding: 10px; margin-bottom: 12px; border: 1px solid #d8dee4; border-radius: 6px;">
-      `;
-      
-      const options = question ? question.options : [
-        { text: '', isCorrect: true },
-        { text: '', isCorrect: false },
-        { text: '', isCorrect: false },
-        { text: '', isCorrect: false }
-      ];
-      
-      options.forEach((option, index) => {
-        questionBlock.innerHTML += `
-          <div style="display: flex; gap: 10px; margin-bottom: 8px; align-items: center;">
-            <input type="radio" name="correct_${questionId}" 
-                   ${option.isCorrect ? 'checked' : ''} 
-                   style="flex-shrink: 0;">
-            <input type="text" class="opt" placeholder="Option ${index + 1}" 
-                   value="${option.text}" 
-                   style="flex: 1; padding: 8px; border: 1px solid #d8dee4; border-radius: 6px;">
-          </div>
-        `;
-      });
-      
-      questionBlock.innerHTML += `
-        <button class="btn delete-btn" 
-                onclick="this.parentElement.remove()" 
-                style="margin-top: 10px; padding: 6px 12px; font-size: 13px">
-          Remove Question
-        </button>
-      `;
-      
-      questionsContainer.appendChild(questionBlock);
-    }
+   function addQuestionBlock(question = null) {
+  const questionsContainer = document.getElementById("questionsContainer");
+  const questionId = question?._id || `q_${Date.now()}`;
+
+  const questionBlock = document.createElement("div");
+  questionBlock.className = "q-block";
+  questionBlock.style.background = "#f8faff";
+  questionBlock.style.padding = "16px";
+  questionBlock.style.borderRadius = "8px";
+  questionBlock.style.marginBottom = "16px";
+  questionBlock.style.border = "1px solid #e6edff";
+
+  const prompt = question?.prompt || '';
+  const options = question?.options || [
+    { text: '', isCorrect: true },
+    { text: '', isCorrect: false },
+    { text: '', isCorrect: false },
+    { text: '', isCorrect: false }
+  ];
+questionBlock.innerHTML = `
+    <input type="text" class="prompt" placeholder="Enter question text"
+           value="${prompt}"
+           style="width: 100%; padding: 10px; margin-bottom: 12px; border: 1px solid #d8dee4; border-radius: 6px;">
+  `;
+
+   options.forEach((option, index) => {
+    const isChecked = option.isCorrect ? 'checked' : '';
+    questionBlock.innerHTML += `
+      <div style="display: flex; gap: 10px; margin-bottom: 8px; align-items: center;">
+        <input type="radio" name="correct_${questionId}" ${isChecked} style="flex-shrink: 0;">
+        <input type="text" class="opt" placeholder="Option ${index + 1}"
+               value="${option.text}"
+               style="flex: 1; padding: 8px; border: 1px solid #d8dee4; border-radius: 6px;">
+      </div>
+    `;
+  });
+  questionBlock.innerHTML += `
+    <button class="btn delete-btn"
+            onclick="this.parentElement.remove()"
+            style="margin-top: 10px; padding: 6px 12px; font-size: 13px">
+      Remove Question
+    </button>
+  `;
+
+
+  questionsContainer.appendChild(questionBlock);
+}
+
 
     function saveQuiz() {
       const questionsContainer = document.getElementById("questionsContainer");
@@ -883,53 +885,70 @@
       });
     }
 
-    document.getElementById("submitQuizBtn").addEventListener("click", function() {
-      const quizContent = document.getElementById("quizContent");
-      const submitBtn = this;
-      
-      const answers = [...quizContent.querySelectorAll('input[type=radio]:checked')]
-        .map(radio => ({
-          questionId: radio.name.slice(2),
-          optionIndex: parseInt(radio.value)
-        }));
-      
-      if(answers.length === 0) {
-        alert("Please answer at least one question before submitting.");
-        return;
-      }
-      
-      submitBtn.disabled = true;
-      submitBtn.textContent = "Submitting...";
-      
-      fetch(`/api/videos/${currentVideoId}/quiz/submit`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": "Bearer " + token
-        },
-        body: JSON.stringify({ answers })
-      })
-      .then(response => response.json())
-      .then(result => {
-        let message = "";
-        if(result.score === 100) {
-          message = `🎉 Perfect! You got ${result.score}% - All answers correct!`;
-        } else if(result.score >= 70) {
-          message = `👍 Good job! You scored ${result.score}%`;
-        } else {
-          message = `📚 Keep learning! You scored ${result.score}%`;
-        }
-        alert(message);
-        closeQuizModal();
-      })
-      .catch(() => {
-        alert("Failed to submit quiz. Please try again.");
-      })
-      .finally(() => {
-        submitBtn.disabled = false;
-        submitBtn.textContent = "Submit Quiz";
-      });
+    document.getElementById("submitQuizBtn").addEventListener("click", function () {
+  const quizContent = document.getElementById("quizContent");
+  const submitBtn = this;
+
+  // ✅ Make sure we're submitting the correct quiz for the correct video
+  console.log("🔁 Submitting for video:", currentVideoId);
+
+  // ✅ Extract answers (each radio group name = q_<questionId>)
+  const answers = [...quizContent.querySelectorAll('input[type=radio]:checked')]
+    .map(radio => {
+      const questionId = radio.name.slice(2); // remove 'q_' prefix
+      const optionIndex = parseInt(radio.value);
+      return { questionId, optionIndex };
     });
+
+  console.log("📝 Collected Answers:", answers);
+
+  // ✅ Validation
+  if (answers.length === 0) {
+    alert("Please answer at least one question before submitting.");
+    return;
+  }
+
+  // ✅ Disable the button to prevent double-submit
+  submitBtn.disabled = true;
+  submitBtn.textContent = "Submitting...";
+
+     fetch(`/api/videos/${currentVideoId}/quiz/submit`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer " + token
+    },
+    body: JSON.stringify({ answers })
+  })
+    .then(async response => {
+      const result = await response.json();
+      console.log("📥 Server response:", result);
+
+      if (!response.ok) {
+        throw new Error(result.message || "Unknown error occurred");
+      }
+
+      let message = "";
+      if (result.score === 100) {
+        message = `🎉 Perfect! You got ${result.score}% - All answers correct!`;
+      } else if (result.score >= 70) {
+        message = `👍 Good job! You scored ${result.score}%`;
+      } else {
+        message = `📚 Keep learning! You scored ${result.score}%`;
+      }
+
+      alert(message);
+      closeQuizModal();
+    })
+    .catch(error => {
+      console.error("❌ Failed to submit quiz:", error);
+      alert("Failed to submit quiz. Please try again.\n" + error.message);
+    })
+    .finally(() => {
+      submitBtn.disabled = false;
+      submitBtn.textContent = "Submit Quiz";
+    });
+});
 
     /* ---------- Initialize ---------- */
     init();
