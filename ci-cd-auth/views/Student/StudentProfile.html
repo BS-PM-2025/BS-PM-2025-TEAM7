@@ -475,25 +475,46 @@
     }
 
     .quiz-result-card h4 {
-      font-size: 16px;
+      font-size: 18px;
       color: #1f2328;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
+      font-weight: 600;
     }
 
     .quiz-result-card p {
-      font-size: 14px;
+      font-size: 15px;
       color: #444;
-      margin: 4px 0;
+      margin: 8px 0;
+      line-height: 1.4;
     }
 
-    .correct {
-      color: green;
-      font-weight: bold;
+    .quiz-result-card p strong {
+      font-weight: 600;
     }
 
-    .incorrect {
-      color: red;
-      font-weight: bold;
+    .question-block {
+      background: #f9f9f9;
+      padding: 12px 16px;
+      border-radius: 6px;
+      margin-bottom: 12px;
+      border-left: 4px solid transparent;
+      transition: border-color 0.3s;
+    }
+
+    .question-block.correct {
+      border-color: #4caf50;
+      background-color: #e6f4ea;
+    }
+
+    .question-block.incorrect {
+      border-color: #f44336;
+      background-color: #fbe9e7;
+    }
+
+    .hr-divider {
+      border: none;
+      border-top: 1px solid #ddd;
+      margin: 12px 0;
     }
 
     @media (max-width: 1024px) {
@@ -773,15 +794,16 @@
           let questionsHtml = '';
           if (entry.results && Array.isArray(entry.results)) {
             questionsHtml = entry.results.map(result => `
-              <p><strong>${result.prompt}</strong></p>
-              <p>Your Answer: <span class="${result.isCorrect ? 'correct' : 'incorrect'}">${result.studentAnswer}</span></p>
-              <p>Correct Answer: <strong>${result.correctAnswer}</strong></p>
-              <hr>
+              <div class="question-block ${result.isCorrect ? 'correct' : 'incorrect'}">
+                <p><strong>Question:</strong> ${result.prompt}</p>
+                <p>Your Answer: <span>${result.studentAnswer}</span></p>
+                <p>Correct Answer: <strong>${result.correctAnswer}</strong></p>
+              </div>
             `).join("");
           }
 
           card.innerHTML = `
-            <h4>Video ID: ${entry.videoTitle || entry.videoId}</h4>
+            <h4>Lesson: ${entry.videoTitle || entry.videoId}</h4>
             <p>Score: <strong>${entry.score}%</strong></p>
             ${questionsHtml}
           `;
@@ -790,7 +812,7 @@
         });
       })
       .catch(err => {
-        console.error("Error loading quiz history:", err);
+        console.error("There is no quizes for this student:", err);
       });
     }
   </script>
