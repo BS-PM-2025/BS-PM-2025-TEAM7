@@ -148,6 +148,7 @@
       display: flex;
       align-items: center;
       margin-top: 20px;
+      position: relative;
     }
 
     .avatar {
@@ -160,6 +161,20 @@
       justify-content: center;
       margin-right: 20px;
       position: relative;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .avatar-initials {
+      color: white;
+      font-size: 24px;
+      font-weight: bold;
     }
 
     .avatar-decoration {
@@ -475,46 +490,108 @@
     }
 
     .quiz-result-card h4 {
-      font-size: 18px;
+      font-size: 16px;
       color: #1f2328;
-      margin-bottom: 12px;
-      font-weight: 600;
+      margin-bottom: 10px;
     }
 
     .quiz-result-card p {
-      font-size: 15px;
+      font-size: 14px;
       color: #444;
-      margin: 8px 0;
-      line-height: 1.4;
+      margin: 4px 0;
     }
 
-    .quiz-result-card p strong {
-      font-weight: 600;
+    .correct {
+      color: green;
+      font-weight: bold;
     }
 
-    .question-block {
-      background: #f9f9f9;
-      padding: 12px 16px;
-      border-radius: 6px;
-      margin-bottom: 12px;
-      border-left: 4px solid transparent;
-      transition: border-color 0.3s;
+    .incorrect {
+      color: red;
+      font-weight: bold;
     }
 
-    .question-block.correct {
-      border-color: #4caf50;
-      background-color: #e6f4ea;
+    /* Photo Upload Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 100;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
     }
 
-    .question-block.incorrect {
-      border-color: #f44336;
-      background-color: #fbe9e7;
+    .modal-content {
+      background-color: #fefefe;
+      margin: 15% auto;
+      padding: 20px;
+      border-radius: 8px;
+      width: 80%;
+      max-width: 500px;
     }
 
-    .hr-divider {
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .close:hover {
+      color: black;
+    }
+
+    .upload-btn {
+      background-color: #657EEF;
+      color: white;
+      padding: 10px 15px;
       border: none;
-      border-top: 1px solid #ddd;
-      margin: 12px 0;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .upload-btn:hover {
+      background-color: #4a65e6;
+    }
+
+    /* Photo View Modal */
+    .photo-modal {
+      display: none;
+      position: fixed;
+      z-index: 100;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .photo-modal-content {
+      max-width: 80%;
+      max-height: 80%;
+    }
+
+    .photo-modal-content img {
+      width: 100%;
+      height: auto;
+      max-height: 80vh;
+      border-radius: 8px;
+    }
+
+    .close-photo {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      color: white;
+      font-size: 40px;
+      font-weight: bold;
+      cursor: pointer;
     }
 
     @media (max-width: 1024px) {
@@ -599,14 +676,14 @@
         </div>
         
         <div class="avatar-container">
-          <div class="avatar">
-            <div style="color: white; font-size: 24px; font-weight: bold;">YL</div>
+          <div class="avatar" id="avatarContainer">
+            <div class="avatar-initials" id="avatarInitials">YL</div>
             <div class="avatar-decoration"></div>
           </div>
           
           <div class="level-container">
             <div class="level-title">Level: <span class="level-value" id="levelText">Beginner</span></div>
-            <a href="#" class="learn-more">learn more</a>
+            <a href="#" class="learn-more" id="uploadPhotoLink">Upload Photo</a>
           </div>
         </div>
       </div>
@@ -672,6 +749,24 @@
     </div>
   </div>
 
+  <!-- Photo Upload Modal -->
+  <div id="photoModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Upload Profile Photo</h2>
+      <input type="file" id="photoInput" accept="image/*">
+      <button class="upload-btn" id="uploadBtn">Upload</button>
+    </div>
+  </div>
+
+  <!-- Photo View Modal -->
+  <div id="viewPhotoModal" class="photo-modal">
+    <span class="close-photo">&times;</span>
+    <div class="photo-modal-content">
+      <img id="enlargedPhoto" src="" alt="Enlarged Profile Photo">
+    </div>
+  </div>
+
   <script>
     function goHome() {
       window.location.href = "/";
@@ -714,6 +809,86 @@
       }
     }
 
+    document.addEventListener('DOMContentLoaded', function() {
+      const modal = document.getElementById('photoModal');
+      const uploadLink = document.getElementById('uploadPhotoLink');
+      const closeBtn = document.querySelector('.close');
+      const uploadBtn = document.getElementById('uploadBtn');
+      const photoInput = document.getElementById('photoInput');
+      const avatarContainer = document.getElementById('avatarContainer');
+      const avatarInitials = document.getElementById('avatarInitials');
+      const viewPhotoModal = document.getElementById('viewPhotoModal');
+      const enlargedPhoto = document.getElementById('enlargedPhoto');
+      const closePhotoModal = document.querySelector('.close-photo');
+
+      // Load saved photo from localStorage if exists
+      const savedPhoto = localStorage.getItem('profilePhoto');
+      if (savedPhoto) {
+        avatarContainer.innerHTML = `<img src="${savedPhoto}" alt="Profile Photo">`;
+        avatarInitials.style.display = 'none';
+      }
+
+      // Open modal when upload link is clicked
+      uploadLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        modal.style.display = 'block';
+      });
+
+      // Close modal when X is clicked
+      closeBtn.addEventListener('click', function() {
+        modal.style.display = 'none';
+      });
+
+      // Close modal when clicking outside of it
+      window.addEventListener('click', function(e) {
+        if (e.target === modal) {
+          modal.style.display = 'none';
+        }
+      });
+
+      // Handle photo upload
+      uploadBtn.addEventListener('click', function() {
+        const file = photoInput.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            // Save photo to localStorage
+            localStorage.setItem('profilePhoto', e.target.result);
+            
+            // Display the photo
+            avatarContainer.innerHTML = `<img src="${e.target.result}" alt="Profile Photo">`;
+            avatarInitials.style.display = 'none';
+            
+            // Close modal
+            // Close modal
+            modal.style.display = 'none';
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+
+      // Handle clicking on avatar to view enlarged photo
+      avatarContainer.addEventListener('click', function(e) {
+        const savedPhoto = localStorage.getItem('profilePhoto');
+        if (savedPhoto) {
+          enlargedPhoto.src = savedPhoto;
+          viewPhotoModal.style.display = 'flex';
+        }
+      });
+
+      // Close photo view modal
+      closePhotoModal.addEventListener('click', function() {
+        viewPhotoModal.style.display = 'none';
+      });
+
+      // Close photo view modal when clicking outside
+      window.addEventListener('click', function(e) {
+        if (e.target === viewPhotoModal) {
+          viewPhotoModal.style.display = 'none';
+        }
+      });
+    });
+
     // Check if token exists in session storage
     const token = sessionStorage.getItem("token");
     
@@ -726,6 +901,12 @@
         document.getElementById("username2").textContent = user.username || "Yair Levi";
         document.getElementById("email").textContent = user.email || "Yairle@gmail.com";
         document.getElementById("role").textContent = user.role || "Student";
+        
+        // Update avatar initials based on username
+        const username = user.username || "Yair Levi";
+        const initials = username.split(' ').map(n => n[0]).join('').toUpperCase();
+        document.getElementById("avatarInitials").textContent = initials;
+        
         fetchStudentProgress();
         fetchQuizHistory();
       }
@@ -794,16 +975,15 @@
           let questionsHtml = '';
           if (entry.results && Array.isArray(entry.results)) {
             questionsHtml = entry.results.map(result => `
-              <div class="question-block ${result.isCorrect ? 'correct' : 'incorrect'}">
-                <p><strong>Question:</strong> ${result.prompt}</p>
-                <p>Your Answer: <span>${result.studentAnswer}</span></p>
-                <p>Correct Answer: <strong>${result.correctAnswer}</strong></p>
-              </div>
+              <p><strong>${result.prompt}</strong></p>
+              <p>Your Answer: <span class="${result.isCorrect ? 'correct' : 'incorrect'}">${result.studentAnswer}</span></p>
+              <p>Correct Answer: <strong>${result.correctAnswer}</strong></p>
+              <hr>
             `).join("");
           }
 
           card.innerHTML = `
-            <h4>Lesson: ${entry.videoTitle || entry.videoId}</h4>
+            <h4>Video ID: ${entry.videoTitle || entry.videoId}</h4>
             <p>Score: <strong>${entry.score}%</strong></p>
             ${questionsHtml}
           `;
@@ -812,7 +992,7 @@
         });
       })
       .catch(err => {
-        console.error("There is no quizes for this student:", err);
+        console.error("Error loading quiz history:", err);
       });
     }
   </script>
