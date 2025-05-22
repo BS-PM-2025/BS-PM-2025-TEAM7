@@ -148,9 +148,9 @@
 
     .game-container {
       display: grid;
-      grid-template-columns: repeat(6, 1fr);
+      grid-template-columns: repeat(4, 1fr);
       gap: 1rem;
-      max-width: 1000px;
+      max-width: 800px;
       width: 100%;
     }
 
@@ -165,7 +165,7 @@
       cursor: pointer;
       perspective: 1000px;
       transform-style: preserve-3d;
-      transition: transform 0.5s;
+      transition: transform 0.5s, opacity 0.5s;
       position: relative;
       border: 2px solid #7fffd4;
     }
@@ -180,16 +180,8 @@
 
     .card.matched {
       border-color: #7fffd4;
-    }
-
-    .card.matched::after {
-      content: "✓";
-      position: absolute;
-      bottom: 10px;
-      right: 10px;
-      color: #7fffd4;
-      font-size: 1.2rem;
-      font-weight: bold;
+      opacity: 0;
+      pointer-events: none;
     }
 
     .card.mismatched {
@@ -349,41 +341,60 @@
       height: 120px;
     }
 
-    .speech-bubble {
-      position: absolute;
-      top: -80px;
-      left: -180px;
-      background-color: #5271d5;
-      color: white;
-      padding: 1rem;
-      border-radius: 20px;
-      width: 200px;
-      text-align: center;
-    }
+     .mascot-container {
+    position: fixed;
+    bottom: 50px;
+    right: 50px;
+    z-index: 50;
+    display: none;
+    transform-origin: bottom right;
+  }
 
-    .speech-bubble::after {
-      content: "";
-      position: absolute;
-      bottom: -10px;
-      right: 20px;
-      width: 0;
-      height: 0;
-      border-left: 10px solid transparent;
-      border-right: 10px solid transparent;
-      border-top: 10px solid #5271d5;
-    }
+  .mascot {
+    width: 280px; /* Larger size */
+    height: 280px;
+    filter: drop-shadow(0 5px 10px rgba(0,0,0,0.25));
+    transition: all 0.3s ease;
+  }
 
-    @media (max-width: 1200px) {
-      .game-container {
-        grid-template-columns: repeat(5, 1fr);
-      }
-    }
+  .mascot:hover {
+    transform: scale(1.08);
+    filter: drop-shadow(0 8px 16px rgba(0,0,0,0.3));
+  }
 
-    @media (max-width: 992px) {
-      .game-container {
-        grid-template-columns: repeat(4, 1fr);
-      }
-    }
+  .speech-bubble {
+    position: absolute;
+    top: -100px; /* Closer to head */
+    left: -200px; /* Moved closer */
+    background-color: #5271d5;
+    color: white;
+    padding: 1.2rem 1.5rem;
+    border-radius: 25px;
+    width: 240px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 1.1rem;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    transform-origin: bottom right;
+    animation: float 3s ease-in-out infinite;
+  }
+
+  .speech-bubble::after {
+    content: "";
+    position: absolute;
+    bottom: -15px;
+    right: 30px; /* Adjusted to point closer to mouth */
+    width: 0;
+    height: 0;
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+    border-top: 15px solid #5271d5;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
 
     @media (max-width: 768px) {
       .game-wrapper {
@@ -408,6 +419,11 @@
       .nav-links {
         display: none;
       }
+      
+      .difficulty-buttons {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
     }
   </style>
 </head>
@@ -420,11 +436,7 @@
       <span>Learn GitHub</span>
     </div>
     <div class="nav-links">
-      <a href="#">Home</a>
-      <a href="#">Updates</a>
-      <a href="#">How It Works</a>
-      <a href="#">Explore</a>
-      <a href="#">Support</a>
+      <a href="/">Home</a>
     </div>
     <div class="nav-icons">
       <div class="nav-icon"></div>
@@ -462,24 +474,56 @@
       </div>
     </div>
   </div>
-
-  <div class="mascot-container" id="mascot-container">
-    <div class="speech-bubble" id="speech-bubble">You're UNSTOPPABLE!! Your brain is sharper than my claws!</div>
-    <svg class="mascot" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-      <!-- Black cat mascot -->
-      <path d="M100,50 C130,50 150,80 150,110 C150,140 130,170 100,170 C70,170 50,140 50,110 C50,80 70,50 100,50 Z" fill="black"/>
-      <!-- Ears -->
-      <path d="M70,50 L60,20 L80,40 Z" fill="black"/>
-      <path d="M130,50 L140,20 L120,40 Z" fill="black"/>
-      <!-- Eyes -->
-      <circle cx="80" cy="90" r="15" fill="white"/>
-      <circle cx="120" cy="90" r="15" fill="white"/>
-      <circle cx="80" cy="90" r="8" fill="#5271d5"/>
-      <circle cx="120" cy="90" r="8" fill="#5271d5"/>
-      <!-- Paw -->
-      <path d="M70,150 C80,160 90,160 100,150" fill="none" stroke="black" stroke-width="8"/>
-    </svg>
-  </div>
+<div class="mascot-container" id="mascot-container">
+  <div class="speech-bubble" id="speech-bubble">You're UNSTOPPABLE!! Your brain is sharper than my claws!</div>
+  <svg class="mascot" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+    <!-- Larger, sleeker cat body -->
+    <path d="M250,150 C320,150 380,200 380,250 C380,350 320,400 250,400 C180,400 120,350 120,250 C120,200 180,150 250,150 Z" 
+          fill="#5271d5" stroke="#3a5bbf" stroke-width="8"/>
+    
+    <!-- Head with ears closer to center -->
+    <ellipse cx="250" cy="220" rx="130" ry="100" fill="#5271d5"/>
+    
+    <!-- Ears positioned closer to head -->
+    <path d="M170,140 L120,50 L190,110 Z" fill="#3a5bbf" stroke="#24292e" stroke-width="3"/>
+    <path d="M330,140 L380,50 L310,110 Z" fill="#3a5bbf" stroke="#24292e" stroke-width="3"/>
+    
+    <!-- Inner ear details -->
+    <path d="M180,150 L140,80 L200,120 Z" fill="#7fffd4" opacity="0.7"/>
+    <path d="M320,150 L360,80 L300,120 Z" fill="#7fffd4" opacity="0.7"/>
+    
+    <!-- Expressive eyes -->
+    <ellipse cx="210" cy="200" rx="25" ry="30" fill="white"/>
+    <ellipse cx="290" cy="200" rx="25" ry="30" fill="white"/>
+    <circle cx="210" cy="210" r="12" fill="#24292e"/>
+    <circle cx="290" cy="210" r="12" fill="#24292e"/>
+    <circle cx="215" cy="212" r="4" fill="white"/>
+    <circle cx="295" cy="212" r="4" fill="white"/>
+    
+    <!-- Cheeks -->
+    <circle cx="180" cy="230" r="15" fill="#7fffd4" opacity="0.6"/>
+    <circle cx="320" cy="230" r="15" fill="#7fffd4" opacity="0.6"/>
+    
+    <!-- Nose and mouth -->
+    <path d="M240,240 L250,250 L260,240 Z" fill="#24292e"/>
+    <path d="M250,250 Q250,280 220,275" fill="none" stroke="#24292e" stroke-width="3" stroke-linecap="round"/>
+    <path d="M250,250 Q250,280 280,275" fill="none" stroke="#24292e" stroke-width="3" stroke-linecap="round"/>
+    
+    <!-- Whiskers -->
+    <line x1="230" y1="240" x2="150" y2="230" stroke="#24292e" stroke-width="2" stroke-linecap="round"/>
+    <line x1="230" y1="250" x2="150" y2="250" stroke="#24292e" stroke-width="2" stroke-linecap="round"/>
+    <line x1="230" y1="260" x2="150" y2="270" stroke="#24292e" stroke-width="2" stroke-linecap="round"/>
+    <line x1="270" y1="240" x2="350" y2="230" stroke="#24292e" stroke-width="2" stroke-linecap="round"/>
+    <line x1="270" y1="250" x2="350" y2="250" stroke="#24292e" stroke-width="2" stroke-linecap="round"/>
+    <line x1="270" y1="260" x2="350" y2="270" stroke="#24292e" stroke-width="2" stroke-linecap="round"/>
+    
+    <!-- Paws -->
+    <circle cx="200" cy="370" r="30" fill="#5271d5"/>
+    <circle cx="300" cy="370" r="30" fill="#5271d5"/>
+    <path d="M190,370 Q200,400 210,370" fill="none" stroke="#3a5bbf" stroke-width="5" stroke-linecap="round"/>
+    <path d="M290,370 Q300,400 310,370" fill="none" stroke="#3a5bbf" stroke-width="5" stroke-linecap="round"/>
+  </svg>
+</div>
 
   <canvas id="confetti-canvas" class="confetti"></canvas>
 
@@ -497,19 +541,7 @@
       { command: "git merge", description: "Join two or more development histories together" },
       { command: "git rebase", description: "Reapply commits on top of another base tip" },
       { command: "git stash", description: "Temporarily store modified files" },
-      { command: "git log", description: "Show commit logs" },
-      { command: "git diff", description: "Show changes between commits, commit and working tree, etc" },
-      { command: "git reset", description: "Reset current HEAD to the specified state" },
-      { command: "git remote", description: "Manage set of tracked repositories" },
-      { command: "git fetch", description: "Download objects and refs from another repository" },
-      { command: "git status", description: "Show the working tree status" },
-      { command: "git tag", description: "Create, list, delete or verify a tag object" },
-      { command: "git cherry-pick", description: "Apply the changes introduced by some existing commits" },
-      { command: "git bisect", description: "Use binary search to find the commit that introduced a bug" },
-      { command: "git revert", description: "Create a new commit that undoes the changes made in a previous commit" },
-      { command: "git submodule", description: "Initialize, update or inspect submodules" },
-      { command: "git blame", description: "Show what revision and author last modified each line of a file" },
-      { command: "git grep", description: "Print lines matching a pattern" }
+      { command: "git log", description: "Show commit logs" }
     ];
 
     // Game variables
@@ -646,10 +678,10 @@
       gameContainer.innerHTML = '';
       cards = [];
       
-      // Select 12 random commands and duplicate them
+      // Select 6 random commands and duplicate them (for 12 cards total)
       const shuffledCommands = [...gitCommands]
         .sort(() => 0.5 - Math.random())
-        .slice(0, 12);
+        .slice(0, 6);
       
       const cardPairs = [...shuffledCommands, ...shuffledCommands]
         .sort(() => 0.5 - Math.random());
@@ -734,9 +766,16 @@
       if (command1 && command2 && command1.command === command2.command) {
         card1.classList.add('matched');
         card2.classList.add('matched');
+        
+        // Remove matched cards after a short delay
+        setTimeout(() => {
+          card1.style.display = 'none';
+          card2.style.display = 'none';
+        }, 500);
+        
         matchedPairs++;
         
-        if (matchedPairs === 12) {
+        if (matchedPairs === 6) {
           gameWon();
         }
       } else {

@@ -50,7 +50,9 @@ app.get("/login", (req, res) =>
 app.get("/signup", (req, res) =>
   res.sendFile(path.join(__dirname, "views", "HomePage", "signup.html"))
 );
-
+app.get("/about", (req, res) =>
+  res.sendFile(path.join(__dirname, "views", "HomePage", "about.html"))
+);
 app.get("/StudentProfile", (req, res) =>
   res.sendFile(path.join(__dirname, "views", "Student", "studentProfile.html"))
 );
