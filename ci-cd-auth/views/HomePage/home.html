@@ -93,7 +93,8 @@
     color: #FFFFFF;
     border: 2px solid #d8dee4;
     border-radius: 12px;
-    margin-left: 0;           /* Start from the left */
+    margin-left: 0;  
+     margin-bottom: 40px;      
   }
 
 
@@ -148,17 +149,23 @@
       justify-content: center;  /* Centers horizontally */
       margin-top: 40px;  /* Optional: Add some space above the button */
     }
-    .cta-button {
-      display: inline-block;
-      background-color: #657EEF;
-      color: #FFFFFF;
-      font-weight: 600;
-      padding: 12px 24px;
-      border-radius: 6px;
-      text-decoration: none;
-      font-size: 16px;
-      transition: background-color 0.2s;
-    }
+.cta-button {
+  padding: 10px 80px;               /* Even larger padding */
+  font-size: 1.6rem;                /* Bigger text */
+  border-radius: 999px;             /* Fully rounded (pill shape) */
+  background-color: #657EEF;        /* Adjust as needed */
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);  /* Optional: adds depth */
+}
+
+.cta-button:hover {
+  background-color: #0056b3;        /* Darker on hover */
+}
+
+
 .edit-btn {
   background-color: #657EEF;   /* צבע הרקע של ה-hero */
   color: #FFFFFF;              /* טקסט לבן */
@@ -248,8 +255,7 @@
 
     <main>
       <section class="hero">
-        <h1>Learn CI/CD</h1>
-        <p>Master Continuous Integration and Deployment easily, at your own pace.</p>
+        <h1>Learn GitHub esaliy</h1>
         <p>Join our interactive learning platform that explains, practices, and advances you into the real-world of software development.</p>
       </section>
 
