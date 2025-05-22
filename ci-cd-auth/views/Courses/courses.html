@@ -339,7 +339,7 @@
       background: #FFFFFF;
       padding: 30px;
       border-radius: 12px;
-      max-width: 600px;
+      max-width: 800px;
       width: 90%;
       max-height: 90vh;
       overflow: auto;
@@ -447,6 +447,71 @@
       transform: translateY(-1px);
     }
     
+    /* ---------- Quiz Editor Styles ---------- */
+    .question-block {
+      background: #f8fafc;
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+      position: relative;
+    }
+    
+    .question-block label {
+      display: block;
+      font-weight: 500;
+      color: #1f2328;
+      margin-bottom: 8px;
+    }
+    
+    .question-block textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #cbd5e0;
+      border-radius: 8px;
+      min-height: 80px;
+      resize: vertical;
+      font-family: 'Inter', sans-serif;
+    }
+    
+    .question-block .option-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px;
+      background: #fff;
+      border-radius: 6px;
+      border: 1px solid #e2e8f0;
+      margin-bottom: 8px;
+    }
+    
+    .question-block .option-row input[type="text"] {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      background: #fff;
+    }
+    
+    .remove-option-btn {
+      color: #e53e3e;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 18px;
+      padding: 0 5px;
+    }
+    
+    .add-option-btn {
+      background: #edf2f7;
+      border: none;
+      border-radius: 6px;
+      padding: 8px 12px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    
     /* ---------- Empty State ---------- */
     .empty-state {
       text-align: center;
@@ -552,11 +617,6 @@
     <div class="quiz-modal">
       <h2 id="quizTitle">Video Quiz</h2>
       <div id="quizContent"></div>
-      <div class="modal-actions">
-        <button class="btn close-modal" onclick="closeQuizModal()">Close</button>
-        <button class="btn save-quiz" id="saveQuizBtn" style="display:none" onclick="saveQuiz()">Save Quiz</button>
-        <button class="btn quiz-btn submit-quiz-btn" id="submitQuizBtn" style="display:none">Submit Quiz</button>
-      </div>
     </div>
   </div>
 
@@ -716,13 +776,9 @@
       const modal = document.getElementById("quizModal");
       const quizTitle = document.getElementById("quizTitle");
       const quizContent = document.getElementById("quizContent");
-      const submitBtn = document.getElementById("submitQuizBtn");
-      const saveBtn = document.getElementById("saveQuizBtn");
       
       quizTitle.textContent = `${videoTitle} Quiz`;
-     quizContent.innerHTML = ''; // Reset quiz modal to avoid reusing old radios
-      submitBtn.style.display = "none";
-      saveBtn.style.display = "none";
+      quizContent.innerHTML = ''; // Reset quiz modal
       modal.style.display = "flex";
       
       fetch(`/api/videos/${videoId}/quiz`)
@@ -735,55 +791,15 @@
               </div>`;
             
             if(user?.role === "lecturer") {
-              quizContent.innerHTML += `
-                <div id="quizEditor">
-                  <div id="questionsContainer"></div>
-                  <button class="btn quiz-btn" onclick="addQuestionBlock()" style="margin-top: 15px;">
-                    + Add Question
-                  </button>
-                </div>`;
-              saveBtn.style.display = "block";
+              renderQuizEditor(quizContent);
             }
             return;
           }
           
           if(user?.role === "student") {
-  let quizHTML = '';
-
-  quiz.questions.forEach((question, index) => {
-    const qid = question._id || `q${index}`;
-    quizHTML += `
-      <div class="quiz-question">
-        <p>${index + 1}. ${question.prompt}</p>
-        ${question.options.map((option, optionIndex) => `
-          <div class="quiz-option">
-            <input type="radio" id="q_${qid}_${optionIndex}" name="q_${qid}" value="${optionIndex}">
-            <label for="q_${qid}_${optionIndex}">${option.text}</label>
-          </div>
-        `).join('')}
-      </div>
-    `;
-  });
-
-  quizContent.innerHTML = quizHTML;
-  submitBtn.style.display = "block";
-}
-
-          else if(user?.role === "lecturer") {
-            quizContent.innerHTML = `
-              <div id="quizEditor">
-                <div id="questionsContainer"></div>
-                <button class="btn quiz-btn" onclick="addQuestionBlock()" style="margin-top: 15px;">
-                  + Add Question
-                </button>
-              </div>`;
-            
-            const questionsContainer = document.getElementById("questionsContainer");
-            quiz.questions.forEach(question => {
-              addQuestionBlock(question);
-            });
-            
-            saveBtn.style.display = "block";
+            renderStudentQuiz(quizContent, quiz);
+          } else if(user?.role === "lecturer") {
+            renderQuizEditor(quizContent, quiz);
           }
         })
         .catch(() => {
@@ -796,58 +812,186 @@
       currentVideoId = null;
     }
 
-   function addQuestionBlock(question = null) {
-  const questionsContainer = document.getElementById("questionsContainer");
-  const questionId = question?._id || `q_${Date.now()}`;
+    function renderStudentQuiz(container, quiz) {
+      let quizHTML = '';
 
-  const questionBlock = document.createElement("div");
-  questionBlock.className = "q-block";
-  questionBlock.style.background = "#f8faff";
-  questionBlock.style.padding = "16px";
-  questionBlock.style.borderRadius = "8px";
-  questionBlock.style.marginBottom = "16px";
-  questionBlock.style.border = "1px solid #e6edff";
+      quiz.questions.forEach((question, index) => {
+        const qid = question._id || `q${index}`;
+        quizHTML += `
+          <div class="quiz-question">
+            <p>${index + 1}. ${question.prompt}</p>
+            ${question.options.map((option, optionIndex) => `
+              <div class="quiz-option">
+                <input type="radio" id="q_${qid}_${optionIndex}" name="q_${qid}" value="${optionIndex}">
+                <label for="q_${qid}_${optionIndex}">${option.text}</label>
+              </div>
+            `).join('')}
+          </div>
+        `;
+      });
 
-  const prompt = question?.prompt || '';
-  const options = question?.options || [
-    { text: '', isCorrect: true },
-    { text: '', isCorrect: false },
-    { text: '', isCorrect: false },
-    { text: '', isCorrect: false }
-  ];
-questionBlock.innerHTML = `
-    <input type="text" class="prompt" placeholder="Enter question text"
-           value="${prompt}"
-           style="width: 100%; padding: 10px; margin-bottom: 12px; border: 1px solid #d8dee4; border-radius: 6px;">
-  `;
+      quizHTML += `
+        <div class="modal-actions">
+          <button class="btn close-modal" onclick="closeQuizModal()">Close</button>
+          <button class="btn quiz-btn submit-quiz-btn" id="submitQuizBtn">Submit Quiz</button>
+        </div>
+      `;
 
-   options.forEach((option, index) => {
-    const isChecked = option.isCorrect ? 'checked' : '';
-    questionBlock.innerHTML += `
-      <div style="display: flex; gap: 10px; margin-bottom: 8px; align-items: center;">
-        <input type="radio" name="correct_${questionId}" ${isChecked} style="flex-shrink: 0;">
-        <input type="text" class="opt" placeholder="Option ${index + 1}"
-               value="${option.text}"
-               style="flex: 1; padding: 8px; border: 1px solid #d8dee4; border-radius: 6px;">
-      </div>
-    `;
-  });
-  questionBlock.innerHTML += `
-    <button class="btn delete-btn"
-            onclick="this.parentElement.remove()"
-            style="margin-top: 10px; padding: 6px 12px; font-size: 13px">
-      Remove Question
-    </button>
-  `;
+      container.innerHTML = quizHTML;
 
+      document.getElementById("submitQuizBtn").addEventListener("click", submitQuiz);
+    }
 
-  questionsContainer.appendChild(questionBlock);
-}
+    function renderQuizEditor(container, quiz = null) {
+      container.innerHTML = `
+        <div id="quizEditor">
+          <div id="questionsContainer"></div>
+          
+          <div style="display: flex; justify-content: space-between; margin-top: 30px;">
+            <button class="btn quiz-btn" onclick="addQuestionBlock()" 
+                    style="padding: 10px 20px; font-size: 16px;">
+              <span style="font-size: 18px; margin-right: 8px;">+</span> Add New Question
+            </button>
+            
+            <div style="display: flex; gap: 10px;">
+              <button class="btn close-modal" onclick="closeQuizModal()" 
+                      style="padding: 10px 20px;">
+                Cancel
+              </button>
+              <button class="btn save-quiz" onclick="saveQuiz()" 
+                      style="padding: 10px 20px; font-weight: 600;">
+                Save Quiz
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
 
+      const questionsContainer = document.getElementById("questionsContainer");
+      
+      if(quiz && quiz.questions) {
+        quiz.questions.forEach(question => {
+          addQuestionBlock(question);
+        });
+      } else {
+        // Add one empty question by default
+        addQuestionBlock();
+      }
+    }
+
+    function addQuestionBlock(question = null) {
+      const questionsContainer = document.getElementById("questionsContainer");
+      const questionId = question?._id || `q_${Date.now()}`;
+
+      const questionBlock = document.createElement("div");
+      questionBlock.className = "question-block";
+      
+      // Question prompt
+      const prompt = question?.prompt || '';
+      questionBlock.innerHTML = `
+        <div style="margin-bottom: 15px;">
+          <label>Question Text</label>
+          <textarea class="prompt" placeholder="Enter your question here...">${prompt}</textarea>
+        </div>
+        <div style="margin-bottom: 15px;">
+          <label>Options (select the correct answer)</label>
+          <div id="options-container-${questionId}" style="display: grid; gap: 10px;"></div>
+        </div>
+      `;
+
+      // Options container
+      const optionsContainer = questionBlock.querySelector(`#options-container-${questionId}`);
+      
+      // Add options (default 4 or from existing question)
+      const options = question?.options || [
+        { text: '', isCorrect: true },
+        { text: '', isCorrect: false },
+        { text: '', isCorrect: false },
+        { text: '', isCorrect: false }
+      ];
+
+      options.forEach((option, index) => {
+        const optionDiv = document.createElement("div");
+        optionDiv.className = "option-row";
+        
+        optionDiv.innerHTML = `
+          <input type="radio" name="correct_${questionId}" 
+                 ${option.isCorrect ? 'checked' : ''}
+                 style="flex-shrink: 0; width: 18px; height: 18px; cursor: pointer;">
+          <input type="text" class="opt" placeholder="Option ${index + 1}" 
+                 value="${option.text}"
+                 style="flex: 1; padding: 10px; border: 1px solid #e2e8f0; 
+                        border-radius: 6px; background: #fff;">
+          <button class="remove-option-btn" ${options.length <= 2 ? 'disabled' : ''}>
+            ×
+          </button>
+        `;
+        
+        // Add event listener to remove option
+        const removeBtn = optionDiv.querySelector(".remove-option-btn");
+        removeBtn.addEventListener("click", () => {
+          if (optionsContainer.children.length > 2) {
+            optionDiv.remove();
+          }
+        });
+        
+        optionsContainer.appendChild(optionDiv);
+      });
+
+      // Add "Add Option" button
+      const addOptionBtn = document.createElement("button");
+      addOptionBtn.className = "btn add-option-btn";
+      addOptionBtn.textContent = "+ Add Option";
+      
+      addOptionBtn.addEventListener("click", () => {
+        const optionCount = optionsContainer.children.length;
+        const optionDiv = document.createElement("div");
+        optionDiv.className = "option-row";
+        
+        optionDiv.innerHTML = `
+          <input type="radio" name="correct_${questionId}" 
+                 style="flex-shrink: 0; width: 18px; height: 18px; cursor: pointer;">
+          <input type="text" class="opt" placeholder="Option ${optionCount + 1}" 
+                 style="flex: 1; padding: 10px; border: 1px solid #e2e8f0; 
+                        border-radius: 6px; background: #fff;">
+          <button class="remove-option-btn">
+            ×
+          </button>
+        `;
+        
+        const removeBtn = optionDiv.querySelector(".remove-option-btn");
+        removeBtn.addEventListener("click", () => {
+          if (optionsContainer.children.length > 2) {
+            optionDiv.remove();
+          }
+        });
+        
+        optionsContainer.appendChild(optionDiv);
+      });
+      
+      optionsContainer.parentNode.insertBefore(addOptionBtn, optionsContainer.nextSibling);
+
+      // Remove question button
+      const removeBtn = document.createElement("button");
+      removeBtn.className = "btn delete-btn";
+      removeBtn.textContent = "Remove Question";
+      removeBtn.style.position = "absolute";
+      removeBtn.style.top = "15px";
+      removeBtn.style.right = "15px";
+      removeBtn.style.padding = "5px 10px";
+      removeBtn.style.fontSize = "13px";
+      
+      removeBtn.addEventListener("click", () => {
+        questionBlock.remove();
+      });
+      
+      questionBlock.appendChild(removeBtn);
+      questionsContainer.appendChild(questionBlock);
+    }
 
     function saveQuiz() {
       const questionsContainer = document.getElementById("questionsContainer");
-      const questionBlocks = [...questionsContainer.querySelectorAll('.q-block')];
+      const questionBlocks = [...questionsContainer.querySelectorAll('.question-block')];
       
       const questions = questionBlocks.map(block => {
         const prompt = block.querySelector('.prompt').value.trim();
@@ -857,13 +1001,13 @@ questionBlock.innerHTML = `
         const options = optionInputs.map((input, index) => ({
           text: input.value.trim(),
           isCorrect: radioInputs[index].checked
-        }));
+        })).filter(opt => opt.text); // Filter out empty options
         
         return { prompt, options };
-      }).filter(q => q.prompt && q.options.every(o => o.text));
+      }).filter(q => q.prompt && q.options.length >= 2); // At least 2 options required
       
       if(questions.length === 0) {
-        alert("Please add at least one valid question before saving.");
+        alert("Please add at least one valid question with minimum 2 options before saving.");
         return;
       }
       
@@ -885,70 +1029,62 @@ questionBlock.innerHTML = `
       });
     }
 
-    document.getElementById("submitQuizBtn").addEventListener("click", function () {
-  const quizContent = document.getElementById("quizContent");
-  const submitBtn = this;
+    function submitQuiz() {
+      const quizContent = document.getElementById("quizContent");
+      const submitBtn = document.getElementById("submitQuizBtn");
 
-  // ✅ Make sure we're submitting the correct quiz for the correct video
-  console.log("🔁 Submitting for video:", currentVideoId);
+      // Collect answers
+      const answers = [...quizContent.querySelectorAll('input[type=radio]:checked')]
+        .map(radio => {
+          const questionId = radio.name.slice(2); // remove 'q_' prefix
+          const optionIndex = parseInt(radio.value);
+          return { questionId, optionIndex };
+        });
 
-  // ✅ Extract answers (each radio group name = q_<questionId>)
-  const answers = [...quizContent.querySelectorAll('input[type=radio]:checked')]
-    .map(radio => {
-      const questionId = radio.name.slice(2); // remove 'q_' prefix
-      const optionIndex = parseInt(radio.value);
-      return { questionId, optionIndex };
-    });
-
-  console.log("📝 Collected Answers:", answers);
-
-  // ✅ Validation
-  if (answers.length === 0) {
-    alert("Please answer at least one question before submitting.");
-    return;
-  }
-
-  // ✅ Disable the button to prevent double-submit
-  submitBtn.disabled = true;
-  submitBtn.textContent = "Submitting...";
-
-     fetch(`/api/videos/${currentVideoId}/quiz/submit`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": "Bearer " + token
-    },
-    body: JSON.stringify({ answers })
-  })
-    .then(async response => {
-      const result = await response.json();
-      console.log("📥 Server response:", result);
-
-      if (!response.ok) {
-        throw new Error(result.message || "Unknown error occurred");
+      // Validation
+      if (answers.length === 0) {
+        alert("Please answer at least one question before submitting.");
+        return;
       }
 
-      let message = "";
-      if (result.score === 100) {
-        message = `🎉 Perfect! You got ${result.score}% - All answers correct!`;
-      } else if (result.score >= 70) {
-        message = `👍 Good job! You scored ${result.score}%`;
-      } else {
-        message = `📚 Keep learning! You scored ${result.score}%`;
-      }
+      // Disable button during submission
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Submitting...";
 
-      alert(message);
-      closeQuizModal();
-    })
-    .catch(error => {
-      console.error("❌ Failed to submit quiz:", error);
-      alert("Failed to submit quiz. Please try again.\n" + error.message);
-    })
-    .finally(() => {
-      submitBtn.disabled = false;
-      submitBtn.textContent = "Submit Quiz";
-    });
-});
+      fetch(`/api/videos/${currentVideoId}/quiz/submit`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + token
+        },
+        body: JSON.stringify({ answers })
+      })
+        .then(async response => {
+          const result = await response.json();
+          if (!response.ok) {
+            throw new Error(result.message || "Unknown error occurred");
+          }
+
+          let message = "";
+          if (result.score === 100) {
+            message = `🎉 Perfect! You got ${result.score}% - All answers correct!`;
+          } else if (result.score >= 70) {
+            message = `👍 Good job! You scored ${result.score}%`;
+          } else {
+            message = `📚 Keep learning! You scored ${result.score}%`;
+          }
+
+          alert(message);
+          closeQuizModal();
+        })
+        .catch(error => {
+          alert("Failed to submit quiz. Please try again.\n" + error.message);
+        })
+        .finally(() => {
+          submitBtn.disabled = false;
+          submitBtn.textContent = "Submit Quiz";
+        });
+    }
 
     /* ---------- Initialize ---------- */
     init();
