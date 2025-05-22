@@ -126,6 +126,9 @@
 
     .profile-info {
       margin-bottom: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
     }
 
     .profile-info p {
@@ -195,6 +198,73 @@
     .learn-more:hover {
       opacity: 1;
       text-decoration: underline;
+    }
+
+    /* Medal Styles */
+    .medal-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 10px;
+      margin-left: 200px;
+    }
+
+    .medal {
+      width: 80px;
+      height: 80px;
+      position: relative;
+      margin-bottom: 10px;
+    }
+
+    .medal-circle {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .medal-ribbon {
+      position: absolute;
+      width: 30px;
+      height: 60px;
+      top: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #ffd700;
+      clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 70%, 0 100%);
+      z-index: 0;
+    }
+
+    .medal.gold .medal-circle {
+      background: radial-gradient(circle at 30% 30%, #ffd700, #daa520);
+      box-shadow: 0 4px 8px rgba(218, 165, 32, 0.4);
+    }
+
+    .medal.silver .medal-circle {
+      background: radial-gradient(circle at 30% 30%, #c0c0c0, #a0a0a0);
+      box-shadow: 0 4px 8px rgba(160, 160, 160, 0.4);
+    }
+
+    .medal.bronze .medal-circle {
+      background: radial-gradient(circle at 30% 30%, #cd7f32, #a0522d);
+      box-shadow: 0 4px 8px rgba(160, 82, 45, 0.4);
+    }
+
+    .medal-text {
+      color: white;
+      font-weight: bold;
+      font-size: 24px;
+    }
+
+    .medal-label {
+      font-size: 14px;
+      font-weight: 600;
+      color: #FFFFFF;
+      text-align: center;
     }
 
     /* Content Card */
@@ -450,6 +520,14 @@
       .avatar-container {
         margin-top: 20px;
       }
+      
+      .profile-info {
+        flex-direction: column;
+      }
+      
+      .medal-container {
+        margin-top: 20px;
+      }
     }
   </style>
 </head>
@@ -482,9 +560,21 @@
         </div>
         
         <div class="profile-info">
-          <p><strong>Username:</strong> <span id="username2">Yair Levi</span></p>
-          <p><strong>Email:</strong> <span id="email">Yairle@gmail.com</span></p>
-          <p><strong>Role:</strong> <span id="role">Student</span></p>
+          <div>
+            <p><strong>Username:</strong> <span id="username2">Yair Levi</span></p>
+            <p><strong>Email:</strong> <span id="email">Yairle@gmail.com</span></p>
+            <p><strong>Role:</strong> <span id="role">Student</span></p>
+          </div>
+          
+          <div class="medal-container">
+            <div class="medal gold" id="levelMedal">
+              <div class="medal-ribbon"></div>
+              <div class="medal-circle">
+                <div class="medal-text">1</div>
+              </div>
+            </div>
+            <div class="medal-label">Current Level</div>
+          </div>
         </div>
         
         <div class="avatar-container">
@@ -494,7 +584,7 @@
           </div>
           
           <div class="level-container">
-            <div class="level-title">Level: <span class="level-value">Beginner</span></div>
+            <div class="level-title">Level: <span class="level-value" id="levelText">Beginner</span></div>
             <a href="#" class="learn-more">learn more</a>
           </div>
         </div>
@@ -579,6 +669,30 @@
       }
     }
 
+    // Function to update medal based on level
+    function updateMedal(level) {
+      const medal = document.getElementById('levelMedal');
+      const levelText = document.getElementById('levelText');
+      
+      // Remove all medal classes first
+      medal.classList.remove('gold', 'silver', 'bronze');
+      
+      // Determine medal type based on level
+      if (level == 100) {
+        medal.classList.add('gold');
+        levelText.textContent = 'Advanced';
+        medal.querySelector('.medal-text').textContent = '1';
+      } else if (level >= 50) {
+        medal.classList.add('silver');
+        levelText.textContent = 'Intermediate';
+        medal.querySelector('.medal-text').textContent = '2';
+      } else {
+        medal.classList.add('bronze');
+        levelText.textContent = 'Beginner';
+        medal.querySelector('.medal-text').textContent = '3';
+      }
+    }
+
     // Check if token exists in session storage
     const token = sessionStorage.getItem("token");
     
@@ -624,9 +738,11 @@
         }
 
         // Update UI
-                // Update UI
         document.getElementById("progressPercent").textContent = `${percentage}%`;
         document.querySelector(".progress-circle-fill").style.setProperty('--progress-percent', percentage);
+        
+        // Update medal based on percentage
+        updateMedal(percentage);
       })
       .catch(err => {
         console.error("Failed to fetch progress:", err);
