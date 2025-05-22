@@ -594,6 +594,75 @@
       cursor: pointer;
     }
 
+    /* New styles for edit profile feature */
+    #usernameInput, #emailInput {
+      font-size: 16px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      border: 2px solid #657EEF;
+      outline: none;
+      width: 220px;
+      transition: border-color 0.3s ease;
+    }
+
+    #usernameInput:focus, #emailInput:focus {
+      border-color: #4a65e6;
+      box-shadow: 0 0 8px rgba(101, 126, 239, 0.5);
+    }
+
+    .cancel-btn {
+      background-color: transparent;
+      border: 2px solid white;
+      color: white;
+      font-weight: 600;
+      border-radius: 8px;
+      padding: 6px 14px;
+      margin-left: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .cancel-btn:hover {
+      background-color: white;
+      color: #657EEF;
+    }
+
+    .edit-icon {
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      color: #FFFFFF;
+      font-size: 24px;
+      transition: color 0.3s ease;
+      padding: 6px;
+      border-radius: 50%;
+    }
+
+    .edit-icon:hover {
+      color: #4a65e6;
+      background-color: rgba(255, 255, 255, 0.15);
+    }
+
+    .edit-icon.save-mode {
+      color: #4cceac;
+      font-weight: 700;
+      font-size: 18px;
+      padding: 8px 16px;
+      border-radius: 8px;
+      background-color: white;
+      color: #657EEF;
+      border: 2px solid #657EEF;
+      width: 80px;
+      text-align: center;
+      cursor: pointer;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .edit-icon.save-mode:hover {
+      background-color: #657EEF;
+      color: white;
+    }
+
     @media (max-width: 1024px) {
       .page-container {
         flex-direction: column;
@@ -650,7 +719,7 @@
       <div class="profile-card">
         <div class="profile-header">
           <h1 class="profile-title">Good Morning <span id="username">Yair</span></h1>
-          <button class="edit-icon">
+          <button class="edit-icon" id="editProfileBtn" title="Edit profile">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M16.293 2.293L17.707 3.707L9 12.414L7.586 11L16.293 2.293ZM19.707 6.707L18.293 5.293L20 3.586L21.414 5L19.707 6.707ZM3 13V16H6L17.586 4.414L14.586 1.414L3 13ZM0 21H24V23H0V21Z" fill="white"/>
             </svg>
@@ -860,7 +929,6 @@
             avatarInitials.style.display = 'none';
             
             // Close modal
-            // Close modal
             modal.style.display = 'none';
           };
           reader.readAsDataURL(file);
@@ -995,6 +1063,139 @@
         console.error("Error loading quiz history:", err);
       });
     }
+
+    // Profile edit and save logic
+   document.getElementById("editProfileBtn").addEventListener("click", handleEditClick);
+
+function handleEditClick() {
+  // Convert text spans to input fields
+  const usernameSpan = document.getElementById("username2");
+  const emailSpan = document.getElementById("email");
+
+  const usernameInput = document.createElement("input");
+  usernameInput.type = "text";
+  usernameInput.value = usernameSpan.textContent;
+  usernameInput.id = "usernameInput";
+
+  const emailInput = document.createElement("input");
+  emailInput.type = "email";
+  emailInput.value = emailSpan.textContent;
+  emailInput.id = "emailInput";
+
+  usernameSpan.parentNode.replaceChild(usernameInput, usernameSpan);
+  emailSpan.parentNode.replaceChild(emailInput, emailSpan);
+
+  const editBtn = document.getElementById("editProfileBtn");
+  editBtn.textContent = "Save";
+  editBtn.classList.add("save-mode");
+
+  // Remove old click listener and add save listener
+  editBtn.removeEventListener("click", handleEditClick);
+  editBtn.addEventListener("click", saveProfile, { once: true });
+
+  // Create and add cancel button next to save button
+  let cancelBtn = document.createElement("button");
+  cancelBtn.textContent = "Cancel";
+  cancelBtn.className = "cancel-btn";
+
+  editBtn.parentNode.insertBefore(cancelBtn, editBtn.nextSibling);
+
+  // Cancel button event: revert UI to original
+  cancelBtn.addEventListener("click", () => {
+    // Replace inputs back to spans
+    usernameInput.parentNode.replaceChild(usernameSpan, usernameInput);
+    emailInput.parentNode.replaceChild(emailSpan, emailInput);
+
+    // Revert save button to edit icon
+    editBtn.textContent = "";
+    editBtn.innerHTML = `
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" 
+        xmlns="http://www.w3.org/2000/svg">
+        <path d="M16.293 2.293L17.707 3.707L9 12.414L7.586 11L16.293 2.293ZM
+                 19.707 6.707L18.293 5.293L20 3.586L21.414 5L19.707 6.707ZM
+                 3 13V16H6L17.586 4.414L14.586 1.414L3 13ZM0 21H24V23H0V21Z" 
+          fill="white"/>
+      </svg>
+    `;
+    editBtn.classList.remove("save-mode");
+
+    // Remove cancel button from DOM
+    cancelBtn.remove();
+
+    // Remove save listener and add edit listener back
+    editBtn.removeEventListener("click", saveProfile);
+    editBtn.addEventListener("click", handleEditClick);
+  });
+}
+
+function saveProfile() {
+  const newUsername = document.getElementById("usernameInput").value.trim();
+  const newEmail = document.getElementById("emailInput").value.trim();
+
+  if (!newUsername || !newEmail) {
+    alert("Username and Email cannot be empty.");
+    return;
+  }
+
+  const editBtn = document.getElementById("editProfileBtn");
+  const usernameInput = document.getElementById("usernameInput");
+  const emailInput = document.getElementById("emailInput");
+
+  fetch('/api/users/updateProfile', {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + sessionStorage.getItem("token")
+    },
+    body: JSON.stringify({ username: newUsername, email: newEmail })
+  })
+  .then(response => {
+    if (!response.ok) throw new Error('Failed to update profile');
+    return response.json();
+  })
+  .then(data => {
+    alert("Profile updated successfully!");
+
+    // Replace inputs back with updated spans
+    const newUsernameSpan = document.createElement("span");
+    newUsernameSpan.id = "username2";
+    newUsernameSpan.textContent = data.username || newUsername;
+
+    const newEmailSpan = document.createElement("span");
+    newEmailSpan.id = "email";
+    newEmailSpan.textContent = data.email || newEmail;
+
+    usernameInput.parentNode.replaceChild(newUsernameSpan, usernameInput);
+    emailInput.parentNode.replaceChild(newEmailSpan, emailInput);
+
+    // Revert button to edit mode
+    editBtn.textContent = "";
+    editBtn.innerHTML = `
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" 
+        xmlns="http://www.w3.org/2000/svg">
+        <path d="M16.293 2.293L17.707 3.707L9 12.414L7.586 11L16.293 2.293ZM
+                 19.707 6.707L18.293 5.293L20 3.586L21.414 5L19.707 6.707ZM
+                 3 13V16H6L17.586 4.414L14.586 1.414L3 13ZM0 21H24V23H0V21Z" 
+          fill="white"/>
+      </svg>
+    `;
+    editBtn.classList.remove("save-mode");
+
+    // Remove cancel button if exists
+    const cancelBtn = editBtn.parentNode.querySelector(".cancel-btn");
+    if(cancelBtn) cancelBtn.remove();
+
+    // Remove this save listener and add edit listener back
+    editBtn.removeEventListener("click", saveProfile);
+    editBtn.addEventListener("click", handleEditClick);
+  })
+  .catch(error => {
+    alert("Error updating profile: " + error.message);
+  });
+}
+
+  editBtn.addEventListener("click", saveProfile, { once: true });
+
   </script>
 </body>
 </html>
