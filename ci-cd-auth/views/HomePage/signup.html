@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -86,6 +87,7 @@
       min-height: 100vh;
       background-color: #FFFFFF;
       padding: 16px;
+      ;
     }
 
     .login-container {
@@ -110,6 +112,7 @@
   margin-bottom: 24px;
   text-align: left;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin-top: 20px;
 }
 
 .form-group label {
@@ -153,6 +156,40 @@
   font-style: italic;
 }
 
+/* Stylish Role Dropdown */
+.form-group select {
+  width: 100%;
+  padding: 12px 16px;
+  font-size: 15px;
+  line-height: 22px;
+  color: #2c3e50;
+  background: linear-gradient(145deg, #f0fdfa, #e8fbf5);
+  border: 1.5px solid #a3d9c9;
+  border-radius: 12px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.05),
+              inset 0 1px 2px rgba(0, 0, 0, 0.04);
+  transition: all 0.3s ease;
+  height: 44px;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg width='14' height='10' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l6 6 6-6' stroke='%23657EEF' stroke-width='2' fill='none' fill-rule='evenodd'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  background-size: 12px;
+}
+
+.form-group select:focus {
+  border-color: #00cec9;
+  outline: none;
+  background-color: #65EFBC;
+  box-shadow: 0 0 0 4px #65EFBC;
+}
+
+.form-group select:hover {
+  background-color: #FFFFFF;
+  border-color: #7de3dd;
+}
+
+
 
 
     button[type="submit"] {
@@ -187,6 +224,8 @@
     .login-container p a:hover {
       text-decoration: underline;
     }
+    
+    
 
     /* Media Query for responsiveness */
     @media (max-width: 768px) {
@@ -246,7 +285,7 @@
         </div>
         <button type="submit">Sign Up</button>
       </form>
-
+      <br>
       <p>Already have an account? <a href="/login">Login here</a></p>
     </div>
   </div>
@@ -282,3 +321,4 @@
   </script>
 </body>
 </html>
+
