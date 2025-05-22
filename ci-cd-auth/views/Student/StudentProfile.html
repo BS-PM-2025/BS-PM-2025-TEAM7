@@ -126,6 +126,9 @@
 
     .profile-info {
       margin-bottom: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
     }
 
     .profile-info p {
@@ -145,6 +148,7 @@
       display: flex;
       align-items: center;
       margin-top: 20px;
+      position: relative;
     }
 
     .avatar {
@@ -157,6 +161,20 @@
       justify-content: center;
       margin-right: 20px;
       position: relative;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .avatar-initials {
+      color: white;
+      font-size: 24px;
+      font-weight: bold;
     }
 
     .avatar-decoration {
@@ -195,6 +213,73 @@
     .learn-more:hover {
       opacity: 1;
       text-decoration: underline;
+    }
+
+    /* Medal Styles */
+    .medal-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 10px;
+      margin-left: 200px;
+    }
+
+    .medal {
+      width: 80px;
+      height: 80px;
+      position: relative;
+      margin-bottom: 10px;
+    }
+
+    .medal-circle {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .medal-ribbon {
+      position: absolute;
+      width: 30px;
+      height: 60px;
+      top: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #ffd700;
+      clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 70%, 0 100%);
+      z-index: 0;
+    }
+
+    .medal.gold .medal-circle {
+      background: radial-gradient(circle at 30% 30%, #ffd700, #daa520);
+      box-shadow: 0 4px 8px rgba(218, 165, 32, 0.4);
+    }
+
+    .medal.silver .medal-circle {
+      background: radial-gradient(circle at 30% 30%, #c0c0c0, #a0a0a0);
+      box-shadow: 0 4px 8px rgba(160, 160, 160, 0.4);
+    }
+
+    .medal.bronze .medal-circle {
+      background: radial-gradient(circle at 30% 30%, #cd7f32, #a0522d);
+      box-shadow: 0 4px 8px rgba(160, 82, 45, 0.4);
+    }
+
+    .medal-text {
+      color: white;
+      font-weight: bold;
+      font-size: 24px;
+    }
+
+    .medal-label {
+      font-size: 14px;
+      font-weight: 600;
+      color: #FFFFFF;
+      text-align: center;
     }
 
     /* Content Card */
@@ -426,6 +511,89 @@
       font-weight: bold;
     }
 
+    /* Photo Upload Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 100;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-content {
+      background-color: #fefefe;
+      margin: 15% auto;
+      padding: 20px;
+      border-radius: 8px;
+      width: 80%;
+      max-width: 500px;
+    }
+
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .close:hover {
+      color: black;
+    }
+
+    .upload-btn {
+      background-color: #657EEF;
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .upload-btn:hover {
+      background-color: #4a65e6;
+    }
+
+    /* Photo View Modal */
+    .photo-modal {
+      display: none;
+      position: fixed;
+      z-index: 100;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .photo-modal-content {
+      max-width: 80%;
+      max-height: 80%;
+    }
+
+    .photo-modal-content img {
+      width: 100%;
+      height: auto;
+      max-height: 80vh;
+      border-radius: 8px;
+    }
+
+    .close-photo {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      color: white;
+      font-size: 40px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
     @media (max-width: 1024px) {
       .page-container {
         flex-direction: column;
@@ -448,6 +616,14 @@
       }
       
       .avatar-container {
+        margin-top: 20px;
+      }
+      
+      .profile-info {
+        flex-direction: column;
+      }
+      
+      .medal-container {
         margin-top: 20px;
       }
     }
@@ -482,20 +658,32 @@
         </div>
         
         <div class="profile-info">
-          <p><strong>Username:</strong> <span id="username2">Yair Levi</span></p>
-          <p><strong>Email:</strong> <span id="email">Yairle@gmail.com</span></p>
-          <p><strong>Role:</strong> <span id="role">Student</span></p>
+          <div>
+            <p><strong>Username:</strong> <span id="username2">Yair Levi</span></p>
+            <p><strong>Email:</strong> <span id="email">Yairle@gmail.com</span></p>
+            <p><strong>Role:</strong> <span id="role">Student</span></p>
+          </div>
+          
+          <div class="medal-container">
+            <div class="medal gold" id="levelMedal">
+              <div class="medal-ribbon"></div>
+              <div class="medal-circle">
+                <div class="medal-text">1</div>
+              </div>
+            </div>
+            <div class="medal-label">Current Level</div>
+          </div>
         </div>
         
         <div class="avatar-container">
-          <div class="avatar">
-            <div style="color: white; font-size: 24px; font-weight: bold;">YL</div>
+          <div class="avatar" id="avatarContainer">
+            <div class="avatar-initials" id="avatarInitials">YL</div>
             <div class="avatar-decoration"></div>
           </div>
           
           <div class="level-container">
-            <div class="level-title">Level: <span class="level-value">Beginner</span></div>
-            <a href="#" class="learn-more">learn more</a>
+            <div class="level-title">Level: <span class="level-value" id="levelText">Beginner</span></div>
+            <a href="#" class="learn-more" id="uploadPhotoLink">Upload Photo</a>
           </div>
         </div>
       </div>
@@ -561,6 +749,24 @@
     </div>
   </div>
 
+  <!-- Photo Upload Modal -->
+  <div id="photoModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Upload Profile Photo</h2>
+      <input type="file" id="photoInput" accept="image/*">
+      <button class="upload-btn" id="uploadBtn">Upload</button>
+    </div>
+  </div>
+
+  <!-- Photo View Modal -->
+  <div id="viewPhotoModal" class="photo-modal">
+    <span class="close-photo">&times;</span>
+    <div class="photo-modal-content">
+      <img id="enlargedPhoto" src="" alt="Enlarged Profile Photo">
+    </div>
+  </div>
+
   <script>
     function goHome() {
       window.location.href = "/";
@@ -579,6 +785,109 @@
       }
     }
 
+    // Function to update medal based on level
+    function updateMedal(level) {
+      const medal = document.getElementById('levelMedal');
+      const levelText = document.getElementById('levelText');
+      
+      // Remove all medal classes first
+      medal.classList.remove('gold', 'silver', 'bronze');
+      
+      // Determine medal type based on level
+      if (level == 100) {
+        medal.classList.add('gold');
+        levelText.textContent = 'Advanced';
+        medal.querySelector('.medal-text').textContent = '1';
+      } else if (level >= 50) {
+        medal.classList.add('silver');
+        levelText.textContent = 'Intermediate';
+        medal.querySelector('.medal-text').textContent = '2';
+      } else {
+        medal.classList.add('bronze');
+        levelText.textContent = 'Beginner';
+        medal.querySelector('.medal-text').textContent = '3';
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const modal = document.getElementById('photoModal');
+      const uploadLink = document.getElementById('uploadPhotoLink');
+      const closeBtn = document.querySelector('.close');
+      const uploadBtn = document.getElementById('uploadBtn');
+      const photoInput = document.getElementById('photoInput');
+      const avatarContainer = document.getElementById('avatarContainer');
+      const avatarInitials = document.getElementById('avatarInitials');
+      const viewPhotoModal = document.getElementById('viewPhotoModal');
+      const enlargedPhoto = document.getElementById('enlargedPhoto');
+      const closePhotoModal = document.querySelector('.close-photo');
+
+      // Load saved photo from localStorage if exists
+      const savedPhoto = localStorage.getItem('profilePhoto');
+      if (savedPhoto) {
+        avatarContainer.innerHTML = `<img src="${savedPhoto}" alt="Profile Photo">`;
+        avatarInitials.style.display = 'none';
+      }
+
+      // Open modal when upload link is clicked
+      uploadLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        modal.style.display = 'block';
+      });
+
+      // Close modal when X is clicked
+      closeBtn.addEventListener('click', function() {
+        modal.style.display = 'none';
+      });
+
+      // Close modal when clicking outside of it
+      window.addEventListener('click', function(e) {
+        if (e.target === modal) {
+          modal.style.display = 'none';
+        }
+      });
+
+      // Handle photo upload
+      uploadBtn.addEventListener('click', function() {
+        const file = photoInput.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            // Save photo to localStorage
+            localStorage.setItem('profilePhoto', e.target.result);
+            
+            // Display the photo
+            avatarContainer.innerHTML = `<img src="${e.target.result}" alt="Profile Photo">`;
+            avatarInitials.style.display = 'none';
+            
+            // Close modal
+            modal.style.display = 'none';
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+
+      // Handle clicking on avatar to view enlarged photo
+      avatarContainer.addEventListener('click', function(e) {
+        const savedPhoto = localStorage.getItem('profilePhoto');
+        if (savedPhoto) {
+          enlargedPhoto.src = savedPhoto;
+          viewPhotoModal.style.display = 'flex';
+        }
+      });
+
+      // Close photo view modal
+      closePhotoModal.addEventListener('click', function() {
+        viewPhotoModal.style.display = 'none';
+      });
+
+      // Close photo view modal when clicking outside
+      window.addEventListener('click', function(e) {
+        if (e.target === viewPhotoModal) {
+          viewPhotoModal.style.display = 'none';
+        }
+      });
+    });
+
     // Check if token exists in session storage
     const token = sessionStorage.getItem("token");
     
@@ -591,6 +900,12 @@
         document.getElementById("username2").textContent = user.username || "Yair Levi";
         document.getElementById("email").textContent = user.email || "Yairle@gmail.com";
         document.getElementById("role").textContent = user.role || "Student";
+        
+        // Update avatar initials based on username
+        const username = user.username || "Yair Levi";
+        const initials = username.split(' ').map(n => n[0]).join('').toUpperCase();
+        document.getElementById("avatarInitials").textContent = initials;
+        
         fetchStudentProgress();
         fetchQuizHistory();
       }
@@ -598,46 +913,43 @@
 
     // Function to fetch student progress
     function fetchStudentProgress() {
-  if (!token) return;
-  
-  const user = parseJwt(token);
-  if (!user) return;
+      if (!token) return;
+      
+      const user = parseJwt(token);
+      if (!user) return;
 
-  fetch(`/api/progress/${user.id}`, {
-    headers: {
-      Authorization: "Bearer " + token
+      fetch(`/api/progress/${user.id}`, {
+        headers: {
+          Authorization: "Bearer " + token
+        }
+      })
+      .then(res => res.json())
+      .then(data => {
+        let percentage = 0;
+
+        // Case 1: list of quizzes with scores -> calculate average
+        if (Array.isArray(data) && data.length > 0) {
+          const total = data.reduce((sum, entry) => sum + entry.percentage, 0);
+          percentage = Math.round(total / data.length);
+        }
+
+        // Case 2: single value from backend
+        if (data.averagePercentage) {
+          percentage = Math.round(data.averagePercentage);
+        }
+
+        // Update UI
+        document.getElementById("progressPercent").textContent = `${percentage}%`;
+        document.querySelector(".progress-circle-fill").style.setProperty('--progress-percent', percentage);
+        
+        // Update medal based on percentage
+        updateMedal(percentage);
+      })
+      .catch(err => {
+        console.error("Failed to fetch progress:", err);
+      });
     }
-  })
-  .then(res => res.json())
-  .then(data => {
-    let percentage = 0;
 
-    if (Array.isArray(data) && data.length > 0) {
-      const total = data.reduce((sum, entry) => sum + entry.percentage, 0);
-      percentage = Math.round(total / data.length);
-    }
-
-    if (data.averagePercentage) {
-      percentage = Math.round(data.averagePercentage);
-    }
-
-    // Update progress UI
-    document.getElementById("progressPercent").textContent = `${percentage}%`;
-    document.querySelector(".progress-circle-fill").style.setProperty('--progress-percent', percentage);
-
-    // Update level based on progress percentage
-    let level = "Beginner";  // default
-    if (percentage >= 100) {
-      level = "Advanced";
-    } else if (percentage >= 50) {
-      level = "Intermediate";
-    }
-    document.querySelector(".level-value").textContent = level;
-  })
-  .catch(err => {
-    console.error("Failed to fetch progress:", err);
-  });
-}
     // Function to fetch quiz history
     function fetchQuizHistory() {
       if (!token) return;
