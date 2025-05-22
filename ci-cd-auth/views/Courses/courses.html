@@ -251,7 +251,7 @@
     /* ---------- Video Card Styles ---------- */
     .video-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      grid-template-columns: repeat(3, 1fr);
       gap: 30px;
       margin-top: 40px;
     }
@@ -535,6 +535,11 @@
     }
     
     /* ---------- Responsive ---------- */
+    @media (max-width: 1024px) {
+      .video-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
     @media (max-width: 768px) {
       header {
         padding: 16px 5%;
@@ -548,9 +553,12 @@
         padding: 120px 5% 60px;
       }
       
-      .video-grid {
-        grid-template-columns: 1fr;
-      }
+     .video-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+  margin-top: 40px;
+}
     }
   </style>
 </head>
