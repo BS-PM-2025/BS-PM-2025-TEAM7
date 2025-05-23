@@ -1,7 +1,7 @@
 // tests/test.js
 const request               = require("supertest");
 const mongoose              = require("mongoose");
-const { MongoMemoryServer } = require("mongodb-memory-server-core");
+const { MongoMemoryServer } = require('mongodb-memory-server');
 
 const User             = require("../models/user");
 const Video            = require("../models/video");
@@ -27,8 +27,11 @@ beforeAll(async () => {
   const fs   = require("fs");
   const path = require("path");
   fs.mkdirSync(path.join(__dirname, "../public/uploads"), { recursive: true });
+    const { MongoMemoryServer } = require('mongodb-memory-server');
 
-  mongoServer = await MongoMemoryServer.create();
+    process.env.MONGOMS_CACHE_DIR = '/tmp'; // 👈 THIS FIXES THE PERMISSION ISSUE
+    mongoServer = await MongoMemoryServer.create();
+
   process.env.MONGO_URI  = mongoServer.getUri();
   process.env.NODE_ENV   = "test";
   app = require("../index");
