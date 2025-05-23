@@ -27,8 +27,8 @@ pipeline {
             steps {
                 echo '🧪 Running backend unit tests...'
                 dir('server') {
-                    sh 'npm test || true'
-                }
+                sh 'ls -la'
+                sh 'npx jest hakathonTest/tests1.test.js --verbose'                }
             }
         }
     }

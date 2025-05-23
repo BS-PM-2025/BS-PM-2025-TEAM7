@@ -4,13 +4,11 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon index.js",
-    "test": "jest --runInBand"
-  },
-  "jest": {
-    "testMatch": [
-      "**/tests/**/*.js"
-    ]
-  },
+    "test": "jest hakathonTest/tests1.test.js"
+  }
+
+
+  ,
   "keywords": [],
   "author": "",
   "license": "ISC",
