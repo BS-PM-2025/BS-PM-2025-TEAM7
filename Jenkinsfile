@@ -16,22 +16,20 @@ pipeline {
     }
 
     stages {
-       stage('Install All Dependencies') {
+        stage('Install All Dependencies') {
             steps {
-                echo '📦 Installing dependencies for root, backend, and frontend...'
+                echo '📦 Installing dependencies for root and backend...'
                 sh '''
                     npm install
-                    npm --prefix server install
-                    npm --prefix my-react-app install
+                    npm --prefix ci-cd-auth install
                 '''
             }
         }
 
-
         stage('Run Backend Tests') {
             steps {
                 echo '🧪 Running backend unit tests...'
-                dir('server') {
+                dir('ci-cd-auth') {
                     sh 'ls -la'
                     sh 'npx jest hakathonTest/tests1.test.js --verbose'
                 }
