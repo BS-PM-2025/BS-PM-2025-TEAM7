@@ -8,7 +8,7 @@ const Video            = require("../models/video");
 const Course           = require("../models/course");
 const Feedback         = require("../models/FeedBack");
 const Progress         = require("../models/Progress");
-const Quiz             = require("../models/Quiz");
+const Quiz             = require("../models/quiz");
 const QuizSubmission   = require("../models/QuizSubmission");
 
 let app;
