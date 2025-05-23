@@ -4,11 +4,11 @@ const mongoose              = require("mongoose");
 const { MongoMemoryServer } = require("mongodb-memory-server-core");
 
 const User             = require("../models/user");
-const Video            = require("../models/video");
+const Video            = require("../models/Video");
 const Course           = require("../models/course");
 const Feedback         = require("../models/FeedBack");
 const Progress         = require("../models/Progress");
-const Quiz             = require("../models/quiz");
+const Quiz             = require("../models/Quiz");
 const QuizSubmission   = require("../models/QuizSubmission");
 
 let app;

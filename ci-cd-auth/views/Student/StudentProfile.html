@@ -752,7 +752,8 @@
           
           <div class="level-container">
             <div class="level-title">Level: <span class="level-value" id="levelText">Beginner</span></div>
-            <a href="#" class="learn-more" id="uploadPhotoLink">Upload Photo</a>
+             <a href="#" class="learn-more" id="uploadPhotoLink">Upload Photo</a>
+            <a href="#" class="learn-more" id="deletePhotoLink" style="margin-left:8px">Delete Photo</a>
           </div>
         </div>
       </div>
@@ -846,13 +847,15 @@
       window.location.href = "/login";
     }
 
-    function parseJwt(token) {
-      try {
-        return JSON.parse(atob(token.split('.')[1]));
-      } catch {
-        return null;
-      }
+      function parseJwt(token) {
+      try { return JSON.parse(atob(token.split('.')[1])); }
+      catch { return null; }
     }
+
+    const storedToken = sessionStorage.getItem("token");
+    const user       = storedToken && parseJwt(storedToken);
+    const userId     = user?.id;                              // make sure your JWT includes `id`
+    const photoKey   = userId ? `profilePhoto_${userId}` : null;
 
     // Function to update medal based on level
     function updateMedal(level) {
@@ -891,7 +894,7 @@
       const closePhotoModal = document.querySelector('.close-photo');
 
       // Load saved photo from localStorage if exists
-      const savedPhoto = localStorage.getItem('profilePhoto');
+      const savedPhoto = photoKey && localStorage.getItem(photoKey);
       if (savedPhoto) {
         avatarContainer.innerHTML = `<img src="${savedPhoto}" alt="Profile Photo">`;
         avatarInitials.style.display = 'none';
@@ -918,11 +921,12 @@
       // Handle photo upload
       uploadBtn.addEventListener('click', function() {
         const file = photoInput.files[0];
-        if (file) {
+        if (file && photoKey) {
           const reader = new FileReader();
           reader.onload = function(e) {
             // Save photo to localStorage
-            localStorage.setItem('profilePhoto', e.target.result);
+            localStorage.setItem(photoKey, e.target.result);
+
             
             // Display the photo
             avatarContainer.innerHTML = `<img src="${e.target.result}" alt="Profile Photo">`;
@@ -934,10 +938,24 @@
           reader.readAsDataURL(file);
         }
       });
+      // ─── wire up delete link ─────────────────────────────────────────
+        const deleteLink = document.getElementById('deletePhotoLink');
+        deleteLink.addEventListener('click', e => {
+          e.preventDefault();
+          if (!photoKey) return;
+          localStorage.removeItem(photoKey);
+
+          // restore initials
+          const initials = avatarInitials.textContent;
+          avatarContainer.innerHTML = `
+            <div class="avatar-initials">${initials}</div>
+            <div class="avatar-decoration"></div>
+          `;
+        });
 
       // Handle clicking on avatar to view enlarged photo
       avatarContainer.addEventListener('click', function(e) {
-        const savedPhoto = localStorage.getItem('profilePhoto');
+       const savedPhoto = photoKey && localStorage.getItem(photoKey);
         if (savedPhoto) {
           enlargedPhoto.src = savedPhoto;
           viewPhotoModal.style.display = 'flex';
