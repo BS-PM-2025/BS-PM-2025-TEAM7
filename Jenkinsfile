@@ -1,7 +1,7 @@
 pipeline {
-    agent any{
+    agent {
         docker {
-            image 'node:18'  // You can use 'node:20' as well
+            image 'node:18'
         }
     }
 
@@ -20,9 +20,9 @@ pipeline {
             steps {
                 echo '📦 Installing dependencies for root, backend, and frontend...'
                 sh '''
-                    npm install --unsafe-perm || true
-                    cd server && npm install --unsafe-perm || true
-                    cd ../my-react-app && npm install --unsafe-perm || true
+                    npm install
+                    cd server && npm install
+                    cd ../my-react-app && npm install
                 '''
             }
         }
@@ -31,8 +31,9 @@ pipeline {
             steps {
                 echo '🧪 Running backend unit tests...'
                 dir('server') {
-                sh 'ls -la'
-                sh 'npx jest hakathonTest/tests1.test.js --verbose'                }
+                    sh 'ls -la'
+                    sh 'npx jest hakathonTest/tests1.test.js --verbose'
+                }
             }
         }
     }
