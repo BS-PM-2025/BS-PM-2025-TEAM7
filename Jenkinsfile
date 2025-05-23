@@ -1,5 +1,9 @@
 pipeline {
-    agent any
+    agent any{
+        docker {
+            image 'node:18'  // You can use 'node:20' as well
+        }
+    }
 
     environment {
         NPM_CONFIG_LOGLEVEL = 'warn'
