@@ -9,6 +9,7 @@ pipeline {
         NPM_CONFIG_LOGLEVEL = 'warn'
         NPM_CONFIG_CACHE = '.npm'
         CI = 'true'
+        MONGOMS_CACHE_DIR = './tmp'
     }
 
     options {
