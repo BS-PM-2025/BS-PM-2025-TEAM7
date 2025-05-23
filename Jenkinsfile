@@ -16,16 +16,17 @@ pipeline {
     }
 
     stages {
-        stage('Install All Dependencies') {
+       stage('Install All Dependencies') {
             steps {
                 echo '📦 Installing dependencies for root, backend, and frontend...'
                 sh '''
                     npm install
-                    cd server && npm install
-                    cd ../my-react-app && npm install
+                    npm --prefix server install
+                    npm --prefix my-react-app install
                 '''
             }
         }
+
 
         stage('Run Backend Tests') {
             steps {
