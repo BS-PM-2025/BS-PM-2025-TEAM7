@@ -301,30 +301,36 @@
       const user = parseJwt(token);
       if (!user) return;
 
-      navbar.innerHTML = ''; // Clear default links
+      // Clear out the default links
+      navbar.innerHTML = "";
 
       if (user.role === "admin") {
         navbar.innerHTML += '<li><a href="/admin-dashboard">Admin Dashboard</a></li>';
-      } else if (user.role === "lecturer") {
+      } 
+      else if (user.role === "lecturer") {
         navbar.innerHTML += '<li><a href="/">Home</a></li>';
         navbar.innerHTML += '<li><a href="/video/courses">Courses</a></li>';
         navbar.innerHTML += '<li><a href="/LecturerProfile">Profile</a></li>';
-      } else if (user.role === "student") {
+        navbar.innerHTML += '<li><a href="/chat">Chat</a></li>';        // ← Chat for lecturers
+      } 
+      else if (user.role === "student") {
         navbar.innerHTML += '<li><a href="/">Home</a></li>';
         navbar.innerHTML += '<li><a href="/video/courses">Courses</a></li>';
         navbar.innerHTML += '<li><a href="/StudentProfile">Profile</a></li>';
+        navbar.innerHTML += '<li><a href="/chat">Chat</a></li>';        // ← Chat for students
       }
 
+      // Always show logout
       navbar.innerHTML += '<li><a href="#" onclick="logout()">Logout</a></li>';
-    } else {
-      // Show default links if not logged in
+    } 
+    else {
+      // Not logged in → show default links
       navbar.innerHTML = `
         <li><a href="/" class="active">Home</a></li>
         <li><a href="/signup">Sign Up</a></li>
         <li><a href="/login">Login</a></li>
       `;
-      
-      // Optional: prevent going back to protected page
+      // Prevent back‐button to protected pages
       history.pushState(null, null, location.href);
       window.onpopstate = () => history.go(1);
     }

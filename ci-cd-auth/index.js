@@ -13,6 +13,7 @@ const videoRoutes    = require("./routes/video");
 const userRoutes     = require("./routes/user");
 const progressRoutes = require("./routes/progress");
 const quizRoutes = require("./routes/quiz");
+const chatRoutes = require("./routes/chat");
 
 const app  = express();
 const PORT = process.env.PORT || 3000;
@@ -35,6 +36,7 @@ app.use("/api/videos", videoRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/progress", progressRoutes);
 app.use("/api", require("./routes/quiz")); // תומך ב־/api/submissions
+app.use("/api/chat", chatRoutes);
 
 // ---------- Frontend Pages ----------
 app.get("/", (req, res) => {
@@ -72,7 +74,9 @@ app.get("/video/courses", (req, res) =>
 app.get("/users-table", (req, res) =>
   res.sendFile(path.join(__dirname, "views", "Admin", "usersTable.html"))
 );
-
+app.get("/chat", (req, res) => {
+  res.sendFile(path.join(__dirname, "views", "Chats", "chat.html"));
+});
 // ---------- Prevent caching on dynamic routes ----------
 app.use((req, res, next) => {
   res.setHeader("Cache-Control", "no-store");

@@ -1,317 +1,149 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>All Users</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: 'Inter', sans-serif;
-      background-color: #f8faff;
-      color: #1f2328;
-      line-height: 1.5;
-      padding-top: 80px;
-    }
-
-    header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      padding: 16px 10%;
-      background-color: #FFFFFF;
-      border-bottom: 1px solid #d8dee4;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      z-index: 10;
-    }
-
-    .logo-container {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .logo-img {
-      height: 32px;
-      width: 32px;
-    }
-
-    .logo-text {
-      font-size: 1.25rem;
-      font-weight: 600;
-      color: #657EEF;
-    }
-
-    .nav-links {
-      list-style: none;
-      display: flex;
-      gap: 24px;
-      margin-left: auto;
-    }
-
-    .nav-links li a {
-      text-decoration: none;
-      color: #1f2328;
-      font-weight: 500;
-      font-size: 14px;
-      padding: 8px 0;
-      position: relative;
-    }
-
-    .nav-links li a:hover {
-      color: #657EEF;
-    }
-
-    .nav-links li a.active {
-      color: #657EEF;
-    }
-
-    .nav-links li a.active::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 2px;
-      background-color: #657EEF;
-    }
-
-    .page-title {
-      text-align: center;
-      color: #657EEF;
-      margin: 40px 0 20px;
-      font-size: 28px;
-    }
-
-    table {
-      width: 90%;
-      margin: 20px auto;
-      border-collapse: collapse;
-      background-color: #FFFFFF;
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 4px 12px rgba(101, 126, 239, 0.1);
-    }
-
-    th, td {
-      padding: 16px;
-      text-align: left;
-      border-bottom: 1px solid #d8dee4;
-    }
-
-    th {
-      background-color: #657EEF;
-      color: #FFFFFF;
-      font-weight: 600;
-    }
-
-    tr:nth-child(even) {
-      background-color: #f9fafb;
-    }
-
-    tr:hover {
-      background-color: #f0f4ff;
-    }
-
-    td input, td select {
-      width: 100%;
-      padding: 8px 12px;
-      border: 1px solid #d8dee4;
-      border-radius: 6px;
-      font-family: 'Inter', sans-serif;
-      font-size: 14px;
-    }
-
-    td input:focus, td select:focus {
-      outline: none;
-      border-color: #657EEF;
-      box-shadow: 0 0 0 2px rgba(101, 126, 239, 0.2);
-    }
-
-    .btn-group {
-      display: flex;
-      gap: 8px;
-    }
-
-    .btn {
-      padding: 8px 16px;
-      border-radius: 6px;
-      font-weight: 500;
-      font-size: 14px;
-      cursor: pointer;
-      transition: all 0.2s;
-      border: none;
-    }
-
-    .btn-save {
-      background-color: #657EEF;
-      color: white;
-    }
-
-    .btn-save:hover {
-      background-color: #7a88d1;
-      transform: translateY(-1px);
-    }
-
-    .btn-delete {
-      background-color: #ff4d4f;
-      color: white;
-    }
-
-    .btn-delete:hover {
-      background-color: #ff7875;
-      transform: translateY(-1px);
-    }
-
-    @media (max-width: 768px) {
-      header {
-        padding: 16px 5%;
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .nav-links {
-        gap: 16px;
-        margin-top: 16px;
-        margin-left: 0;
-        width: 100%;
-        justify-content: space-between;
-      }
-
-      table {
-        width: 95%;
-        font-size: 14px;
-      }
-
-      th, td {
-        padding: 12px 8px;
-      }
-
-      .btn-group {
-        flex-direction: column;
-      }
-    }
+    /* --- SAME CSS YOU ALREADY HAVE --- */
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Inter',sans-serif;background:#f8faff;color:#1f2328;line-height:1.5;padding-top:80px}
+    header{position:fixed;top:0;left:0;width:100%;padding:16px 10%;background:#fff;border-bottom:1px solid #d8dee4;display:flex;align-items:center;z-index:10}
+    .logo-container{display:flex;align-items:center;gap:12px}
+    .logo-img{width:32px;height:32px;fill:#657EEF}
+    .logo-text{font-size:1.25rem;font-weight:600;color:#657EEF}
+    .nav-links{list-style:none;display:flex;gap:24px;margin-left:auto}
+    .nav-links a{text-decoration:none;color:#1f2328;font-weight:500;font-size:14px;padding:8px 0;position:relative}
+    .nav-links a:hover,.nav-links a.active{color:#657EEF}
+    .nav-links a.active::after{content:'';position:absolute;bottom:0;left:0;width:100%;height:2px;background:#657EEF}
+    .page-title{text-align:center;color:#657EEF;margin:40px 0 20px;font-size:28px}
+    table{width:90%;margin:20px auto;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 4px 12px rgba(101,126,239,.1)}
+    th,td{padding:16px;text-align:left;border-bottom:1px solid #d8dee4}
+    th{background:#657EEF;color:#fff;font-weight:600}
+    tr:nth-child(even){background:#f9fafb}
+    tr:hover{background:#f0f4ff}
+    td input,td select{width:100%;padding:8px 12px;border:1px solid #d8dee4;border-radius:6px;font:14px/1.4 'Inter',sans-serif}
+    td input:focus,td select:focus{outline:none;border-color:#657EEF;box-shadow:0 0 0 2px rgba(101,126,239,.2)}
+    .btn-group{display:flex;gap:8px}
+    .btn{padding:8px 16px;border-radius:6px;font:14px/1.4 'Inter',sans-serif;font-weight:500;cursor:pointer;border:none;transition:.2s}
+    .btn-save{background:#657EEF;color:#fff}.btn-save:hover{background:#7a88d1;transform:translateY(-1px)}
+    .btn-delete{background:#ff4d4f;color:#fff}.btn-delete:hover{background:#ff7875;transform:translateY(-1px)}
+    @media(max-width:768px){header{padding:16px 5%;flex-direction:column;align-items:flex-start}.nav-links{gap:16px;margin-top:16px;width:100%;justify-content:space-between}table{width:95%;font-size:14px}th,td{padding:12px 8px}.btn-group{flex-direction:column}}
   </style>
 </head>
 <body>
-
-
+  <!-- ========== HEADER ========== -->
   <header>
-        <div class="logo-container">
-      <svg class="logo-img" viewBox="0 0 24 24" fill="#657EEF" xmlns="http://www.w3.org/2000/svg">
-        <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.652.242 2.873.118 3.176.77.84 1.235 1.91 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
-      </svg>
+    <div class="logo-container">
+      <svg class="logo-img" viewBox="0 0 24 24"><path d="M12 0C5.374..." /></svg>
       <span class="logo-text">CI/CD</span>
-          <ul class="nav-links" id="nav-links">
+    </div>
+    <ul class="nav-links">
       <li><a href="/">Home</a></li>
       <li><a href="/admin-dashboard" class="active">Dashboard</a></li>
-      <li><a href="/users-table" >Users</a></li>
-      
+      <li><a href="/users-table">Users</a></li>
     </ul>
-    </div>
-
   </header>
+
   <h2 class="page-title">👥 All Registered Users</h2>
 
   <table id="usersTable">
     <thead>
-      <tr>
-        <th>Username</th>
-        <th>Email</th>
-        <th>Role</th>
-        <th>Password</th>
-        <th>Actions</th>
-      </tr>
+      <tr><th>Username</th><th>Email</th><th>Role</th><th>Password</th><th>Actions</th></tr>
     </thead>
-    <tbody>
-      <!-- Filled by JS -->
-    </tbody>
+    <tbody><!-- filled by JS --></tbody>
   </table>
 
   <script>
-    // Load users and create editable rows
-    fetch("/api/users/all")
-      .then(res => res.json())
-      .then(users => {
-        const tbody = document.querySelector("#usersTable tbody");
+  /* get JWT or redirect */
+  const token = sessionStorage.getItem("token") || localStorage.getItem("token");
+  if (!token) location.replace("/login");
+  const authHdr = { "Authorization":"Bearer " + token };
 
-        users.forEach(user => {
-          const row = document.createElement("tr");
-          row.innerHTML = `
-            <td><input type="text" id="username_${user._id}" value="${user.username}"></td>
-            <td><input type="email" id="email_${user._id}" value="${user.email}"></td>
-            <td>
-              <select id="role_${user._id}">
-                <option value="student" ${user.role === "student" ? "selected" : ""}>Student</option>
-                <option value="lecturer" ${user.role === "lecturer" ? "selected" : ""}>Lecturer</option>
-                <option value="admin" ${user.role === "admin" ? "selected" : ""}>Admin</option>
-              </select>
-            </td>
-            <td><input type="password" id="password_${user._id}" placeholder="New password"></td>
-            <td>
-              <div class="btn-group">
-                <button class="btn btn-save" onclick="updateUser('${user._id}')">Save</button>
-                <button class="btn btn-delete" onclick="deleteUser('${user._id}')">Delete</button>
-              </div>
-            </td>
-          `;
-          tbody.appendChild(row);
-        });
-      })
-      .catch(() => {
-        document.querySelector("#usersTable").innerHTML = "<p>Failed to load users.</p>";
-      });
+  /* -------- load users ---------- */
+  fetch("/api/users/all", { headers: authHdr })
+    .then(async r => {
+      if (!r.ok) {
+        const text = await r.text();
+        throw new Error(`Status ${r.status} ${text}`);
+      }
+      return r.json();
+    })
+    .then(populate)
+    .catch(err => {
+      console.error(err);
+      document
+        .querySelector("#usersTable")
+        .insertAdjacentHTML(
+          "afterend",
+          `<p style="text-align:center;color:#ff4d4f">Failed to load users. (${err.message})</p>`
+        );
+    });
 
-    // Save updated user
-    function updateUser(id) {
-      const username = document.getElementById(`username_${id}`).value;
-      const email = document.getElementById(`email_${id}`).value;
-      const role = document.getElementById(`role_${id}`).value;
-      const password = document.getElementById(`password_${id}`).value;
-
-      fetch(`/api/users/edit/${id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, email, role, password })
-      })
-      .then(res => res.json())
-      .then(data => {
-        alert(data.message || "User updated successfully");
-        location.reload();
-      })
-      .catch(err => {
-        console.error(err);
-        alert("Failed to update user");
-      });
+  /* fill table */
+  function populate(users) {
+    if (!Array.isArray(users) || users.length === 0) {
+      document.querySelector("#usersTable").insertAdjacentHTML(
+        "afterend",
+        `<p style="text-align:center;">No users found.</p>`
+      );
+      return;
     }
 
-    // Delete user
-    function deleteUser(id) {
-      if (!confirm("Are you sure you want to delete this user?")) return;
+    const tbody = document.querySelector("#usersTable tbody");
+    users.forEach(u => {
+      tbody.insertAdjacentHTML(
+        "beforeend",
+        `<tr>
+          <td><input id="u_${u._id}" value="${u.username}"></td>
+          <td><input id="e_${u._id}" value="${u.email || ""}"></td>
+          <td>
+            <select id="r_${u._id}">
+              <option value="student"  ${u.role === "student" ? "selected" : ""}>Student</option>
+              <option value="lecturer" ${u.role === "lecturer" ? "selected" : ""}>Lecturer</option>
+              <option value="admin"    ${u.role === "admin" ? "selected"   : ""}>Admin</option>
+            </select>
+          </td>
+          <td><input type="password" id="p_${u._id}" placeholder="New password"></td>
+          <td class="btn-group">
+            <button class="btn btn-save"   onclick="save('${u._id}')">Save</button>
+            <button class="btn btn-delete" onclick="removeUser('${u._id}')">Delete</button>
+          </td>
+        </tr>`
+      );
+    });
+  }
 
-      fetch(`/api/users/delete/${id}`, {
-        method: "DELETE"
-      })
-      .then(res => res.json())
-      .then(data => {
-        alert(data.message || "User deleted successfully");
-        location.reload();
-      })
-      .catch(err => {
-        console.error(err);
-        alert("Failed to delete user");
-      });
-    }
-  </script>
+  /* update user */
+  function save(id) {
+    const body = {
+      username: document.getElementById(`u_${id}`).value,
+      email   : document.getElementById(`e_${id}`).value,
+      role    : document.getElementById(`r_${id}`).value
+    };
+    const pwd = document.getElementById(`p_${id}`).value.trim();
+    if (pwd) body.password = pwd;
+
+    fetch(`/api/users/edit/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json", ...authHdr },
+      body: JSON.stringify(body)
+    })
+      .then(r => r.json())
+      .then(d => { alert(d.message || "Updated"); location.reload(); })
+      .catch(() => alert("Update failed"));
+  }
+
+  /* delete user */
+  function removeUser(id) {
+    if (!confirm("Delete this user?")) return;
+    fetch(`/api/users/delete/${id}`, { method: "DELETE", headers: authHdr })
+      .then(r => r.json())
+      .then(d => { alert(d.message || "Deleted"); location.reload(); })
+      .catch(() => alert("Delete failed"));
+  }
+</script>
 
 </body>
 </html>
