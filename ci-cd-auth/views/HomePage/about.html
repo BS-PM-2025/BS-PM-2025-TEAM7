@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GitHub Commands Memory Challenge</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background-color: #f6f8fa;
+      color: #24292e;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .navbar {
+      display: flex;
+      align-items: center;
+      padding: 0.5rem 1rem;
+      background-color: #ffffff;
+      border-bottom: 1px solid #e1e4e8;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      margin-right: 2rem;
+      color: #5271d5;
+      font-weight: 600;
+    }
+
+    .logo img {
+      height: 24px;
+      margin-right: 0.5rem;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .nav-links a {
+      color: #5271d5;
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+
+    .nav-icons {
+      margin-left: auto;
+      display: flex;
+      gap: 1rem;
+    }
+
+    .nav-icon {
+      width: 24px;
+      height: 24px;
+      background-color: #5271d5;
+      border-radius: 50%;
+    }
+
+    .game-wrapper {
+      display: flex;
+      flex: 1;
+    }
+
+    .sidebar {
+      width: 208px;
+      background-color: #5271d5;
+      color: white;
+      padding: 2rem 1rem;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sidebar-title {
+      font-size: 1.8rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .sidebar-subtitle {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+    }
+
+    .play-button {
+      background-color: #7fffd4;
+      color: #24292e;
+      border: none;
+      border-radius: 20px;
+      padding: 0.5rem 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 2rem;
+      width: 80%;
+    }
+
+    .play-button.paused::after {
+      content: "▶";
+    }
+
+    .play-button.playing::after {
+      content: "⏸";
+    }
+
+    .timer-display {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-top: auto;
+      margin-bottom: 0.5rem;
+    }
+
+    .reset-button {
+      background: none;
+      border: none;
+      color: white;
+      cursor: pointer;
+      font-size: 1.2rem;
+      display: flex;
+      align-items: center;
+      margin-top: 1rem;
+    }
+
+    .reset-button::before {
+      content: "↻";
+      margin-right: 0.5rem;
+    }
+
+    .game-content {
+      flex: 1;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .game-container {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      max-width: 800px;
+      width: 100%;
+    }
+
+    .card {
+      aspect-ratio: 0.7;
+      background-color: #edf2f7;
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      perspective: 1000px;
+      transform-style: preserve-3d;
+      transition: transform 0.5s, opacity 0.5s;
+      position: relative;
+      border: 2px solid #7fffd4;
+    }
+
+    .card:hover {
+      background-color: #e2e8f0;
+    }
+
+    .card.flipped {
+      transform: rotateY(180deg);
+    }
+
+    .card.matched {
+      border-color: #7fffd4;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .card.mismatched {
+      border-color: #f56565;
+    }
+
+    .card.mismatched::after {
+      content: "×";
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      color: #f56565;
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+
+    .card-face {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      border-radius: 6px;
+      padding: 0.5rem;
+    }
+
+    .card-front {
+      background-color: #edf2f7;
+    }
+
+    .card-front img {
+      width: 50px;
+      height: 50px;
+      margin-bottom: 0.5rem;
+    }
+
+    .card-front-text {
+      color: #5271d5;
+      font-size: 0.9rem;
+      text-align: center;
+    }
+
+    .card-back {
+      background-color: #edf2f7;
+      transform: rotateY(180deg);
+      padding: 0.5rem;
+      text-align: center;
+    }
+
+    .card-back-content {
+      color: #5271d5;
+      font-size: 0.9rem;
+    }
+
+    .difficulty-buttons {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .difficulty-btn {
+      background-color: #edf2f7;
+      color: #5271d5;
+      border: 2px solid #7fffd4;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background-color 0.2s;
+    }
+
+    .difficulty-btn:hover {
+      background-color: #e2e8f0;
+    }
+
+    .difficulty-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .message-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 100;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+
+    .message-container.visible {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .message-box {
+      background-color: white;
+      border-radius: 12px;
+      padding: 2rem;
+      text-align: center;
+      max-width: 500px;
+      position: relative;
+    }
+
+    .message-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    .message-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .message-btn {
+      background-color: #7fffd4;
+      color: #24292e;
+      border: none;
+      border-radius: 20px;
+      padding: 0.5rem 1.5rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .confetti {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 99;
+    }
+
+    .mascot-container {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 50;
+      display: none;
+    }
+
+    .mascot {
+      width: 120px;
+      height: 120px;
+    }
+
+     .mascot-container {
+    position: fixed;
+    bottom: 50px;
+    right: 50px;
+    z-index: 50;
+    display: none;
+    transform-origin: bottom right;
+  }
+
+  .mascot {
+    width: 280px; /* Larger size */
+    height: 280px;
+    filter: drop-shadow(0 5px 10px rgba(0,0,0,0.25));
+    transition: all 0.3s ease;
+  }
+
+  .mascot:hover {
+    transform: scale(1.08);
+    filter: drop-shadow(0 8px 16px rgba(0,0,0,0.3));
+  }
+
+  .speech-bubble {
+    position: absolute;
+    top: -100px; /* Closer to head */
+    left: -200px; /* Moved closer */
+    background-color: #5271d5;
+    color: white;
+    padding: 1.2rem 1.5rem;
+    border-radius: 25px;
+    width: 240px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 1.1rem;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    transform-origin: bottom right;
+    animation: float 3s ease-in-out infinite;
+  }
+
+  .speech-bubble::after {
+    content: "";
+    position: absolute;
+    bottom: -15px;
+    right: 30px; /* Adjusted to point closer to mouth */
+    width: 0;
+    height: 0;
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+    border-top: 15px solid #5271d5;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+
+    @media (max-width: 768px) {
+      .game-wrapper {
+        flex-direction: column;
+      }
+      
+      .sidebar {
+        width: 100%;
+        padding: 1rem;
+      }
+      
+      .game-container {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (max-width: 576px) {
+      .game-container {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .nav-links {
+        display: none;
+      }
+      
+      .difficulty-buttons {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="logo">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#5271d5">
+        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+      </svg>
+      <span>Learn GitHub</span>
+    </div>
+    <div class="nav-links">
+      <a href="/">Home</a>
+    </div>
+    <div class="nav-icons">
+      <div class="nav-icon"></div>
+      <div class="nav-icon"></div>
+    </div>
+  </nav>
+
+  <div class="game-wrapper">
+    <div class="sidebar">
+      <div class="sidebar-title">Cards</div>
+      <div class="sidebar-subtitle">Git Commands</div>
+      <button class="play-button paused" id="play-btn"></button>
+      <div class="timer-display" id="timer-display">You only have <span id="timer">45</span> seconds.</div>
+      <button class="reset-button" id="reset-btn">Reset</button>
+    </div>
+
+    <div class="game-content">
+      <div class="difficulty-buttons">
+        <button class="difficulty-btn" id="easy-btn">Easy (90s)</button>
+        <button class="difficulty-btn" id="medium-btn">Medium (60s)</button>
+        <button class="difficulty-btn" id="hard-btn">Hard (45s)</button>
+        <button class="difficulty-btn" id="extreme-btn">Extreme (30s)</button>
+      </div>
+
+      <div class="game-container" id="game-container"></div>
+    </div>
+  </div>
+
+  <div class="message-container" id="message-container">
+    <div class="message-box">
+      <div class="message-title" id="message-title">What would you like to do?</div>
+      <div class="message-buttons">
+        <button class="message-btn" id="play-again-btn">Play Again</button>
+        <button class="message-btn" id="new-game-btn">New Game</button>
+      </div>
+    </div>
+  </div>
+<div class="mascot-container" id="mascot-container">
+  <div class="speech-bubble" id="speech-bubble">You're UNSTOPPABLE!! Your brain is sharper than my claws!</div>
+  <svg class="mascot" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+    <!-- Larger, sleeker cat body -->
+    <path d="M250,150 C320,150 380,200 380,250 C380,350 320,400 250,400 C180,400 120,350 120,250 C120,200 180,150 250,150 Z" 
+          fill="#5271d5" stroke="#3a5bbf" stroke-width="8"/>
+    
+    <!-- Head with ears closer to center -->
+    <ellipse cx="250" cy="220" rx="130" ry="100" fill="#5271d5"/>
+    
+    <!-- Ears positioned closer to head -->
+    <path d="M170,140 L120,50 L190,110 Z" fill="#3a5bbf" stroke="#24292e" stroke-width="3"/>
+    <path d="M330,140 L380,50 L310,110 Z" fill="#3a5bbf" stroke="#24292e" stroke-width="3"/>
+    
+    <!-- Inner ear details -->
+    <path d="M180,150 L140,80 L200,120 Z" fill="#7fffd4" opacity="0.7"/>
+    <path d="M320,150 L360,80 L300,120 Z" fill="#7fffd4" opacity="0.7"/>
+    
+    <!-- Expressive eyes -->
+    <ellipse cx="210" cy="200" rx="25" ry="30" fill="white"/>
+    <ellipse cx="290" cy="200" rx="25" ry="30" fill="white"/>
+    <circle cx="210" cy="210" r="12" fill="#24292e"/>
+    <circle cx="290" cy="210" r="12" fill="#24292e"/>
+    <circle cx="215" cy="212" r="4" fill="white"/>
+    <circle cx="295" cy="212" r="4" fill="white"/>
+    
+    <!-- Cheeks -->
+    <circle cx="180" cy="230" r="15" fill="#7fffd4" opacity="0.6"/>
+    <circle cx="320" cy="230" r="15" fill="#7fffd4" opacity="0.6"/>
+    
+    <!-- Nose and mouth -->
+    <path d="M240,240 L250,250 L260,240 Z" fill="#24292e"/>
+    <path d="M250,250 Q250,280 220,275" fill="none" stroke="#24292e" stroke-width="3" stroke-linecap="round"/>
+    <path d="M250,250 Q250,280 280,275" fill="none" stroke="#24292e" stroke-width="3" stroke-linecap="round"/>
+    
+    <!-- Whiskers -->
+    <line x1="230" y1="240" x2="150" y2="230" stroke="#24292e" stroke-width="2" stroke-linecap="round"/>
+    <line x1="230" y1="250" x2="150" y2="250" stroke="#24292e" stroke-width="2" stroke-linecap="round"/>
+    <line x1="230" y1="260" x2="150" y2="270" stroke="#24292e" stroke-width="2" stroke-linecap="round"/>
+    <line x1="270" y1="240" x2="350" y2="230" stroke="#24292e" stroke-width="2" stroke-linecap="round"/>
+    <line x1="270" y1="250" x2="350" y2="250" stroke="#24292e" stroke-width="2" stroke-linecap="round"/>
+    <line x1="270" y1="260" x2="350" y2="270" stroke="#24292e" stroke-width="2" stroke-linecap="round"/>
+    
+    <!-- Paws -->
+    <circle cx="200" cy="370" r="30" fill="#5271d5"/>
+    <circle cx="300" cy="370" r="30" fill="#5271d5"/>
+    <path d="M190,370 Q200,400 210,370" fill="none" stroke="#3a5bbf" stroke-width="5" stroke-linecap="round"/>
+    <path d="M290,370 Q300,400 310,370" fill="none" stroke="#3a5bbf" stroke-width="5" stroke-linecap="round"/>
+  </svg>
+</div>
+
+  <canvas id="confetti-canvas" class="confetti"></canvas>
+
+  <script>
+    // Game data - command/description pairs
+    const gitCommands = [
+      { command: "git init", description: "Initialize a new Git repository" },
+      { command: "git clone", description: "Create a local copy of a remote repository" },
+      { command: "git add", description: "Stage changes for commit" },
+      { command: "git commit", description: "Record changes to the repository" },
+      { command: "git push", description: "Upload local changes to a remote repository" },
+      { command: "git pull", description: "Fetch and merge changes from a remote repository" },
+      { command: "git branch", description: "List, create, or delete branches" },
+      { command: "git checkout", description: "Switch branches or restore working tree files" },
+      { command: "git merge", description: "Join two or more development histories together" },
+      { command: "git rebase", description: "Reapply commits on top of another base tip" },
+      { command: "git stash", description: "Temporarily store modified files" },
+      { command: "git log", description: "Show commit logs" }
+    ];
+
+    // Game variables
+    let cards = [];
+    let flippedCards = [];
+    let matchedPairs = 0;
+    let moves = 0;
+    let timer;
+    let timeLeft = 0;
+    let gameActive = false;
+    let difficulty = '';
+
+    // DOM elements
+    const gameContainer = document.getElementById('game-container');
+    const timerDisplay = document.getElementById('timer');
+    const messageContainer = document.getElementById('message-container');
+    const messageTitle = document.getElementById('message-title');
+    const playAgainBtn = document.getElementById('play-again-btn');
+    const newGameBtn = document.getElementById('new-game-btn');
+    const resetBtn = document.getElementById('reset-btn');
+    const playBtn = document.getElementById('play-btn');
+    const mascotContainer = document.getElementById('mascot-container');
+    const speechBubble = document.getElementById('speech-bubble');
+    const difficultyButtons = {
+      easy: document.getElementById('easy-btn'),
+      medium: document.getElementById('medium-btn'),
+      hard: document.getElementById('hard-btn'),
+      extreme: document.getElementById('extreme-btn')
+    };
+
+    // Confetti setup
+    const confettiCanvas = document.getElementById('confetti-canvas');
+    const confettiCtx = confettiCanvas.getContext('2d');
+    const confettiColors = ['#5271d5', '#7fffd4', '#f8e71c', '#ff5252', '#4caf50', '#9c27b0'];
+    let confetti = [];
+
+    // Initialize confetti canvas
+    function initConfetti() {
+      confettiCanvas.width = window.innerWidth;
+      confettiCanvas.height = window.innerHeight;
+      
+      window.addEventListener('resize', () => {
+        confettiCanvas.width = window.innerWidth;
+        confettiCanvas.height = window.innerHeight;
+      });
+    }
+
+    // Create confetti particles
+    function createConfetti() {
+      confetti = [];
+      for (let i = 0; i < 200; i++) {
+        confetti.push({
+          x: Math.random() * confettiCanvas.width,
+          y: -Math.random() * confettiCanvas.height,
+          size: Math.random() * 10 + 5,
+          color: confettiColors[Math.floor(Math.random() * confettiColors.length)],
+          speed: Math.random() * 3 + 2,
+          angle: Math.random() * 2 * Math.PI,
+          rotation: Math.random() * 0.2 - 0.1,
+          rotationSpeed: Math.random() * 0.01 - 0.005
+        });
+      }
+    }
+
+    // Draw confetti
+    function drawConfetti() {
+      confettiCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+      
+      for (let i = 0; i < confetti.length; i++) {
+        const p = confetti[i];
+        confettiCtx.save();
+        confettiCtx.translate(p.x, p.y);
+        confettiCtx.rotate(p.angle);
+        confettiCtx.fillStyle = p.color;
+        confettiCtx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+        confettiCtx.restore();
+        
+        p.y += p.speed;
+        p.x += Math.sin(p.angle) * 2;
+        p.angle += p.rotation;
+        
+        if (p.y > confettiCanvas.height) {
+          p.y = -p.size;
+          p.x = Math.random() * confettiCanvas.width;
+        }
+      }
+      
+      if (gameActive) {
+        requestAnimationFrame(drawConfetti);
+      }
+    }
+
+    // Initialize game
+    function initGame(selectedDifficulty) {
+      // Reset game state
+      clearInterval(timer);
+      flippedCards = [];
+      matchedPairs = 0;
+      moves = 0;
+      gameActive = true;
+      difficulty = selectedDifficulty;
+      
+      // Set time based on difficulty
+      switch(difficulty) {
+        case 'easy': timeLeft = 90; break;
+        case 'medium': timeLeft = 60; break;
+        case 'hard': timeLeft = 45; break;
+        case 'extreme': timeLeft = 30; break;
+      }
+      
+      // Update displays
+      timerDisplay.textContent = timeLeft;
+      
+      // Hide message and mascot
+      messageContainer.classList.remove('visible');
+      mascotContainer.style.display = 'none';
+      
+      // Update play button
+      playBtn.classList.remove('paused');
+      playBtn.classList.add('playing');
+      
+      // Enable/disable buttons
+      Object.values(difficultyButtons).forEach(btn => btn.disabled = true);
+      
+      // Create cards
+      createCards();
+      
+      // Start timer
+      timer = setInterval(updateTimer, 1000);
+    }
+
+    // Create card elements
+    function createCards() {
+      gameContainer.innerHTML = '';
+      cards = [];
+      
+      // Select 6 random commands and duplicate them (for 12 cards total)
+      const shuffledCommands = [...gitCommands]
+        .sort(() => 0.5 - Math.random())
+        .slice(0, 6);
+      
+      const cardPairs = [...shuffledCommands, ...shuffledCommands]
+        .sort(() => 0.5 - Math.random());
+      
+      // Create card elements
+      cardPairs.forEach((item, index) => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.dataset.index = index;
+        card.dataset.command = item.command;
+        
+        const cardFront = document.createElement('div');
+        cardFront.className = 'card-face card-front';
+        
+        const logoImg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+        logoImg.setAttribute("width", "50");
+        logoImg.setAttribute("height", "50");
+        logoImg.setAttribute("viewBox", "0 0 24 24");
+        logoImg.setAttribute("fill", "#5271d5");
+        
+        const logoPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        logoPath.setAttribute("d", "M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z");
+        
+        logoImg.appendChild(logoPath);
+        cardFront.appendChild(logoImg);
+        
+        const cardFrontText = document.createElement('div');
+        cardFrontText.className = 'card-front-text';
+        cardFrontText.textContent = 'Learn GitHub';
+        cardFront.appendChild(cardFrontText);
+        
+        const cardBack = document.createElement('div');
+        cardBack.className = 'card-face card-back';
+        
+        const cardBackContent = document.createElement('div');
+        cardBackContent.className = 'card-back-content';
+        
+        // Randomly assign command or description to each card
+        const isCommand = Math.random() > 0.5;
+        cardBackContent.textContent = isCommand ? item.command : item.description;
+        card.dataset.contentType = isCommand ? 'command' : 'description';
+        card.dataset.matchingContent = isCommand ? item.description : item.command;
+        
+        cardBack.appendChild(cardBackContent);
+        
+        card.appendChild(cardFront);
+        card.appendChild(cardBack);
+        card.addEventListener('click', flipCard);
+        
+        gameContainer.appendChild(card);
+        cards.push(card);
+      });
+    }
+
+    // Flip card
+    function flipCard() {
+      if (!gameActive || flippedCards.length >= 2 || this.classList.contains('flipped')) return;
+      
+      this.classList.add('flipped');
+      flippedCards.push(this);
+      
+      if (flippedCards.length === 2) {
+        moves++;
+        checkForMatch();
+      }
+    }
+
+    // Check for match
+    function checkForMatch() {
+      const [card1, card2] = flippedCards;
+      
+      // Find the original command objects for both cards
+      const command1 = gitCommands.find(cmd => 
+        cmd.command === card1.dataset.command
+      );
+      
+      const command2 = gitCommands.find(cmd => 
+        cmd.command === card2.dataset.command
+      );
+      
+      // Cards match if they refer to the same git command
+      if (command1 && command2 && command1.command === command2.command) {
+        card1.classList.add('matched');
+        card2.classList.add('matched');
+        
+        // Remove matched cards after a short delay
+        setTimeout(() => {
+          card1.style.display = 'none';
+          card2.style.display = 'none';
+        }, 500);
+        
+        matchedPairs++;
+        
+        if (matchedPairs === 6) {
+          gameWon();
+        }
+      } else {
+        card1.classList.add('mismatched');
+        card2.classList.add('mismatched');
+        setTimeout(() => {
+          card1.classList.remove('flipped', 'mismatched');
+          card2.classList.remove('flipped', 'mismatched');
+        }, 1000);
+      }
+      
+      flippedCards = [];
+    }
+
+    // Game won
+    function gameWon() {
+      clearInterval(timer);
+      gameActive = false;
+      
+      // Show mascot with speech bubble
+      mascotContainer.style.display = 'block';
+      
+      // Show confetti
+      initConfetti();
+      createConfetti();
+      drawConfetti();
+      
+      // Show message after a delay
+      setTimeout(() => {
+        messageTitle.textContent = "Congratulations! You've matched all pairs!";
+        messageContainer.classList.add('visible');
+      }, 3000);
+      
+      // Update play button
+      playBtn.classList.remove('playing');
+      playBtn.classList.add('paused');
+      
+      // Enable difficulty buttons
+      Object.values(difficultyButtons).forEach(btn => btn.disabled = false);
+    }
+
+    // Game over
+    function gameOver() {
+      clearInterval(timer);
+      gameActive = false;
+      
+      // Show message
+      messageTitle.textContent = "Time's up! Try again?";
+      messageContainer.classList.add('visible');
+      
+      // Update play button
+      playBtn.classList.remove('playing');
+      playBtn.classList.add('paused');
+      
+      // Enable difficulty buttons
+      Object.values(difficultyButtons).forEach(btn => btn.disabled = false);
+    }
+
+    // Update timer
+    function updateTimer() {
+      timeLeft--;
+      timerDisplay.textContent = timeLeft;
+      
+      if (timeLeft <= 0) {
+        gameOver();
+      }
+    }
+
+    // Event listeners
+    resetBtn.addEventListener('click', () => {
+      if (difficulty) {
+        initGame(difficulty);
+      }
+    });
+
+    playBtn.addEventListener('click', () => {
+      if (!gameActive && difficulty) {
+        initGame(difficulty);
+      }
+    });
+
+    playAgainBtn.addEventListener('click', () => {
+      if (difficulty) {
+        initGame(difficulty);
+      }
+      messageContainer.classList.remove('visible');
+    });
+
+    newGameBtn.addEventListener('click', () => {
+      messageContainer.classList.remove('visible');
+      Object.values(difficultyButtons).forEach(btn => btn.disabled = false);
+    });
+
+    difficultyButtons.easy.addEventListener('click', () => initGame('easy'));
+    difficultyButtons.medium.addEventListener('click', () => initGame('medium'));
+    difficultyButtons.hard.addEventListener('click', () => initGame('hard'));
+    difficultyButtons.extreme.addEventListener('click', () => initGame('extreme'));
+
+    // Initialize with hard difficulty
+    window.addEventListener('load', () => {
+      // Show initial message
+      setTimeout(() => {
+        messageContainer.classList.add('visible');
+      }, 500);
+    });
+  </script>
+</body>
+</html>
