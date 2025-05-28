@@ -599,51 +599,66 @@
     }
     
     function createRepo() {
-      const name = document.getElementById('repoName').value;
-      const description = document.getElementById('repoDescription').value;
-      const isPrivate = document.getElementById('repoPrivate').checked;
-      
-      if (!name) {
-        showError('Please enter a repository name');
-        return;
-      }
-      
-      const btn = document.getElementById('createRepoBtn');
-      btn.disabled = true;
-      btn.textContent = 'Creating...';
-      
-      fetch('/api/github/repos', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${githubToken}`
-        },
-        body: JSON.stringify({
-          name,
-          description,
-          isPrivate
-        })
-      })
-      .then(response => {
-        if (!response.ok) throw new Error('Failed to create repository');
-        return response.json();
-      })
-      .then(() => {
-        showSuccess('Repository created successfully!');
-        fetchRepositories();
-        document.getElementById('repoName').value = '';
-        document.getElementById('repoDescription').value = '';
-        document.getElementById('repoPrivate').checked = false;
-      })
-      .catch(error => {
-        console.error('Error creating repository:', error);
-        showError('Failed to create repository: ' + error.message);
-      })
-      .finally(() => {
-        btn.disabled = false;
-        btn.textContent = 'Create Repository';
-      });
+  const name = document.getElementById('repoName').value;
+  const description = document.getElementById('repoDescription').value;
+  const isPrivate = document.getElementById('repoPrivate').checked;
+  
+  if (!name) {
+    showError('Please enter a repository name');
+    return;
+  }
+  
+  const btn = document.getElementById('createRepoBtn');
+  btn.disabled = true;
+  btn.textContent = 'Creating...';
+  
+  // Define initial folder structure and files
+  const initialFiles = [
+    {
+      path: 'src/index.js',
+      content: '// Your code here\nconsole.log("Hello from your new repository!");',
+      message: 'Add initial index.js file'
+    },
+    {
+      path: 'README.md',
+      content: `# ${name}\n\n${description || 'A new GitHub repository'}`,
+      message: 'Add README.md'
     }
+  ];
+  
+  fetch('/api/github/repos', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${githubToken}`
+    },
+    body: JSON.stringify({
+      name,
+      description,
+      isPrivate,
+      initialFiles
+    })
+  })
+  .then(response => {
+    if (!response.ok) throw new Error('Failed to create repository');
+    return response.json();
+  })
+  .then(() => {
+    showSuccess('Repository created successfully with initial files!');
+    fetchRepositories();
+    document.getElementById('repoName').value = '';
+    document.getElementById('repoDescription').value = '';
+    document.getElementById('repoPrivate').checked = false;
+  })
+  .catch(error => {
+    console.error('Error creating repository:', error);
+    showError('Failed to create repository: ' + error.message);
+  })
+  .finally(() => {
+    btn.disabled = false;
+    btn.textContent = 'Create Repository';
+  });
+}
     
     function loadRepoForEditor(repoName) {
       currentRepo = repoName;

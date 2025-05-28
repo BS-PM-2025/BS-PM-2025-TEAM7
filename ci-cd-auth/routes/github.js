@@ -248,7 +248,7 @@ router.get('/repos', async (req, res) => {
 // Create new repository
 router.post('/repos', async (req, res) => {
   try {
-    const { name, description, isPrivate } = req.body;
+    const { name, description, isPrivate, initialFiles } = req.body;
     
     // Get token from Authorization header
     const authHeader = req.headers.authorization;
@@ -258,6 +258,7 @@ router.post('/repos', async (req, res) => {
     
     const token = authHeader.split(' ')[1];
 
+    // First create the repository
     const repoResponse = await axios.post('https://api.github.com/user/repos', {
       name,
       description,
@@ -269,6 +270,35 @@ router.post('/repos', async (req, res) => {
         'User-Agent': 'GitHub-OAuth-App'
       }
     });
+
+    // If initial files are provided, create them
+    if (initialFiles && initialFiles.length > 0) {
+      const owner = repoResponse.data.owner.login;
+      const repo = repoResponse.data.name;
+      
+      // Create each initial file
+      for (const file of initialFiles) {
+        try {
+          await axios.put(
+            `https://api.github.com/repos/${owner}/${repo}/contents/${file.path}`,
+            {
+              message: file.message || 'Initial commit',
+              content: Buffer.from(file.content).toString('base64')
+            },
+            {
+              headers: { 
+                Authorization: `token ${token}`,
+                Accept: 'application/vnd.github.v3+json',
+                'User-Agent': 'GitHub-OAuth-App'
+              }
+            }
+          );
+        } catch (fileError) {
+          console.error(`Error creating initial file ${file.path}:`, fileError.message);
+          // Continue with other files even if one fails
+        }
+      }
+    }
 
     res.json(repoResponse.data);
   } catch (err) {
