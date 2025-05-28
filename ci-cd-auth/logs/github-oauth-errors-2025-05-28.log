@@ -1,0 +1,434 @@
+{
+  "id": "8rpwqll8q94",
+  "timestamp": "2025-05-28T14:01:04.234Z",
+  "context": {
+    "phase": "create_repository",
+    "repoName": "asdsadsad"
+  },
+  "message": "Request failed with status code 422",
+  "stack": "AxiosError: Request failed with status code 422\n    at settle (C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:2049:12)\n    at IncomingMessage.handleStreamEnd (C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:3166:11)\n    at IncomingMessage.emit (node:events:530:35)\n    at endReadableNT (node:internal/streams/readable:1698:12)\n    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)\n    at Axios.request (C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:4276:41)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\routes\\github.js:261:26",
+  "status": 422,
+  "statusText": "Unprocessable Entity",
+  "data": {
+    "message": "Repository creation failed.",
+    "errors": [
+      {
+        "resource": "Repository",
+        "code": "custom",
+        "field": "name",
+        "message": "name already exists on this account"
+      }
+    ],
+    "documentation_url": "https://docs.github.com/rest/repos/repos#create-a-repository-for-the-authenticated-user",
+    "status": "422"
+  },
+  "headers": {
+    "date": "Wed, 28 May 2025 14:01:04 GMT",
+    "content-type": "application/json; charset=utf-8",
+    "content-length": "282",
+    "x-oauth-scopes": "repo",
+    "x-accepted-oauth-scopes": "public_repo, repo",
+    "x-oauth-client-id": "Ov23liqmVRU1aVroq3Wj",
+    "x-github-media-type": "github.v3; format=json",
+    "x-github-api-version-selected": "2022-11-28",
+    "x-ratelimit-limit": "5000",
+    "x-ratelimit-remaining": "4969",
+    "x-ratelimit-reset": "1748441069",
+    "x-ratelimit-used": "31",
+    "x-ratelimit-resource": "core",
+    "access-control-expose-headers": "ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Used, X-RateLimit-Resource, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type, X-GitHub-SSO, X-GitHub-Request-Id, Deprecation, Sunset",
+    "access-control-allow-origin": "*",
+    "strict-transport-security": "max-age=31536000; includeSubdomains; preload",
+    "x-frame-options": "deny",
+    "x-content-type-options": "nosniff",
+    "x-xss-protection": "0",
+    "referrer-policy": "origin-when-cross-origin, strict-origin-when-cross-origin",
+    "content-security-policy": "default-src 'none'",
+    "vary": "Accept-Encoding, Accept, X-Requested-With",
+    "server": "github.com",
+    "x-github-request-id": "0ADE:37B6DB:1AB1A2:361A1E:6837171B"
+  },
+  "requestUrl": "https://api.github.com/user/repos",
+  "requestMethod": "post",
+  "requestHeaders": {
+    "Accept": "application/vnd.github.v3+json",
+    "Content-Type": "application/json",
+    "Authorization": "[REDACTED]",
+    "User-Agent": "GitHub-OAuth-App",
+    "Content-Length": "64",
+    "Accept-Encoding": "gzip, compress, deflate, br"
+  }
+}
+
+{
+  "id": "lh6dh0lrtp",
+  "timestamp": "2025-05-28T14:01:07.525Z",
+  "context": {
+    "phase": "create_repository",
+    "repoName": "asdsadsad"
+  },
+  "message": "Request failed with status code 422",
+  "stack": "AxiosError: Request failed with status code 422\n    at settle (C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:2049:12)\n    at IncomingMessage.handleStreamEnd (C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:3166:11)\n    at IncomingMessage.emit (node:events:530:35)\n    at endReadableNT (node:internal/streams/readable:1698:12)\n    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)\n    at Axios.request (C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:4276:41)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\routes\\github.js:261:26",
+  "status": 422,
+  "statusText": "Unprocessable Entity",
+  "data": {
+    "message": "Repository creation failed.",
+    "errors": [
+      {
+        "resource": "Repository",
+        "code": "custom",
+        "field": "name",
+        "message": "name already exists on this account"
+      }
+    ],
+    "documentation_url": "https://docs.github.com/rest/repos/repos#create-a-repository-for-the-authenticated-user",
+    "status": "422"
+  },
+  "headers": {
+    "date": "Wed, 28 May 2025 14:01:07 GMT",
+    "content-type": "application/json; charset=utf-8",
+    "content-length": "282",
+    "x-oauth-scopes": "repo",
+    "x-accepted-oauth-scopes": "public_repo, repo",
+    "x-oauth-client-id": "Ov23liqmVRU1aVroq3Wj",
+    "x-github-media-type": "github.v3; format=json",
+    "x-github-api-version-selected": "2022-11-28",
+    "x-ratelimit-limit": "5000",
+    "x-ratelimit-remaining": "4968",
+    "x-ratelimit-reset": "1748441069",
+    "x-ratelimit-used": "32",
+    "x-ratelimit-resource": "core",
+    "access-control-expose-headers": "ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Used, X-RateLimit-Resource, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type, X-GitHub-SSO, X-GitHub-Request-Id, Deprecation, Sunset",
+    "access-control-allow-origin": "*",
+    "strict-transport-security": "max-age=31536000; includeSubdomains; preload",
+    "x-frame-options": "deny",
+    "x-content-type-options": "nosniff",
+    "x-xss-protection": "0",
+    "referrer-policy": "origin-when-cross-origin, strict-origin-when-cross-origin",
+    "content-security-policy": "default-src 'none'",
+    "vary": "Accept-Encoding, Accept, X-Requested-With",
+    "server": "github.com",
+    "x-github-request-id": "0ADE:37B6DB:1AB21F:361AE9:68371720"
+  },
+  "requestUrl": "https://api.github.com/user/repos",
+  "requestMethod": "post",
+  "requestHeaders": {
+    "Accept": "application/vnd.github.v3+json",
+    "Content-Type": "application/json",
+    "Authorization": "[REDACTED]",
+    "User-Agent": "GitHub-OAuth-App",
+    "Content-Length": "63",
+    "Accept-Encoding": "gzip, compress, deflate, br"
+  }
+}
+
+{
+  "id": "mcudi8u2etf",
+  "timestamp": "2025-05-28T14:01:08.770Z",
+  "context": {
+    "phase": "create_repository",
+    "repoName": "asdsadsad"
+  },
+  "message": "Request failed with status code 422",
+  "stack": "AxiosError: Request failed with status code 422\n    at settle (C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:2049:12)\n    at IncomingMessage.handleStreamEnd (C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:3166:11)\n    at IncomingMessage.emit (node:events:530:35)\n    at endReadableNT (node:internal/streams/readable:1698:12)\n    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)\n    at Axios.request (C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:4276:41)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\routes\\github.js:261:26",
+  "status": 422,
+  "statusText": "Unprocessable Entity",
+  "data": {
+    "message": "Repository creation failed.",
+    "errors": [
+      {
+        "resource": "Repository",
+        "code": "custom",
+        "field": "name",
+        "message": "name already exists on this account"
+      }
+    ],
+    "documentation_url": "https://docs.github.com/rest/repos/repos#create-a-repository-for-the-authenticated-user",
+    "status": "422"
+  },
+  "headers": {
+    "date": "Wed, 28 May 2025 14:01:08 GMT",
+    "content-type": "application/json; charset=utf-8",
+    "content-length": "282",
+    "x-oauth-scopes": "repo",
+    "x-accepted-oauth-scopes": "public_repo, repo",
+    "x-oauth-client-id": "Ov23liqmVRU1aVroq3Wj",
+    "x-github-media-type": "github.v3; format=json",
+    "x-github-api-version-selected": "2022-11-28",
+    "x-ratelimit-limit": "5000",
+    "x-ratelimit-remaining": "4967",
+    "x-ratelimit-reset": "1748441069",
+    "x-ratelimit-used": "33",
+    "x-ratelimit-resource": "core",
+    "access-control-expose-headers": "ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Used, X-RateLimit-Resource, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type, X-GitHub-SSO, X-GitHub-Request-Id, Deprecation, Sunset",
+    "access-control-allow-origin": "*",
+    "strict-transport-security": "max-age=31536000; includeSubdomains; preload",
+    "x-frame-options": "deny",
+    "x-content-type-options": "nosniff",
+    "x-xss-protection": "0",
+    "referrer-policy": "origin-when-cross-origin, strict-origin-when-cross-origin",
+    "content-security-policy": "default-src 'none'",
+    "vary": "Accept-Encoding, Accept, X-Requested-With",
+    "server": "github.com",
+    "x-github-request-id": "0ADE:37B6DB:1AB25E:361B4A:68371723"
+  },
+  "requestUrl": "https://api.github.com/user/repos",
+  "requestMethod": "post",
+  "requestHeaders": {
+    "Accept": "application/vnd.github.v3+json",
+    "Content-Type": "application/json",
+    "Authorization": "[REDACTED]",
+    "User-Agent": "GitHub-OAuth-App",
+    "Content-Length": "63",
+    "Accept-Encoding": "gzip, compress, deflate, br"
+  }
+}
+
+{
+  "id": "mda9fefzzd",
+  "timestamp": "2025-05-28T14:01:09.632Z",
+  "context": {
+    "phase": "create_repository",
+    "repoName": "asdsadsad"
+  },
+  "message": "Request failed with status code 422",
+  "stack": "AxiosError: Request failed with status code 422\n    at settle (C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:2049:12)\n    at IncomingMessage.handleStreamEnd (C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:3166:11)\n    at IncomingMessage.emit (node:events:530:35)\n    at endReadableNT (node:internal/streams/readable:1698:12)\n    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)\n    at Axios.request (C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:4276:41)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\routes\\github.js:261:26",
+  "status": 422,
+  "statusText": "Unprocessable Entity",
+  "data": {
+    "message": "Repository creation failed.",
+    "errors": [
+      {
+        "resource": "Repository",
+        "code": "custom",
+        "field": "name",
+        "message": "name already exists on this account"
+      }
+    ],
+    "documentation_url": "https://docs.github.com/rest/repos/repos#create-a-repository-for-the-authenticated-user",
+    "status": "422"
+  },
+  "headers": {
+    "date": "Wed, 28 May 2025 14:01:09 GMT",
+    "content-type": "application/json; charset=utf-8",
+    "content-length": "282",
+    "x-oauth-scopes": "repo",
+    "x-accepted-oauth-scopes": "public_repo, repo",
+    "x-oauth-client-id": "Ov23liqmVRU1aVroq3Wj",
+    "x-github-media-type": "github.v3; format=json",
+    "x-github-api-version-selected": "2022-11-28",
+    "x-ratelimit-limit": "5000",
+    "x-ratelimit-remaining": "4966",
+    "x-ratelimit-reset": "1748441069",
+    "x-ratelimit-used": "34",
+    "x-ratelimit-resource": "core",
+    "access-control-expose-headers": "ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Used, X-RateLimit-Resource, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type, X-GitHub-SSO, X-GitHub-Request-Id, Deprecation, Sunset",
+    "access-control-allow-origin": "*",
+    "strict-transport-security": "max-age=31536000; includeSubdomains; preload",
+    "x-frame-options": "deny",
+    "x-content-type-options": "nosniff",
+    "x-xss-protection": "0",
+    "referrer-policy": "origin-when-cross-origin, strict-origin-when-cross-origin",
+    "content-security-policy": "default-src 'none'",
+    "vary": "Accept-Encoding, Accept, X-Requested-With",
+    "server": "github.com",
+    "x-github-request-id": "0ADE:37B6DB:1AB28A:361B87:68371724"
+  },
+  "requestUrl": "https://api.github.com/user/repos",
+  "requestMethod": "post",
+  "requestHeaders": {
+    "Accept": "application/vnd.github.v3+json",
+    "Content-Type": "application/json",
+    "Authorization": "[REDACTED]",
+    "User-Agent": "GitHub-OAuth-App",
+    "Content-Length": "63",
+    "Accept-Encoding": "gzip, compress, deflate, br"
+  }
+}
+
+{
+  "id": "h6huyx66dp9",
+  "timestamp": "2025-05-28T14:01:10.139Z",
+  "context": {
+    "phase": "create_repository",
+    "repoName": "asdsadsad"
+  },
+  "message": "Request failed with status code 422",
+  "stack": "AxiosError: Request failed with status code 422\n    at settle (C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:2049:12)\n    at IncomingMessage.handleStreamEnd (C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:3166:11)\n    at IncomingMessage.emit (node:events:530:35)\n    at endReadableNT (node:internal/streams/readable:1698:12)\n    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)\n    at Axios.request (C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:4276:41)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\routes\\github.js:261:26",
+  "status": 422,
+  "statusText": "Unprocessable Entity",
+  "data": {
+    "message": "Repository creation failed.",
+    "errors": [
+      {
+        "resource": "Repository",
+        "code": "custom",
+        "field": "name",
+        "message": "name already exists on this account"
+      }
+    ],
+    "documentation_url": "https://docs.github.com/rest/repos/repos#create-a-repository-for-the-authenticated-user",
+    "status": "422"
+  },
+  "headers": {
+    "date": "Wed, 28 May 2025 14:01:10 GMT",
+    "content-type": "application/json; charset=utf-8",
+    "content-length": "282",
+    "x-oauth-scopes": "repo",
+    "x-accepted-oauth-scopes": "public_repo, repo",
+    "x-oauth-client-id": "Ov23liqmVRU1aVroq3Wj",
+    "x-github-media-type": "github.v3; format=json",
+    "x-github-api-version-selected": "2022-11-28",
+    "x-ratelimit-limit": "5000",
+    "x-ratelimit-remaining": "4965",
+    "x-ratelimit-reset": "1748441069",
+    "x-ratelimit-used": "35",
+    "x-ratelimit-resource": "core",
+    "access-control-expose-headers": "ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Used, X-RateLimit-Resource, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type, X-GitHub-SSO, X-GitHub-Request-Id, Deprecation, Sunset",
+    "access-control-allow-origin": "*",
+    "strict-transport-security": "max-age=31536000; includeSubdomains; preload",
+    "x-frame-options": "deny",
+    "x-content-type-options": "nosniff",
+    "x-xss-protection": "0",
+    "referrer-policy": "origin-when-cross-origin, strict-origin-when-cross-origin",
+    "content-security-policy": "default-src 'none'",
+    "vary": "Accept-Encoding, Accept, X-Requested-With",
+    "server": "github.com",
+    "x-github-request-id": "0ADE:37B6DB:1AB29C:361B9E:68371725"
+  },
+  "requestUrl": "https://api.github.com/user/repos",
+  "requestMethod": "post",
+  "requestHeaders": {
+    "Accept": "application/vnd.github.v3+json",
+    "Content-Type": "application/json",
+    "Authorization": "[REDACTED]",
+    "User-Agent": "GitHub-OAuth-App",
+    "Content-Length": "63",
+    "Accept-Encoding": "gzip, compress, deflate, br"
+  }
+}
+
+{
+  "id": "t3mwe66shg",
+  "timestamp": "2025-05-28T14:01:10.709Z",
+  "context": {
+    "phase": "create_repository",
+    "repoName": "asdsadsad"
+  },
+  "message": "Request failed with status code 422",
+  "stack": "AxiosError: Request failed with status code 422\n    at settle (C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:2049:12)\n    at IncomingMessage.handleStreamEnd (C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:3166:11)\n    at IncomingMessage.emit (node:events:530:35)\n    at endReadableNT (node:internal/streams/readable:1698:12)\n    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)\n    at Axios.request (C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:4276:41)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\routes\\github.js:261:26",
+  "status": 422,
+  "statusText": "Unprocessable Entity",
+  "data": {
+    "message": "Repository creation failed.",
+    "errors": [
+      {
+        "resource": "Repository",
+        "code": "custom",
+        "field": "name",
+        "message": "name already exists on this account"
+      }
+    ],
+    "documentation_url": "https://docs.github.com/rest/repos/repos#create-a-repository-for-the-authenticated-user",
+    "status": "422"
+  },
+  "headers": {
+    "date": "Wed, 28 May 2025 14:01:10 GMT",
+    "content-type": "application/json; charset=utf-8",
+    "content-length": "282",
+    "x-oauth-scopes": "repo",
+    "x-accepted-oauth-scopes": "public_repo, repo",
+    "x-oauth-client-id": "Ov23liqmVRU1aVroq3Wj",
+    "x-github-media-type": "github.v3; format=json",
+    "x-github-api-version-selected": "2022-11-28",
+    "x-ratelimit-limit": "5000",
+    "x-ratelimit-remaining": "4964",
+    "x-ratelimit-reset": "1748441069",
+    "x-ratelimit-used": "36",
+    "x-ratelimit-resource": "core",
+    "access-control-expose-headers": "ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Used, X-RateLimit-Resource, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type, X-GitHub-SSO, X-GitHub-Request-Id, Deprecation, Sunset",
+    "access-control-allow-origin": "*",
+    "strict-transport-security": "max-age=31536000; includeSubdomains; preload",
+    "x-frame-options": "deny",
+    "x-content-type-options": "nosniff",
+    "x-xss-protection": "0",
+    "referrer-policy": "origin-when-cross-origin, strict-origin-when-cross-origin",
+    "content-security-policy": "default-src 'none'",
+    "vary": "Accept-Encoding, Accept, X-Requested-With",
+    "server": "github.com",
+    "x-github-request-id": "0ADE:37B6DB:1AB2B1:361BC9:68371726"
+  },
+  "requestUrl": "https://api.github.com/user/repos",
+  "requestMethod": "post",
+  "requestHeaders": {
+    "Accept": "application/vnd.github.v3+json",
+    "Content-Type": "application/json",
+    "Authorization": "[REDACTED]",
+    "User-Agent": "GitHub-OAuth-App",
+    "Content-Length": "63",
+    "Accept-Encoding": "gzip, compress, deflate, br"
+  }
+}
+
+{
+  "id": "evvt3771d4n",
+  "timestamp": "2025-05-28T14:01:12.551Z",
+  "context": {
+    "phase": "create_repository",
+    "repoName": "asdsadsad"
+  },
+  "message": "Request failed with status code 422",
+  "stack": "AxiosError: Request failed with status code 422\n    at settle (C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:2049:12)\n    at IncomingMessage.handleStreamEnd (C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:3166:11)\n    at IncomingMessage.emit (node:events:530:35)\n    at endReadableNT (node:internal/streams/readable:1698:12)\n    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)\n    at Axios.request (C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:4276:41)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\routes\\github.js:261:26",
+  "status": 422,
+  "statusText": "Unprocessable Entity",
+  "data": {
+    "message": "Repository creation failed.",
+    "errors": [
+      {
+        "resource": "Repository",
+        "code": "custom",
+        "field": "name",
+        "message": "name already exists on this account"
+      }
+    ],
+    "documentation_url": "https://docs.github.com/rest/repos/repos#create-a-repository-for-the-authenticated-user",
+    "status": "422"
+  },
+  "headers": {
+    "date": "Wed, 28 May 2025 14:01:12 GMT",
+    "content-type": "application/json; charset=utf-8",
+    "content-length": "282",
+    "x-oauth-scopes": "repo",
+    "x-accepted-oauth-scopes": "public_repo, repo",
+    "x-oauth-client-id": "Ov23liqmVRU1aVroq3Wj",
+    "x-github-media-type": "github.v3; format=json",
+    "x-github-api-version-selected": "2022-11-28",
+    "x-ratelimit-limit": "5000",
+    "x-ratelimit-remaining": "4963",
+    "x-ratelimit-reset": "1748441069",
+    "x-ratelimit-used": "37",
+    "x-ratelimit-resource": "core",
+    "access-control-expose-headers": "ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Used, X-RateLimit-Resource, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type, X-GitHub-SSO, X-GitHub-Request-Id, Deprecation, Sunset",
+    "access-control-allow-origin": "*",
+    "strict-transport-security": "max-age=31536000; includeSubdomains; preload",
+    "x-frame-options": "deny",
+    "x-content-type-options": "nosniff",
+    "x-xss-protection": "0",
+    "referrer-policy": "origin-when-cross-origin, strict-origin-when-cross-origin",
+    "content-security-policy": "default-src 'none'",
+    "vary": "Accept-Encoding, Accept, X-Requested-With",
+    "server": "github.com",
+    "x-github-request-id": "0ADE:37B6DB:1AB30C:361C4D:68371726"
+  },
+  "requestUrl": "https://api.github.com/user/repos",
+  "requestMethod": "post",
+  "requestHeaders": {
+    "Accept": "application/vnd.github.v3+json",
+    "Content-Type": "application/json",
+    "Authorization": "[REDACTED]",
+    "User-Agent": "GitHub-OAuth-App",
+    "Content-Length": "63",
+    "Accept-Encoding": "gzip, compress, deflate, br"
+  }
+}
+

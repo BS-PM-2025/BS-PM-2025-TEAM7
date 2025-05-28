@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>GitHub Repository Management</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f6f8fa;
+      color: #24292e;
+      line-height: 1.5;
+      padding: 40px 20px;
+    }
+    
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      background: #fff;
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+    
+    h1 {
+      color: #657EEF;
+      margin-bottom: 20px;
+    }
+    
+    .btn {
+      background: #657EEF;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      margin-top: 10px;
+    }
+    
+    .btn:hover {
+      background: #7a88d1;
+    }
+    
+    .btn-secondary {
+      background: #6c757d;
+    }
+    
+    .btn-secondary:hover {
+      background: #5a6268;
+    }
+    
+    .repo-list {
+      margin-top: 30px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+    
+    .repo-item {
+      padding: 20px;
+      border: 1px solid #e1e4e8;
+      border-radius: 6px;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .repo-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: auto;
+      padding-top: 15px;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    input, textarea, select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #d1d5da;
+      border-radius: 6px;
+      font-family: 'Inter', sans-serif;
+    }
+    
+    textarea.code-editor {
+      min-height: 300px;
+      font-family: 'Courier New', monospace;
+      white-space: pre;
+      overflow-x: auto;
+    }
+    
+    .file-explorer {
+      margin-top: 30px;
+      border: 1px solid #e1e4e8;
+      border-radius: 6px;
+      padding: 15px;
+    }
+    
+    .file-item {
+      padding: 8px 12px;
+      cursor: pointer;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+    }
+    
+    .file-item:hover {
+      background: #f6f8fa;
+    }
+    
+    .file-item.file {
+      padding-left: 30px;
+    }
+    
+    .file-item::before {
+      content: attr(data-icon);
+      margin-right: 8px;
+    }
+    
+    .file-content {
+      margin-top: 20px;
+      border: 1px solid #e1e4e8;
+      border-radius: 6px;
+      padding: 15px;
+      background: #f6f8fa;
+    }
+    
+    .tabs {
+      display: flex;
+      border-bottom: 1px solid #e1e4e8;
+      margin-bottom: 20px;
+    }
+    
+    .tab {
+      padding: 10px 20px;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+    }
+    
+    .tab.active {
+      border-bottom: 2px solid #657EEF;
+      font-weight: 600;
+    }
+    
+    .tab-content {
+      display: none;
+    }
+    
+    .tab-content.active {
+      display: block;
+    }
+    
+    .empty-state {
+      text-align: center;
+      padding: 40px;
+      color: #6a737d;
+    }
+    
+    .icon {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+    
+    .alert {
+      padding: 15px;
+      margin-bottom: 20px;
+      border-radius: 6px;
+      color: #721c24;
+      background-color: #f8d7da;
+      border: 1px solid #f5c6cb;
+    }
+    
+    .alert.success {
+      color: #155724;
+      background-color: #d4edda;
+      border: 1px solid #c3e6cb;
+    }
+    
+    .alert.warning {
+      color: #856404;
+      background-color: #fff3cd;
+      border: 1px solid #ffeeba;
+    }
+    
+    .alert.info {
+      color: #0c5460;
+      background-color: #d1ecf1;
+      border: 1px solid #bee5eb;
+    }
+    
+    .error-details {
+      margin-top: 10px;
+      font-size: 12px;
+      color: #6a737d;
+    }
+    
+    .diagnostic-section {
+      margin-top: 20px;
+      padding: 15px;
+      border: 1px solid #e1e4e8;
+      border-radius: 6px;
+      background-color: #f6f8fa;
+    }
+    
+    .diagnostic-btn {
+      background: #6c757d;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 8px 15px;
+      font-size: 14px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    
+    .diagnostic-results {
+      margin-top: 15px;
+      font-family: 'Courier New', monospace;
+      white-space: pre-wrap;
+      font-size: 12px;
+      max-height: 200px;
+      overflow-y: auto;
+      padding: 10px;
+      background-color: #f1f1f1;
+      border-radius: 4px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>GitHub Repository Management</h1>
+    
+    <div id="errorAlert" class="alert" style="display: none;"></div>
+    <div id="successAlert" class="alert success" style="display: none;"></div>
+    
+    <div id="githubAuth" class="empty-state" style="display: none;">
+      <div class="icon">🔒</div>
+      <p>Connect your GitHub account to manage repositories</p>
+      <button class="btn" id="connectGitHubBtn">Connect GitHub Account</button>
+      
+      <div class="diagnostic-section">
+        <h3>Troubleshooting</h3>
+        <p>If you're having trouble connecting, run a diagnostic check:</p>
+        <button class="diagnostic-btn" id="runDiagnosticBtn">Run Diagnostic</button>
+        <div id="diagnosticResults" class="diagnostic-results"></div>
+      </div>
+    </div>
+    
+    <div id="repoManagement" style="display: none;">
+      <div class="tabs">
+        <div class="tab active" data-tab="repos">Repositories</div>
+        <div class="tab" data-tab="editor">Code Editor</div>
+        <div class="tab" data-tab="upload">Upload Repository</div>
+      </div>
+      
+      <div class="tab-content active" id="repos-tab">
+        <div class="form-group">
+          <h2>Create New Repository</h2>
+          <input type="text" id="repoName" placeholder="Repository name">
+        </div>
+        <div class="form-group">
+          <textarea id="repoDescription" placeholder="Description"></textarea>
+        </div>
+        <div class="form-group">
+          <label>
+            <input type="checkbox" id="repoPrivate"> Private repository
+          </label>
+        </div>
+        <button class="btn" id="createRepoBtn">Create Repository</button>
+        
+        <h2 style="margin-top: 40px;">Your Repositories</h2>
+        <div id="repoList" class="repo-list"></div>
+      </div>
+      
+      <div class="tab-content" id="editor-tab">
+        <div class="form-group">
+          <select id="repoSelect">
+            <option value="">Select a repository</option>
+          </select>
+        </div>
+        
+        <div id="fileExplorer" class="file-explorer" style="display: none;">
+          <h3 id="currentRepoName"></h3>
+          <div id="fileTree" class="empty-state">
+            <div class="icon">📁</div>
+            <p>Select a repository to view files</p>
+          </div>
+        </div>
+        
+        <div id="fileEditor" class="file-content" style="display: none;">
+          <div class="form-group">
+            <input type="text" id="filePath" placeholder="File path (e.g., src/index.js)">
+          </div>
+          <div class="form-group">
+            <textarea id="fileContent" class="code-editor" placeholder="File content"></textarea>
+          </div>
+          <div class="form-group">
+            <input type="text" id="commitMessage" placeholder="Commit message (e.g., Update file)">
+          </div>
+          <div class="form-group" style="display: flex; gap: 10px;">
+            <button class="btn" id="saveFileBtn">Commit Changes</button>
+            <button class="btn btn-secondary" id="newFileBtn">New File</button>
+          </div>
+        </div>
+      </div>
+      
+      <div class="tab-content" id="upload-tab">
+        <div class="form-group">
+          <h2>Upload Repository</h2>
+          <p>Upload your local repository to GitHub</p>
+        </div>
+        <div class="form-group">
+          <input type="text" id="uploadRepoName" placeholder="Repository name">
+        </div>
+        <div class="form-group">
+          <textarea id="uploadRepoDescription" placeholder="Description"></textarea>
+        </div>
+        <div class="form-group">
+          <label>
+            <input type="checkbox" id="uploadRepoPrivate"> Private repository
+          </label>
+        </div>
+        <div class="form-group">
+          <input type="file" id="repoZipFile" accept=".zip">
+          <p class="help-text">Select a ZIP file containing your repository</p>
+        </div>
+        <button class="btn" id="uploadRepoBtn">Upload Repository</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // GitHub credentials will be stored in localStorage
+    let githubToken = localStorage.getItem("githubToken");
+    let githubUsername = localStorage.getItem("githubUsername");
+    
+    document.addEventListener('DOMContentLoaded', () => {
+      // Check for URL parameters that indicate OAuth status
+      const urlParams = new URLSearchParams(window.location.search);
+      const error = urlParams.get('error');
+      const errorId = urlParams.get('id');
+      const success = urlParams.get('success');
+      const token = urlParams.get('token');
+      const username = urlParams.get('username');
+      
+      // If we received GitHub credentials in the URL, save them
+      if (success === 'true' && token && username) {
+        localStorage.setItem("githubToken", token);
+        localStorage.setItem("githubUsername", username);
+        githubToken = token;
+        githubUsername = username;
+        
+        showSuccess("GitHub account connected successfully!");
+        
+        // Clear the URL parameters
+        window.history.replaceState({}, document.title, window.location.pathname);
+      } else if (error) {
+        let errorMessage = getErrorMessage(error);
+        if (errorId) {
+          errorMessage += `<div class="error-details">Error ID: ${errorId} (Please provide this ID when reporting issues)</div>`;
+        }
+        showError(errorMessage, true);
+        // Clear the URL parameters
+        window.history.replaceState({}, document.title, window.location.pathname);
+      }
+      
+      // Tab switching
+      document.querySelectorAll('.tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+          document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+          document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+          
+          tab.classList.add('active');
+          document.getElementById(`${tab.dataset.tab}-tab`).classList.add('active');
+        });
+      });
+      
+      // Button events
+      document.getElementById('connectGitHubBtn').addEventListener('click', connectGitHub);
+      document.getElementById('createRepoBtn').addEventListener('click', createRepo);
+      document.getElementById('saveFileBtn').addEventListener('click', saveFile);
+      document.getElementById('newFileBtn').addEventListener('click', newFile);
+      document.getElementById('repoSelect').addEventListener('change', loadRepoContents);
+      document.getElementById('uploadRepoBtn').addEventListener('click', uploadRepository);
+      document.getElementById('runDiagnosticBtn').addEventListener('click', runDiagnostic);
+      
+      checkGitHubConnection();
+    });
+    
+    function getErrorMessage(errorCode) {
+      const errorMessages = {
+        'missing_code': 'Authorization code missing. Please try connecting again.',
+        'no_token': 'Failed to obtain access token from GitHub. Please try again.',
+        'db_update_failed': 'Failed to update user profile with GitHub credentials.',
+        'network_error': 'Network error occurred while connecting to GitHub.',
+        'api_error_401': 'Authentication failed. Please check your GitHub credentials.',
+        'api_error_403': 'Access forbidden. Please check your GitHub permissions.',
+        'api_error_404': 'Resource not found on GitHub.',
+        'api_error_422': 'GitHub could not process the request. Please try again.',
+        'api_error_500': 'GitHub server error. Please try again later.',
+        'invalid_state': 'Security validation failed. Please try again.',
+        'github_error': 'GitHub returned an error during authorization.',
+        'server_config': 'Server configuration error. Please contact support.',
+        'no_user_id': 'User identification failed. Please try logging in again.',
+        'unknown': 'An unknown error occurred during GitHub authentication.'
+      };
+      
+      return errorMessages[errorCode] || 'Failed to connect to GitHub. Please try again.';
+    }
+    
+    function showError(message, isHtml = false) {
+      const errorAlert = document.getElementById('errorAlert');
+      if (isHtml) {
+        errorAlert.innerHTML = message;
+      } else {
+        errorAlert.textContent = message;
+      }
+      errorAlert.style.display = 'block';
+      
+      // Hide after 30 seconds for errors with IDs (to give time to copy the ID)
+      const timeout = message.includes('Error ID') ? 30000 : 10000;
+      setTimeout(() => {
+        errorAlert.style.display = 'none';
+      }, timeout);
+    }
+    
+    function showSuccess(message) {
+      const successAlert = document.getElementById('successAlert');
+      successAlert.textContent = message;
+      successAlert.style.display = 'block';
+      
+      // Hide after 5 seconds
+      setTimeout(() => {
+        successAlert.style.display = 'none';
+      }, 5000);
+    }
+    
+    function runDiagnostic() {
+      const diagnosticBtn = document.getElementById('runDiagnosticBtn');
+      const diagnosticResults = document.getElementById('diagnosticResults');
+      
+      diagnosticBtn.disabled = true;
+      diagnosticBtn.textContent = 'Running...';
+      diagnosticResults.textContent = 'Running diagnostic checks...';
+      diagnosticResults.style.display = 'block';
+      
+      fetch('/api/github/diagnostic')
+        .then(response => {
+          if (!response.ok) throw new Error('Failed to run diagnostic');
+          return response.json();
+        })
+        .then(results => {
+          diagnosticResults.textContent = JSON.stringify(results, null, 2);
+          
+          // Analyze results and provide recommendations
+          let recommendations = '\n\n--- RECOMMENDATIONS ---\n';
+          
+          // Check environment variables
+          if (!results.environment.clientIdSet || !results.environment.clientSecretSet || !results.environment.redirectUriSet) {
+            recommendations += '• Server is missing required GitHub OAuth environment variables. Contact administrator.\n';
+          }
+          
+          // Check GitHub API connectivity
+          if (results.connectivity.github && results.connectivity.github.status === 'success') {
+            recommendations += '• GitHub API connection is working correctly.\n';
+          } else {
+            recommendations += '• GitHub API connection failed. Check network connectivity or firewall settings.\n';
+          }
+          
+          // Add recommendations to results
+          diagnosticResults.textContent += recommendations;
+        })
+        .catch(error => {
+          console.error('Diagnostic error:', error);
+          diagnosticResults.textContent = 'Error running diagnostic: ' + error.message;
+        })
+        .finally(() => {
+          diagnosticBtn.disabled = false;
+          diagnosticBtn.textContent = 'Run Diagnostic';
+        });
+    }
+    
+    function checkGitHubConnection() {
+      if (githubToken && githubUsername) {
+        // We have GitHub credentials, verify they're valid
+        fetch('/api/github/connection-status', {
+          headers: {
+            Authorization: `Bearer ${githubToken}`
+          }
+        })
+        .then(response => {
+          if (!response.ok) throw new Error('Failed to check connection status');
+          return response.json();
+        })
+        .then(data => {
+          if (data.connected) {
+            document.getElementById('githubAuth').style.display = 'none';
+            document.getElementById('repoManagement').style.display = 'block';
+            fetchRepositories();
+          } else if (data.error === 'token_invalid') {
+            // Token is invalid, clear it
+            localStorage.removeItem("githubToken");
+            localStorage.removeItem("githubUsername");
+            githubToken = null;
+            githubUsername = null;
+            
+            showError('Your GitHub token has expired or is invalid. Please reconnect your account.');
+            document.getElementById('githubAuth').style.display = 'block';
+            document.getElementById('repoManagement').style.display = 'none';
+          } else {
+            document.getElementById('githubAuth').style.display = 'block';
+            document.getElementById('repoManagement').style.display = 'none';
+          }
+        })
+        .catch(error => {
+          console.error('Error checking GitHub connection:', error);
+          document.getElementById('githubAuth').style.display = 'block';
+          document.getElementById('repoManagement').style.display = 'none';
+        });
+      } else {
+        // No GitHub credentials, show auth screen
+        document.getElementById('githubAuth').style.display = 'block';
+        document.getElementById('repoManagement').style.display = 'none';
+      }
+    }
+    
+    function connectGitHub() {
+      window.location.href = '/api/github/login';
+    }
+    
+    function fetchRepositories() {
+      fetch('/api/github/repos', {
+        headers: {
+          Authorization: `Bearer ${githubToken}`
+        }
+      })
+      .then(response => {
+        if (!response.ok) throw new Error('Failed to fetch repositories');
+        return response.json();
+      })
+      .then(repos => {
+        const repoList = document.getElementById('repoList');
+        const repoSelect = document.getElementById('repoSelect');
+        
+        repoList.innerHTML = '';
+        repoSelect.innerHTML = '<option value="">Select a repository</option>';
+        
+        if (!repos || repos.length === 0) {
+          repoList.innerHTML = `
+            <div class="empty-state">
+              <div class="icon">📂</div>
+              <p>No repositories found. Create your first one!</p>
+            </div>
+          `;
+          return;
+        }
+        
+        repos.forEach(repo => {
+          // Add to repository list
+          const repoDiv = document.createElement('div');
+          repoDiv.className = 'repo-item';
+          repoDiv.innerHTML = `
+            <h3>${repo.name} ${repo.private ? '🔒' : '🌍'}</h3>
+            <p>${repo.description || 'No description'}</p>
+            <div class="repo-actions">
+              <button class="btn" onclick="loadRepoForEditor('${repo.name}')">Edit Files</button>
+              <a href="${repo.html_url}" target="_blank" class="btn btn-secondary">View on GitHub</a>
+            </div>
+          `;
+          repoList.appendChild(repoDiv);
+          
+          // Add to repository select dropdown
+          const option = document.createElement('option');
+          option.value = repo.name;
+          option.textContent = repo.name;
+          repoSelect.appendChild(option);
+        });
+      })
+      .catch(error => {
+        console.error('Error fetching repositories:', error);
+        document.getElementById('repoList').innerHTML = `
+          <div class="empty-state">
+            <div class="icon">⚠️</div>
+            <p>Failed to load repositories. Please try again.</p>
+          </div>
+        `;
+        showError('Failed to fetch repositories. This could be due to an expired GitHub token. Try reconnecting your GitHub account.');
+      });
+    }
+    
+    function createRepo() {
+      const name = document.getElementById('repoName').value;
+      const description = document.getElementById('repoDescription').value;
+      const isPrivate = document.getElementById('repoPrivate').checked;
+      
+      if (!name) {
+        showError('Please enter a repository name');
+        return;
+      }
+      
+      const btn = document.getElementById('createRepoBtn');
+      btn.disabled = true;
+      btn.textContent = 'Creating...';
+      
+      fetch('/api/github/repos', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${githubToken}`
+        },
+        body: JSON.stringify({
+          name,
+          description,
+          isPrivate
+        })
+      })
+      .then(response => {
+        if (!response.ok) throw new Error('Failed to create repository');
+        return response.json();
+      })
+      .then(() => {
+        showSuccess('Repository created successfully!');
+        fetchRepositories();
+        document.getElementById('repoName').value = '';
+        document.getElementById('repoDescription').value = '';
+        document.getElementById('repoPrivate').checked = false;
+      })
+      .catch(error => {
+        console.error('Error creating repository:', error);
+        showError('Failed to create repository: ' + error.message);
+      })
+      .finally(() => {
+        btn.disabled = false;
+        btn.textContent = 'Create Repository';
+      });
+    }
+    
+    function loadRepoForEditor(repoName) {
+      currentRepo = repoName;
+      document.getElementById('editor-tab').classList.add('active');
+      document.getElementById('repos-tab').classList.remove('active');
+      document.getElementById('upload-tab').classList.remove('active');
+      document.querySelector('.tab[data-tab="editor"]').classList.add('active');
+      document.querySelector('.tab[data-tab="repos"]').classList.remove('active');
+      document.querySelector('.tab[data-tab="upload"]').classList.remove('active');
+      document.getElementById('repoSelect').value = repoName;
+      loadRepoContents();
+    }
+    
+    function loadRepoContents() {
+      const repoName = document.getElementById('repoSelect').value;
+      if (!repoName) {
+        document.getElementById('fileExplorer').style.display = 'none';
+        document.getElementById('fileEditor').style.display = 'none';
+        document.getElementById('fileTree').innerHTML = `
+          <div class="empty-state">
+            <div class="icon">📁</div>
+            <p>Select a repository to view files</p>
+          </div>
+        `;
+        return;
+      }
+      
+      currentRepo = repoName;
+      document.getElementById('currentRepoName').textContent = repoName;
+      
+      fetch(`/api/github/repos/${githubUsername}/${repoName}/contents`, {
+        headers: {
+          Authorization: `Bearer ${githubToken}`
+        }
+      })
+      .then(response => {
+        if (!response.ok) throw new Error('Failed to load repository contents');
+        return response.json();
+      })
+      .then(contents => {
+        renderFileTree(contents);
+        document.getElementById('fileExplorer').style.display = 'block';
+        document.getElementById('fileEditor').style.display = 'none';
+      })
+      .catch(error => {
+        console.error('Error loading repository contents:', error);
+        document.getElementById('fileTree').innerHTML = `
+          <div class="empty-state">
+            <div class="icon">⚠️</div>
+            <p>Failed to load repository contents</p>
+          </div>
+        `;
+        showError('Failed to load repository contents: ' + error.message);
+      });
+    }
+    
+    function renderFileTree(contents, path = '') {
+      const fileTree = document.getElementById('fileTree');
+      
+      if (!contents || contents.length === 0) {
+        fileTree.innerHTML = `
+          <div class="empty-state">
+            <div class="icon">📁</div>
+            <p>This directory is empty</p>
+          </div>
+        `;
+        return;
+      }
+      
+      fileTree.innerHTML = '';
+      
+      // Sort directories first, then files
+      contents.sort((a, b) => {
+        if (a.type === b.type) return a.name.localeCompare(b.name);
+        return a.type === 'dir' ? -1 : 1;
+      });
+      
+      contents.forEach(item => {
+        const fileItem = document.createElement('div');
+        fileItem.className = `file-item ${item.type === 'file' ? 'file' : 'dir'}`;
+        fileItem.dataset.icon = item.type === 'dir' ? '📁' : '📄';
+        fileItem.textContent = item.name;
+        fileItem.onclick = () => {
+          if (item.type === 'dir') {
+            fetch(`/api/github/repos/${githubUsername}/${currentRepo}/contents?path=${item.path}`, {
+              headers: {
+                Authorization: `Bearer ${githubToken}`
+              }
+            })
+            .then(response => {
+              if (!response.ok) throw new Error('Failed to load directory');
+              return response.json();
+            })
+            .then(contents => renderFileTree(contents, item.path))
+            .catch(error => {
+              console.error('Error loading directory:', error);
+              showError('Failed to load directory: ' + error.message);
+            });
+          } else {
+            loadFileContent(item);
+          }
+        };
+        fileTree.appendChild(fileItem);
+      });
+    }
+    
+    function loadFileContent(file) {
+      currentFile = file;
+      document.getElementById('filePath').value = file.path;
+      document.getElementById('commitMessage').value = `Update ${file.name}`;
+      
+      fetch(file.download_url)
+        .then(response => {
+          if (!response.ok) throw new Error('Failed to load file content');
+          return response.text();
+        })
+        .then(content => {
+          document.getElementById('fileContent').value = content;
+          document.getElementById('fileEditor').style.display = 'block';
+        })
+        .catch(error => {
+          console.error('Error loading file content:', error);
+          showError('Failed to load file content: ' + error.message);
+        });
+    }
+    
+    function saveFile() {
+      const path = document.getElementById('filePath').value;
+      const content = document.getElementById('fileContent').value;
+      const message = document.getElementById('commitMessage').value;
+      
+      if (!path || !content || !message) {
+        showError('Please fill in all fields');
+        return;
+      }
+      
+      const btn = document.getElementById('saveFileBtn');
+      btn.disabled = true;
+      btn.textContent = 'Saving...';
+      
+      // If editing an existing file, include the SHA
+      const sha = currentFile ? currentFile.sha : null;
+      
+      fetch(`/api/github/repos/${githubUsername}/${currentRepo}/contents/${path}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${githubToken}`
+        },
+        body: JSON.stringify({
+          content,
+          message,
+          sha
+        })
+      })
+      .then(response => {
+        if (!response.ok) throw new Error('Failed to save file');
+        return response.json();
+      })
+      .then(() => {
+        showSuccess('File saved successfully!');
+        loadRepoContents();
+      })
+      .catch(error => {
+        console.error('Error saving file:', error);
+        showError('Failed to save file: ' + error.message);
+      })
+      .finally(() => {
+        btn.disabled = false;
+        btn.textContent = 'Commit Changes';
+      });
+    }
+    
+    function newFile() {
+      currentFile = null;
+      document.getElementById('filePath').value = '';
+      document.getElementById('fileContent').value = '';
+      document.getElementById('commitMessage').value = 'Add new file';
+      document.getElementById('fileEditor').style.display = 'block';
+    }
+    
+    function uploadRepository() {
+      const name = document.getElementById('uploadRepoName').value;
+      const description = document.getElementById('uploadRepoDescription').value;
+      const isPrivate = document.getElementById('uploadRepoPrivate').checked;
+      const fileInput = document.getElementById('repoZipFile');
+      
+      if (!name || !fileInput.files.length) {
+        showError('Please enter a repository name and select a ZIP file');
+        return;
+      }
+      
+      const btn = document.getElementById('uploadRepoBtn');
+      btn.disabled = true;
+      btn.textContent = 'Uploading...';
+      
+      const formData = new FormData();
+      formData.append('name', name);
+      formData.append('description', description);
+      formData.append('isPrivate', isPrivate);
+      formData.append('zipFile', fileInput.files[0]);
+      
+      fetch('/api/github/upload-repo', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${githubToken}`
+        },
+        body: formData
+      })
+      .then(response => {
+        if (!response.ok) throw new Error('Failed to upload repository');
+        return response.json();
+      })
+      .then(() => {
+        showSuccess('Repository uploaded successfully!');
+        fetchRepositories();
+        document.getElementById('uploadRepoName').value = '';
+        document.getElementById('uploadRepoDescription').value = '';
+        document.getElementById('uploadRepoPrivate').checked = false;
+        fileInput.value = '';
+      })
+      .catch(error => {
+        console.error('Error uploading repository:', error);
+        showError('Failed to upload repository: ' + error.message);
+      })
+      .finally(() => {
+        btn.disabled = false;
+        btn.textContent = 'Upload Repository';
+      });
+    }
+  </script>
+</body>
+</html>

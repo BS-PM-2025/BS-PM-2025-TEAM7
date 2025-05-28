@@ -14,7 +14,7 @@ const userRoutes     = require("./routes/user");
 const progressRoutes = require("./routes/progress");
 const quizRoutes = require("./routes/quiz");
 const chatRoutes = require("./routes/chat");
-
+const githubRouter = require('./routes/github');
 const app  = express();
 const PORT = process.env.PORT || 3000;
 
@@ -37,7 +37,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/progress", progressRoutes);
 app.use("/api", require("./routes/quiz")); // תומך ב־/api/submissions
 app.use("/api/chat", chatRoutes);
-
+app.use('/api/github', githubRouter); 
 // ---------- Frontend Pages ----------
 app.get("/", (req, res) => {
   if (req.session) req.session.destroy(() => {});
@@ -48,7 +48,9 @@ app.get("/", (req, res) => {
 app.get("/login", (req, res) =>
   res.sendFile(path.join(__dirname, "views", "HomePage", "login.html"))
 );
-
+app.get("/student/github", (req, res) =>
+  res.sendFile(path.join(__dirname, "views", "Student", "github.html"))
+);
 app.get("/signup", (req, res) =>
   res.sendFile(path.join(__dirname, "views", "HomePage", "signup.html"))
 );

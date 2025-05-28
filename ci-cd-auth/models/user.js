@@ -21,6 +21,15 @@ const userSchema = new mongoose.Schema({
     enum: ["student", "lecturer", "admin"],
     required: true,
   },
+  githubAccessToken: {
+    type: String,
+    select: false
+  },
+  githubUsername: {
+    type: String,
+    unique: true,
+    sparse: true
+  }
 });
 
 // ✅ Hash password before saving, only if it’s new or changed

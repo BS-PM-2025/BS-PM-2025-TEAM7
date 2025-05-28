@@ -511,7 +511,48 @@
       cursor: pointer;
       margin-top: 10px;
     }
-    
+     .github-container {
+    background: #fff;
+    border-radius: 12px;
+    padding: 30px;
+    margin-bottom: 40px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    border: 1px solid #e1e4e8;
+  }
+  
+  .github-btn {
+    background: #24292e;
+    color: white;
+  }
+  
+  .github-btn:hover {
+    background: #2c3136;
+  }
+  
+  .repo-list {
+    display: grid;
+    gap: 20px;
+  }
+  
+  .repo-item {
+    padding: 20px;
+    border: 1px solid #e1e4e8;
+    border-radius: 6px;
+  }
+  
+  .repo-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+  }
+  
+  .form-input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #d1d5da;
+    border-radius: 6px;
+    margin-bottom: 15px;
+  }
     /* ---------- Empty State ---------- */
     .empty-state {
       text-align: center;
@@ -588,7 +629,34 @@
       <input type="text" id="searchInput" class="search-input" placeholder="Search videos by title...">
       <span class="search-icon">🔍</span>
     </div>
-
+<div id="githubSection" class="github-container" style="display: none;">
+  <h2>GitHub Repository Management</h2>
+  
+  <div class="repo-controls">
+    <button class="btn github-btn" onclick="connectGitHub()" id="connectGitHubBtn">
+      Connect GitHub Account
+    </button>
+    
+    <div id="repoManagement" style="display: none;">
+      <h3>Create New Repository</h3>
+      <div class="form-group">
+        <input type="text" id="repoName" placeholder="Repository name" class="form-input">
+      </div>
+      <div class="form-group">
+        <textarea id="repoDescription" placeholder="Description" class="form-input"></textarea>
+      </div>
+      <div class="form-group">
+        <label>
+          <input type="checkbox" id="repoPrivate"> Private repository
+        </label>
+      </div>
+      <button class="btn github-btn" onclick="createRepo()">Create Repository</button>
+      
+      <h3 style="margin-top: 30px;">Your Repositories</h3>
+      <div id="repoList" class="repo-list"></div>
+    </div>
+  </div>
+</div>
     <!-- Upload Form -->
     <div id="uploadForm" style="display:none" class="upload-container">
       <h2>Upload New Video</h2>
@@ -639,12 +707,113 @@
     let allVideos = [];
 
     /* ---------- Initialize Page ---------- */
-    function init() {
-      setupAuth();
-      setupSearch();
-      fetchVideos();
+  function init() {
+    setupAuth();
+    setupSearch();
+    fetchVideos();
+    
+    if (user?.role === "student") {
+      document.getElementById('githubSection').style.display = 'block';
+      checkGitHubConnection();
     }
+  }
+ function connectGitHub() {
+    window.location.href = '/api/github/login';
+  }
 
+  function checkGitHubConnection() {
+    fetch('/api/users/me', {
+      headers: {
+        Authorization: 'Bearer ' + token
+      }
+    })
+    .then(response => response.json())
+    .then(user => {
+      if (user.githubUsername) {
+        document.getElementById('connectGitHubBtn').style.display = 'none';
+        document.getElementById('repoManagement').style.display = 'block';
+        fetchRepositories();
+      }
+    });
+  }
+
+  function fetchRepositories() {
+    fetch('/api/github/repos', {
+      headers: {
+        Authorization: 'Bearer ' + token
+      }
+    })
+    .then(response => response.json())
+    .then(repos => {
+      const repoList = document.getElementById('repoList');
+      repoList.innerHTML = '';
+      
+      if (repos.length === 0) {
+        repoList.innerHTML = '<p>No repositories found. Create your first one!</p>';
+        return;
+      }
+      
+      repos.forEach(repo => {
+        const repoDiv = document.createElement('div');
+        repoDiv.className = 'repo-item';
+        repoDiv.innerHTML = `
+          <h4>${repo.name} ${repo.private ? '🔒' : '🌍'}</h4>
+          <p>${repo.description || 'No description'}</p>
+          <div class="repo-actions">
+            <button class="btn github-btn" onclick="cloneRepo('${repo.name}')">Clone</button>
+            <a href="${repo.html_url}" target="_blank" class="btn github-btn">View on GitHub</a>
+          </div>
+        `;
+        repoList.appendChild(repoDiv);
+      });
+    });
+  }
+
+  function createRepo() {
+    const name = document.getElementById('repoName').value;
+    const description = document.getElementById('repoDescription').value;
+    const isPrivate = document.getElementById('repoPrivate').checked;
+    
+    if (!name) {
+      alert('Please enter a repository name');
+      return;
+    }
+    
+    fetch('/api/github/repos', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token
+      },
+      body: JSON.stringify({
+        name,
+        description,
+        isPrivate
+      })
+    })
+    .then(response => response.json())
+    .then(() => {
+      alert('Repository created successfully!');
+      fetchRepositories();
+    })
+    .catch(() => {
+      alert('Failed to create repository');
+    });
+  }
+
+  function cloneRepo(repoName) {
+    // This would be more complex in a real implementation
+    // For now, just show the clone URL
+    fetch('/api/users/me', {
+      headers: {
+        Authorization: 'Bearer ' + token
+      }
+    })
+    .then(response => response.json())
+    .then(user => {
+      alert(`To clone this repository, run:\n\ngit clone https://github.com/${user.githubUsername}/${repoName}.git`);
+    });
+  }
     /* ---------- Authentication ---------- */
     function setupAuth() {
       if(token) {
@@ -683,6 +852,7 @@
         navbar.innerHTML += `
           <li><a href="/">Home</a></li>
           <li><a href="/video/courses" class="active">Courses</a></li>
+          <li><a href="/student/github">GitHub</a></li>
           <li><a href="/StudentProfile">Profile</a></li>`;
       }
       
