@@ -4,6 +4,7 @@ const router = express.Router();
 const {
   submitFeedback,
   getAllFeedback,
+  getCourseFeedback,
   updateFeedback,
   deleteFeedback,
 } = require("../controllers/feedbackController");
@@ -21,14 +22,21 @@ router.get(
   getAllFeedback
 );
 
-// 2. Only **students** may submit new feedback
- router.post(
-   "/submit",
-   authenticateToken,
-   submitFeedback
- );
+// 2. Get feedback for a specific course
+router.get(
+  "/course/:courseId",
+  authenticateToken,
+  getCourseFeedback
+);
 
-// 3. Only **lecturers** may edit existing feedback
+// 3. Only **students** may submit new feedback
+router.post(
+  "/submit",
+  authenticateToken,
+  submitFeedback
+);
+
+// 4. Only **lecturers** may edit existing feedback
 router.put(
   "/:id",
   authenticateToken,
@@ -36,7 +44,7 @@ router.put(
   updateFeedback
 );
 
-// 4. Only **lecturers** may delete feedback
+// 5. Only **lecturers** may delete feedback
 router.delete(
   "/:id",
   authenticateToken,
