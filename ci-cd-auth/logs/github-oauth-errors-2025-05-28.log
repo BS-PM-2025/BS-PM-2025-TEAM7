@@ -485,3 +485,1235 @@
   }
 }
 
+{
+  "id": "8fghhe99ai",
+  "timestamp": "2025-05-28T16:07:15.443Z",
+  "context": {
+    "phase": "update_file",
+    "owner": "HasanMosa112345",
+    "repo": "ad",
+    "path": "src"
+  },
+  "message": "Request failed with status code 422",
+  "stack": "AxiosError: Request failed with status code 422\n    at settle (C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:2049:12)\n    at IncomingMessage.handleStreamEnd (C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:3166:11)\n    at IncomingMessage.emit (node:events:530:35)\n    at endReadableNT (node:internal/streams/readable:1698:12)\n    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)\n    at Axios.request (C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:4276:41)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\routes\\github.js:363:22",
+  "status": 422,
+  "statusText": "Unprocessable Entity",
+  "data": {
+    "message": "Invalid request.\n\nFor 'properties/sha', nil is not a string.",
+    "documentation_url": "https://docs.github.com/rest/repos/contents#create-or-update-file-contents",
+    "status": "422"
+  },
+  "headers": {
+    "date": "Wed, 28 May 2025 16:07:15 GMT",
+    "content-type": "application/json; charset=utf-8",
+    "content-length": "188",
+    "x-oauth-scopes": "repo",
+    "x-accepted-oauth-scopes": "",
+    "x-oauth-client-id": "Ov23liqmVRU1aVroq3Wj",
+    "x-github-media-type": "github.v3; format=json",
+    "x-github-api-version-selected": "2022-11-28",
+    "x-ratelimit-limit": "5000",
+    "x-ratelimit-remaining": "4949",
+    "x-ratelimit-reset": "1748451015",
+    "x-ratelimit-used": "51",
+    "x-ratelimit-resource": "core",
+    "access-control-expose-headers": "ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Used, X-RateLimit-Resource, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type, X-GitHub-SSO, X-GitHub-Request-Id, Deprecation, Sunset",
+    "access-control-allow-origin": "*",
+    "strict-transport-security": "max-age=31536000; includeSubdomains; preload",
+    "x-frame-options": "deny",
+    "x-content-type-options": "nosniff",
+    "x-xss-protection": "0",
+    "referrer-policy": "origin-when-cross-origin, strict-origin-when-cross-origin",
+    "content-security-policy": "default-src 'none'",
+    "vary": "Accept-Encoding, Accept, X-Requested-With",
+    "server": "github.com",
+    "x-github-request-id": "0AA8:26DE52:1B70A:340B3:683734B3"
+  },
+  "requestUrl": "https://api.github.com/repos/HasanMosa112345/ad/contents/src",
+  "requestMethod": "put",
+  "requestHeaders": {
+    "Accept": "application/vnd.github.v3+json",
+    "Content-Type": "application/json",
+    "Authorization": "[REDACTED]",
+    "User-Agent": "GitHub-OAuth-App",
+    "Content-Length": "49",
+    "Accept-Encoding": "gzip, compress, deflate, br"
+  }
+}
+
+{
+  "id": "08078ttn4dyw",
+  "timestamp": "2025-05-28T16:07:19.698Z",
+  "context": {
+    "phase": "update_file",
+    "owner": "HasanMosa112345",
+    "repo": "ad",
+    "path": "src"
+  },
+  "message": "Request failed with status code 422",
+  "stack": "AxiosError: Request failed with status code 422\n    at settle (C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:2049:12)\n    at IncomingMessage.handleStreamEnd (C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:3166:11)\n    at IncomingMessage.emit (node:events:530:35)\n    at endReadableNT (node:internal/streams/readable:1698:12)\n    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)\n    at Axios.request (C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:4276:41)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\routes\\github.js:363:22",
+  "status": 422,
+  "statusText": "Unprocessable Entity",
+  "data": {
+    "message": "Invalid request.\n\nFor 'properties/sha', nil is not a string.",
+    "documentation_url": "https://docs.github.com/rest/repos/contents#create-or-update-file-contents",
+    "status": "422"
+  },
+  "headers": {
+    "date": "Wed, 28 May 2025 16:07:19 GMT",
+    "content-type": "application/json; charset=utf-8",
+    "content-length": "188",
+    "x-oauth-scopes": "repo",
+    "x-accepted-oauth-scopes": "",
+    "x-oauth-client-id": "Ov23liqmVRU1aVroq3Wj",
+    "x-github-media-type": "github.v3; format=json",
+    "x-github-api-version-selected": "2022-11-28",
+    "x-ratelimit-limit": "5000",
+    "x-ratelimit-remaining": "4948",
+    "x-ratelimit-reset": "1748451015",
+    "x-ratelimit-used": "52",
+    "x-ratelimit-resource": "core",
+    "access-control-expose-headers": "ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Used, X-RateLimit-Resource, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type, X-GitHub-SSO, X-GitHub-Request-Id, Deprecation, Sunset",
+    "access-control-allow-origin": "*",
+    "strict-transport-security": "max-age=31536000; includeSubdomains; preload",
+    "x-frame-options": "deny",
+    "x-content-type-options": "nosniff",
+    "x-xss-protection": "0",
+    "referrer-policy": "origin-when-cross-origin, strict-origin-when-cross-origin",
+    "content-security-policy": "default-src 'none'",
+    "vary": "Accept-Encoding, Accept, X-Requested-With",
+    "server": "github.com",
+    "x-github-request-id": "0AA8:26DE52:1B760:3416B:683734B3"
+  },
+  "requestUrl": "https://api.github.com/repos/HasanMosa112345/ad/contents/src",
+  "requestMethod": "put",
+  "requestHeaders": {
+    "Accept": "application/vnd.github.v3+json",
+    "Content-Type": "application/json",
+    "Authorization": "[REDACTED]",
+    "User-Agent": "GitHub-OAuth-App",
+    "Content-Length": "49",
+    "Accept-Encoding": "gzip, compress, deflate, br"
+  }
+}
+
+{
+  "id": "9suyhgwsnh5",
+  "timestamp": "2025-05-28T16:07:23.776Z",
+  "context": {
+    "phase": "update_file",
+    "owner": "HasanMosa112345",
+    "repo": "ad",
+    "path": "src"
+  },
+  "message": "Request failed with status code 422",
+  "stack": "AxiosError: Request failed with status code 422\n    at settle (C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:2049:12)\n    at IncomingMessage.handleStreamEnd (C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:3166:11)\n    at IncomingMessage.emit (node:events:530:35)\n    at endReadableNT (node:internal/streams/readable:1698:12)\n    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)\n    at Axios.request (C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:4276:41)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\routes\\github.js:363:22",
+  "status": 422,
+  "statusText": "Unprocessable Entity",
+  "data": {
+    "message": "Invalid request.\n\nFor 'properties/sha', nil is not a string.",
+    "documentation_url": "https://docs.github.com/rest/repos/contents#create-or-update-file-contents",
+    "status": "422"
+  },
+  "headers": {
+    "date": "Wed, 28 May 2025 16:07:23 GMT",
+    "content-type": "application/json; charset=utf-8",
+    "content-length": "188",
+    "x-oauth-scopes": "repo",
+    "x-accepted-oauth-scopes": "",
+    "x-oauth-client-id": "Ov23liqmVRU1aVroq3Wj",
+    "x-github-media-type": "github.v3; format=json",
+    "x-github-api-version-selected": "2022-11-28",
+    "x-ratelimit-limit": "5000",
+    "x-ratelimit-remaining": "4947",
+    "x-ratelimit-reset": "1748451015",
+    "x-ratelimit-used": "53",
+    "x-ratelimit-resource": "core",
+    "access-control-expose-headers": "ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Used, X-RateLimit-Resource, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type, X-GitHub-SSO, X-GitHub-Request-Id, Deprecation, Sunset",
+    "access-control-allow-origin": "*",
+    "strict-transport-security": "max-age=31536000; includeSubdomains; preload",
+    "x-frame-options": "deny",
+    "x-content-type-options": "nosniff",
+    "x-xss-protection": "0",
+    "referrer-policy": "origin-when-cross-origin, strict-origin-when-cross-origin",
+    "content-security-policy": "default-src 'none'",
+    "vary": "Accept-Encoding, Accept, X-Requested-With",
+    "server": "github.com",
+    "x-github-request-id": "0AA8:26DE52:1B7D0:34243:683734B7"
+  },
+  "requestUrl": "https://api.github.com/repos/HasanMosa112345/ad/contents/src",
+  "requestMethod": "put",
+  "requestHeaders": {
+    "Accept": "application/vnd.github.v3+json",
+    "Content-Type": "application/json",
+    "Authorization": "[REDACTED]",
+    "User-Agent": "GitHub-OAuth-App",
+    "Content-Length": "49",
+    "Accept-Encoding": "gzip, compress, deflate, br"
+  }
+}
+
+{
+  "id": "da46lb9wfyv",
+  "timestamp": "2025-05-28T16:23:51.124Z",
+  "context": {
+    "phase": "update_file",
+    "owner": "HasanMosa112345",
+    "repo": "ad",
+    "path": "src/index.js"
+  },
+  "message": "Request failed with status code 422",
+  "stack": "AxiosError: Request failed with status code 422\n    at settle (C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:2049:12)\n    at IncomingMessage.handleStreamEnd (C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:3166:11)\n    at IncomingMessage.emit (node:events:530:35)\n    at endReadableNT (node:internal/streams/readable:1698:12)\n    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)\n    at Axios.request (C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:4276:41)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\routes\\github.js:367:22",
+  "status": 422,
+  "statusText": "Unprocessable Entity",
+  "data": {
+    "message": "Invalid request.\n\nFor 'properties/sha', nil is not a string.",
+    "documentation_url": "https://docs.github.com/rest/repos/contents#create-or-update-file-contents",
+    "status": "422"
+  },
+  "headers": {
+    "date": "Wed, 28 May 2025 16:23:51 GMT",
+    "content-type": "application/json; charset=utf-8",
+    "content-length": "188",
+    "x-oauth-scopes": "repo",
+    "x-accepted-oauth-scopes": "",
+    "x-oauth-client-id": "Ov23liqmVRU1aVroq3Wj",
+    "x-github-media-type": "github.v3; format=json",
+    "x-github-api-version-selected": "2022-11-28",
+    "x-ratelimit-limit": "5000",
+    "x-ratelimit-remaining": "4931",
+    "x-ratelimit-reset": "1748451015",
+    "x-ratelimit-used": "69",
+    "x-ratelimit-resource": "core",
+    "access-control-expose-headers": "ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Used, X-RateLimit-Resource, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type, X-GitHub-SSO, X-GitHub-Request-Id, Deprecation, Sunset",
+    "access-control-allow-origin": "*",
+    "strict-transport-security": "max-age=31536000; includeSubdomains; preload",
+    "x-frame-options": "deny",
+    "x-content-type-options": "nosniff",
+    "x-xss-protection": "0",
+    "referrer-policy": "origin-when-cross-origin, strict-origin-when-cross-origin",
+    "content-security-policy": "default-src 'none'",
+    "vary": "Accept-Encoding, Accept, X-Requested-With",
+    "server": "github.com",
+    "x-github-request-id": "0AAF:2C8DEE:2A365:48F6F:68373893"
+  },
+  "requestUrl": "https://api.github.com/repos/HasanMosa112345/ad/contents/src/index.js",
+  "requestMethod": "put",
+  "requestHeaders": {
+    "Accept": "application/vnd.github.v3+json",
+    "Content-Type": "application/json",
+    "Authorization": "[REDACTED]",
+    "User-Agent": "GitHub-OAuth-App",
+    "Content-Length": "153",
+    "Accept-Encoding": "gzip, compress, deflate, br"
+  }
+}
+
+{
+  "id": "kom3b9fxx6c",
+  "timestamp": "2025-05-28T16:23:53.483Z",
+  "context": {
+    "phase": "update_file",
+    "owner": "HasanMosa112345",
+    "repo": "ad",
+    "path": "src/index.js"
+  },
+  "message": "Request failed with status code 422",
+  "stack": "AxiosError: Request failed with status code 422\n    at settle (C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:2049:12)\n    at IncomingMessage.handleStreamEnd (C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:3166:11)\n    at IncomingMessage.emit (node:events:530:35)\n    at endReadableNT (node:internal/streams/readable:1698:12)\n    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)\n    at Axios.request (C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:4276:41)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\routes\\github.js:367:22",
+  "status": 422,
+  "statusText": "Unprocessable Entity",
+  "data": {
+    "message": "Invalid request.\n\nFor 'properties/sha', nil is not a string.",
+    "documentation_url": "https://docs.github.com/rest/repos/contents#create-or-update-file-contents",
+    "status": "422"
+  },
+  "headers": {
+    "date": "Wed, 28 May 2025 16:23:53 GMT",
+    "content-type": "application/json; charset=utf-8",
+    "content-length": "188",
+    "x-oauth-scopes": "repo",
+    "x-accepted-oauth-scopes": "",
+    "x-oauth-client-id": "Ov23liqmVRU1aVroq3Wj",
+    "x-github-media-type": "github.v3; format=json",
+    "x-github-api-version-selected": "2022-11-28",
+    "x-ratelimit-limit": "5000",
+    "x-ratelimit-remaining": "4930",
+    "x-ratelimit-reset": "1748451015",
+    "x-ratelimit-used": "70",
+    "x-ratelimit-resource": "core",
+    "access-control-expose-headers": "ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Used, X-RateLimit-Resource, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type, X-GitHub-SSO, X-GitHub-Request-Id, Deprecation, Sunset",
+    "access-control-allow-origin": "*",
+    "strict-transport-security": "max-age=31536000; includeSubdomains; preload",
+    "x-frame-options": "deny",
+    "x-content-type-options": "nosniff",
+    "x-xss-protection": "0",
+    "referrer-policy": "origin-when-cross-origin, strict-origin-when-cross-origin",
+    "content-security-policy": "default-src 'none'",
+    "vary": "Accept-Encoding, Accept, X-Requested-With",
+    "server": "github.com",
+    "x-github-request-id": "0AAF:2C8DEE:2A39A:48FE2:68373897"
+  },
+  "requestUrl": "https://api.github.com/repos/HasanMosa112345/ad/contents/src/index.js",
+  "requestMethod": "put",
+  "requestHeaders": {
+    "Accept": "application/vnd.github.v3+json",
+    "Content-Type": "application/json",
+    "Authorization": "[REDACTED]",
+    "User-Agent": "GitHub-OAuth-App",
+    "Content-Length": "153",
+    "Accept-Encoding": "gzip, compress, deflate, br"
+  }
+}
+
+{
+  "id": "9dsw9iismk5",
+  "timestamp": "2025-05-28T16:27:18.145Z",
+  "context": {
+    "phase": "update_file",
+    "owner": "HasanMosa112345",
+    "repo": "dss",
+    "path": "src/index.js"
+  },
+  "message": "Request failed with status code 422",
+  "stack": "AxiosError: Request failed with status code 422\n    at settle (C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:2049:12)\n    at IncomingMessage.handleStreamEnd (C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:3166:11)\n    at IncomingMessage.emit (node:events:530:35)\n    at endReadableNT (node:internal/streams/readable:1698:12)\n    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)\n    at Axios.request (C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:4276:41)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\routes\\github.js:367:22",
+  "status": 422,
+  "statusText": "Unprocessable Entity",
+  "data": {
+    "message": "Invalid request.\n\nFor 'properties/sha', nil is not a string.",
+    "documentation_url": "https://docs.github.com/rest/repos/contents#create-or-update-file-contents",
+    "status": "422"
+  },
+  "headers": {
+    "date": "Wed, 28 May 2025 16:27:18 GMT",
+    "content-type": "application/json; charset=utf-8",
+    "content-length": "188",
+    "x-oauth-scopes": "repo",
+    "x-accepted-oauth-scopes": "",
+    "x-oauth-client-id": "Ov23liqmVRU1aVroq3Wj",
+    "x-github-media-type": "github.v3; format=json",
+    "x-github-api-version-selected": "2022-11-28",
+    "x-ratelimit-limit": "5000",
+    "x-ratelimit-remaining": "4902",
+    "x-ratelimit-reset": "1748451015",
+    "x-ratelimit-used": "98",
+    "x-ratelimit-resource": "core",
+    "access-control-expose-headers": "ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Used, X-RateLimit-Resource, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type, X-GitHub-SSO, X-GitHub-Request-Id, Deprecation, Sunset",
+    "access-control-allow-origin": "*",
+    "strict-transport-security": "max-age=31536000; includeSubdomains; preload",
+    "x-frame-options": "deny",
+    "x-content-type-options": "nosniff",
+    "x-xss-protection": "0",
+    "referrer-policy": "origin-when-cross-origin, strict-origin-when-cross-origin",
+    "content-security-policy": "default-src 'none'",
+    "vary": "Accept-Encoding, Accept, X-Requested-With",
+    "server": "github.com",
+    "x-github-request-id": "0AAB:CB316:253BF:4544F:68373961"
+  },
+  "requestUrl": "https://api.github.com/repos/HasanMosa112345/dss/contents/src/index.js",
+  "requestMethod": "put",
+  "requestHeaders": {
+    "Accept": "application/vnd.github.v3+json",
+    "Content-Type": "application/json",
+    "Authorization": "[REDACTED]",
+    "User-Agent": "GitHub-OAuth-App",
+    "Content-Length": "149",
+    "Accept-Encoding": "gzip, compress, deflate, br"
+  }
+}
+
+{
+  "id": "21cr0vrlbbd",
+  "timestamp": "2025-05-28T16:27:21.489Z",
+  "context": {
+    "phase": "update_file",
+    "owner": "HasanMosa112345",
+    "repo": "dss",
+    "path": "src/index.js"
+  },
+  "message": "Request failed with status code 422",
+  "stack": "AxiosError: Request failed with status code 422\n    at settle (C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:2049:12)\n    at IncomingMessage.handleStreamEnd (C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:3166:11)\n    at IncomingMessage.emit (node:events:530:35)\n    at endReadableNT (node:internal/streams/readable:1698:12)\n    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)\n    at Axios.request (C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:4276:41)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\routes\\github.js:367:22",
+  "status": 422,
+  "statusText": "Unprocessable Entity",
+  "data": {
+    "message": "Invalid request.\n\nFor 'properties/sha', nil is not a string.",
+    "documentation_url": "https://docs.github.com/rest/repos/contents#create-or-update-file-contents",
+    "status": "422"
+  },
+  "headers": {
+    "date": "Wed, 28 May 2025 16:27:21 GMT",
+    "content-type": "application/json; charset=utf-8",
+    "content-length": "188",
+    "x-oauth-scopes": "repo",
+    "x-accepted-oauth-scopes": "",
+    "x-oauth-client-id": "Ov23liqmVRU1aVroq3Wj",
+    "x-github-media-type": "github.v3; format=json",
+    "x-github-api-version-selected": "2022-11-28",
+    "x-ratelimit-limit": "5000",
+    "x-ratelimit-remaining": "4901",
+    "x-ratelimit-reset": "1748451015",
+    "x-ratelimit-used": "99",
+    "x-ratelimit-resource": "core",
+    "access-control-expose-headers": "ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Used, X-RateLimit-Resource, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type, X-GitHub-SSO, X-GitHub-Request-Id, Deprecation, Sunset",
+    "access-control-allow-origin": "*",
+    "strict-transport-security": "max-age=31536000; includeSubdomains; preload",
+    "x-frame-options": "deny",
+    "x-content-type-options": "nosniff",
+    "x-xss-protection": "0",
+    "referrer-policy": "origin-when-cross-origin, strict-origin-when-cross-origin",
+    "content-security-policy": "default-src 'none'",
+    "vary": "Accept-Encoding, Accept, X-Requested-With",
+    "server": "github.com",
+    "x-github-request-id": "0AAB:CB316:25424:45504:68373966"
+  },
+  "requestUrl": "https://api.github.com/repos/HasanMosa112345/dss/contents/src/index.js",
+  "requestMethod": "put",
+  "requestHeaders": {
+    "Accept": "application/vnd.github.v3+json",
+    "Content-Type": "application/json",
+    "Authorization": "[REDACTED]",
+    "User-Agent": "GitHub-OAuth-App",
+    "Content-Length": "149",
+    "Accept-Encoding": "gzip, compress, deflate, br"
+  }
+}
+
+{
+  "id": "q1d9yy267sn",
+  "timestamp": "2025-05-28T16:27:42.387Z",
+  "context": {
+    "phase": "update_file",
+    "owner": "HasanMosa112345",
+    "repo": "dss",
+    "path": "src/index.js"
+  },
+  "message": "Request failed with status code 422",
+  "stack": "AxiosError: Request failed with status code 422\n    at settle (C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:2049:12)\n    at IncomingMessage.handleStreamEnd (C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:3166:11)\n    at IncomingMessage.emit (node:events:530:35)\n    at endReadableNT (node:internal/streams/readable:1698:12)\n    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)\n    at Axios.request (C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:4276:41)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\routes\\github.js:367:22",
+  "status": 422,
+  "statusText": "Unprocessable Entity",
+  "data": {
+    "message": "Invalid request.\n\nFor 'properties/sha', nil is not a string.",
+    "documentation_url": "https://docs.github.com/rest/repos/contents#create-or-update-file-contents",
+    "status": "422"
+  },
+  "headers": {
+    "date": "Wed, 28 May 2025 16:27:42 GMT",
+    "content-type": "application/json; charset=utf-8",
+    "content-length": "188",
+    "x-oauth-scopes": "repo",
+    "x-accepted-oauth-scopes": "",
+    "x-oauth-client-id": "Ov23liqmVRU1aVroq3Wj",
+    "x-github-media-type": "github.v3; format=json",
+    "x-github-api-version-selected": "2022-11-28",
+    "x-ratelimit-limit": "5000",
+    "x-ratelimit-remaining": "4900",
+    "x-ratelimit-reset": "1748451015",
+    "x-ratelimit-used": "100",
+    "x-ratelimit-resource": "core",
+    "access-control-expose-headers": "ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Used, X-RateLimit-Resource, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type, X-GitHub-SSO, X-GitHub-Request-Id, Deprecation, Sunset",
+    "access-control-allow-origin": "*",
+    "strict-transport-security": "max-age=31536000; includeSubdomains; preload",
+    "x-frame-options": "deny",
+    "x-content-type-options": "nosniff",
+    "x-xss-protection": "0",
+    "referrer-policy": "origin-when-cross-origin, strict-origin-when-cross-origin",
+    "content-security-policy": "default-src 'none'",
+    "vary": "Accept-Encoding, Accept, X-Requested-With",
+    "server": "github.com",
+    "x-github-request-id": "0ABE:2C8DEE:2C1E8:4C4DA:6837397E"
+  },
+  "requestUrl": "https://api.github.com/repos/HasanMosa112345/dss/contents/src/index.js",
+  "requestMethod": "put",
+  "requestHeaders": {
+    "Accept": "application/vnd.github.v3+json",
+    "Content-Type": "application/json",
+    "Authorization": "[REDACTED]",
+    "User-Agent": "GitHub-OAuth-App",
+    "Content-Length": "145",
+    "Accept-Encoding": "gzip, compress, deflate, br"
+  }
+}
+
+{
+  "id": "c9v8nyvfafp",
+  "timestamp": "2025-05-28T16:27:46.487Z",
+  "context": {
+    "phase": "update_file",
+    "owner": "HasanMosa112345",
+    "repo": "dss",
+    "path": "src/indesss.js"
+  },
+  "message": "Request failed with status code 422",
+  "stack": "AxiosError: Request failed with status code 422\n    at settle (C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:2049:12)\n    at IncomingMessage.handleStreamEnd (C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:3166:11)\n    at IncomingMessage.emit (node:events:530:35)\n    at endReadableNT (node:internal/streams/readable:1698:12)\n    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)\n    at Axios.request (C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:4276:41)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\routes\\github.js:367:22",
+  "status": 422,
+  "statusText": "Unprocessable Entity",
+  "data": {
+    "message": "Invalid request.\n\nFor 'properties/sha', nil is not a string.",
+    "documentation_url": "https://docs.github.com/rest/repos/contents#create-or-update-file-contents",
+    "status": "422"
+  },
+  "headers": {
+    "date": "Wed, 28 May 2025 16:27:46 GMT",
+    "content-type": "application/json; charset=utf-8",
+    "content-length": "188",
+    "x-oauth-scopes": "repo",
+    "x-accepted-oauth-scopes": "",
+    "x-oauth-client-id": "Ov23liqmVRU1aVroq3Wj",
+    "x-github-media-type": "github.v3; format=json",
+    "x-github-api-version-selected": "2022-11-28",
+    "x-ratelimit-limit": "5000",
+    "x-ratelimit-remaining": "4899",
+    "x-ratelimit-reset": "1748451015",
+    "x-ratelimit-used": "101",
+    "x-ratelimit-resource": "core",
+    "access-control-expose-headers": "ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Used, X-RateLimit-Resource, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type, X-GitHub-SSO, X-GitHub-Request-Id, Deprecation, Sunset",
+    "access-control-allow-origin": "*",
+    "strict-transport-security": "max-age=31536000; includeSubdomains; preload",
+    "x-frame-options": "deny",
+    "x-content-type-options": "nosniff",
+    "x-xss-protection": "0",
+    "referrer-policy": "origin-when-cross-origin, strict-origin-when-cross-origin",
+    "content-security-policy": "default-src 'none'",
+    "vary": "Accept-Encoding, Accept, X-Requested-With",
+    "server": "github.com",
+    "x-github-request-id": "0ABE:2C8DEE:2C248:4C59C:6837397E"
+  },
+  "requestUrl": "https://api.github.com/repos/HasanMosa112345/dss/contents/src/indesss.js",
+  "requestMethod": "put",
+  "requestHeaders": {
+    "Accept": "application/vnd.github.v3+json",
+    "Content-Type": "application/json",
+    "Authorization": "[REDACTED]",
+    "User-Agent": "GitHub-OAuth-App",
+    "Content-Length": "75",
+    "Accept-Encoding": "gzip, compress, deflate, br"
+  }
+}
+
+{
+  "id": "zsr2th9xspo",
+  "timestamp": "2025-05-28T16:27:48.410Z",
+  "context": {
+    "phase": "update_file",
+    "owner": "HasanMosa112345",
+    "repo": "dss",
+    "path": "src/indesss.js"
+  },
+  "message": "Request failed with status code 422",
+  "stack": "AxiosError: Request failed with status code 422\n    at settle (C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:2049:12)\n    at IncomingMessage.handleStreamEnd (C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:3166:11)\n    at IncomingMessage.emit (node:events:530:35)\n    at endReadableNT (node:internal/streams/readable:1698:12)\n    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)\n    at Axios.request (C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:4276:41)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\routes\\github.js:367:22",
+  "status": 422,
+  "statusText": "Unprocessable Entity",
+  "data": {
+    "message": "Invalid request.\n\nFor 'properties/sha', nil is not a string.",
+    "documentation_url": "https://docs.github.com/rest/repos/contents#create-or-update-file-contents",
+    "status": "422"
+  },
+  "headers": {
+    "date": "Wed, 28 May 2025 16:27:48 GMT",
+    "content-type": "application/json; charset=utf-8",
+    "content-length": "188",
+    "x-oauth-scopes": "repo",
+    "x-accepted-oauth-scopes": "",
+    "x-oauth-client-id": "Ov23liqmVRU1aVroq3Wj",
+    "x-github-media-type": "github.v3; format=json",
+    "x-github-api-version-selected": "2022-11-28",
+    "x-ratelimit-limit": "5000",
+    "x-ratelimit-remaining": "4898",
+    "x-ratelimit-reset": "1748451015",
+    "x-ratelimit-used": "102",
+    "x-ratelimit-resource": "core",
+    "access-control-expose-headers": "ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Used, X-RateLimit-Resource, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type, X-GitHub-SSO, X-GitHub-Request-Id, Deprecation, Sunset",
+    "access-control-allow-origin": "*",
+    "strict-transport-security": "max-age=31536000; includeSubdomains; preload",
+    "x-frame-options": "deny",
+    "x-content-type-options": "nosniff",
+    "x-xss-protection": "0",
+    "referrer-policy": "origin-when-cross-origin, strict-origin-when-cross-origin",
+    "content-security-policy": "default-src 'none'",
+    "vary": "Accept-Encoding, Accept, X-Requested-With",
+    "server": "github.com",
+    "x-github-request-id": "0ABE:2C8DEE:2C284:4C60D:68373982"
+  },
+  "requestUrl": "https://api.github.com/repos/HasanMosa112345/dss/contents/src/indesss.js",
+  "requestMethod": "put",
+  "requestHeaders": {
+    "Accept": "application/vnd.github.v3+json",
+    "Content-Type": "application/json",
+    "Authorization": "[REDACTED]",
+    "User-Agent": "GitHub-OAuth-App",
+    "Content-Length": "75",
+    "Accept-Encoding": "gzip, compress, deflate, br"
+  }
+}
+
+{
+  "id": "semx3f5wxjc",
+  "timestamp": "2025-05-28T16:27:50.006Z",
+  "context": {
+    "phase": "update_file",
+    "owner": "HasanMosa112345",
+    "repo": "dss",
+    "path": "src/indesss.js"
+  },
+  "message": "Request failed with status code 422",
+  "stack": "AxiosError: Request failed with status code 422\n    at settle (C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:2049:12)\n    at IncomingMessage.handleStreamEnd (C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:3166:11)\n    at IncomingMessage.emit (node:events:530:35)\n    at endReadableNT (node:internal/streams/readable:1698:12)\n    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)\n    at Axios.request (C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:4276:41)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\routes\\github.js:367:22",
+  "status": 422,
+  "statusText": "Unprocessable Entity",
+  "data": {
+    "message": "Invalid request.\n\nFor 'properties/sha', nil is not a string.",
+    "documentation_url": "https://docs.github.com/rest/repos/contents#create-or-update-file-contents",
+    "status": "422"
+  },
+  "headers": {
+    "date": "Wed, 28 May 2025 16:27:50 GMT",
+    "content-type": "application/json; charset=utf-8",
+    "content-length": "188",
+    "x-oauth-scopes": "repo",
+    "x-accepted-oauth-scopes": "",
+    "x-oauth-client-id": "Ov23liqmVRU1aVroq3Wj",
+    "x-github-media-type": "github.v3; format=json",
+    "x-github-api-version-selected": "2022-11-28",
+    "x-ratelimit-limit": "5000",
+    "x-ratelimit-remaining": "4897",
+    "x-ratelimit-reset": "1748451015",
+    "x-ratelimit-used": "103",
+    "x-ratelimit-resource": "core",
+    "access-control-expose-headers": "ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Used, X-RateLimit-Resource, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type, X-GitHub-SSO, X-GitHub-Request-Id, Deprecation, Sunset",
+    "access-control-allow-origin": "*",
+    "strict-transport-security": "max-age=31536000; includeSubdomains; preload",
+    "x-frame-options": "deny",
+    "x-content-type-options": "nosniff",
+    "x-xss-protection": "0",
+    "referrer-policy": "origin-when-cross-origin, strict-origin-when-cross-origin",
+    "content-security-policy": "default-src 'none'",
+    "vary": "Accept-Encoding, Accept, X-Requested-With",
+    "server": "github.com",
+    "x-github-request-id": "0ABE:2C8DEE:2C2C8:4C679:68373984"
+  },
+  "requestUrl": "https://api.github.com/repos/HasanMosa112345/dss/contents/src/indesss.js",
+  "requestMethod": "put",
+  "requestHeaders": {
+    "Accept": "application/vnd.github.v3+json",
+    "Content-Type": "application/json",
+    "Authorization": "[REDACTED]",
+    "User-Agent": "GitHub-OAuth-App",
+    "Content-Length": "75",
+    "Accept-Encoding": "gzip, compress, deflate, br"
+  }
+}
+
+{
+  "id": "zt72ta08d3s",
+  "timestamp": "2025-05-28T16:27:52.078Z",
+  "context": {
+    "phase": "update_file",
+    "owner": "HasanMosa112345",
+    "repo": "dss",
+    "path": "src/indesss.js"
+  },
+  "message": "Request failed with status code 422",
+  "stack": "AxiosError: Request failed with status code 422\n    at settle (C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:2049:12)\n    at IncomingMessage.handleStreamEnd (C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:3166:11)\n    at IncomingMessage.emit (node:events:530:35)\n    at endReadableNT (node:internal/streams/readable:1698:12)\n    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)\n    at Axios.request (C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:4276:41)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\routes\\github.js:367:22",
+  "status": 422,
+  "statusText": "Unprocessable Entity",
+  "data": {
+    "message": "Invalid request.\n\nFor 'properties/sha', nil is not a string.",
+    "documentation_url": "https://docs.github.com/rest/repos/contents#create-or-update-file-contents",
+    "status": "422"
+  },
+  "headers": {
+    "date": "Wed, 28 May 2025 16:27:52 GMT",
+    "content-type": "application/json; charset=utf-8",
+    "content-length": "188",
+    "x-oauth-scopes": "repo",
+    "x-accepted-oauth-scopes": "",
+    "x-oauth-client-id": "Ov23liqmVRU1aVroq3Wj",
+    "x-github-media-type": "github.v3; format=json",
+    "x-github-api-version-selected": "2022-11-28",
+    "x-ratelimit-limit": "5000",
+    "x-ratelimit-remaining": "4896",
+    "x-ratelimit-reset": "1748451015",
+    "x-ratelimit-used": "104",
+    "x-ratelimit-resource": "core",
+    "access-control-expose-headers": "ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Used, X-RateLimit-Resource, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type, X-GitHub-SSO, X-GitHub-Request-Id, Deprecation, Sunset",
+    "access-control-allow-origin": "*",
+    "strict-transport-security": "max-age=31536000; includeSubdomains; preload",
+    "x-frame-options": "deny",
+    "x-content-type-options": "nosniff",
+    "x-xss-protection": "0",
+    "referrer-policy": "origin-when-cross-origin, strict-origin-when-cross-origin",
+    "content-security-policy": "default-src 'none'",
+    "vary": "Accept-Encoding, Accept, X-Requested-With",
+    "server": "github.com",
+    "x-github-request-id": "0ABE:2C8DEE:2C30B:4C6E7:68373986"
+  },
+  "requestUrl": "https://api.github.com/repos/HasanMosa112345/dss/contents/src/indesss.js",
+  "requestMethod": "put",
+  "requestHeaders": {
+    "Accept": "application/vnd.github.v3+json",
+    "Content-Type": "application/json",
+    "Authorization": "[REDACTED]",
+    "User-Agent": "GitHub-OAuth-App",
+    "Content-Length": "75",
+    "Accept-Encoding": "gzip, compress, deflate, br"
+  }
+}
+
+{
+  "id": "c2xr1bdkdw8",
+  "timestamp": "2025-05-28T16:27:54.512Z",
+  "context": {
+    "phase": "update_file",
+    "owner": "HasanMosa112345",
+    "repo": "dss",
+    "path": "src/indesss.js"
+  },
+  "message": "Request failed with status code 422",
+  "stack": "AxiosError: Request failed with status code 422\n    at settle (C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:2049:12)\n    at IncomingMessage.handleStreamEnd (C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:3166:11)\n    at IncomingMessage.emit (node:events:530:35)\n    at endReadableNT (node:internal/streams/readable:1698:12)\n    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)\n    at Axios.request (C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:4276:41)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\routes\\github.js:367:22",
+  "status": 422,
+  "statusText": "Unprocessable Entity",
+  "data": {
+    "message": "Invalid request.\n\nFor 'properties/sha', nil is not a string.",
+    "documentation_url": "https://docs.github.com/rest/repos/contents#create-or-update-file-contents",
+    "status": "422"
+  },
+  "headers": {
+    "date": "Wed, 28 May 2025 16:27:54 GMT",
+    "content-type": "application/json; charset=utf-8",
+    "content-length": "188",
+    "x-oauth-scopes": "repo",
+    "x-accepted-oauth-scopes": "",
+    "x-oauth-client-id": "Ov23liqmVRU1aVroq3Wj",
+    "x-github-media-type": "github.v3; format=json",
+    "x-github-api-version-selected": "2022-11-28",
+    "x-ratelimit-limit": "5000",
+    "x-ratelimit-remaining": "4895",
+    "x-ratelimit-reset": "1748451015",
+    "x-ratelimit-used": "105",
+    "x-ratelimit-resource": "core",
+    "access-control-expose-headers": "ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Used, X-RateLimit-Resource, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type, X-GitHub-SSO, X-GitHub-Request-Id, Deprecation, Sunset",
+    "access-control-allow-origin": "*",
+    "strict-transport-security": "max-age=31536000; includeSubdomains; preload",
+    "x-frame-options": "deny",
+    "x-content-type-options": "nosniff",
+    "x-xss-protection": "0",
+    "referrer-policy": "origin-when-cross-origin, strict-origin-when-cross-origin",
+    "content-security-policy": "default-src 'none'",
+    "vary": "Accept-Encoding, Accept, X-Requested-With",
+    "server": "github.com",
+    "x-github-request-id": "0ABE:2C8DEE:2C351:4C76B:68373988"
+  },
+  "requestUrl": "https://api.github.com/repos/HasanMosa112345/dss/contents/src/indesss.js",
+  "requestMethod": "put",
+  "requestHeaders": {
+    "Accept": "application/vnd.github.v3+json",
+    "Content-Type": "application/json",
+    "Authorization": "[REDACTED]",
+    "User-Agent": "GitHub-OAuth-App",
+    "Content-Length": "75",
+    "Accept-Encoding": "gzip, compress, deflate, br"
+  }
+}
+
+{
+  "id": "8an7unplcx8",
+  "timestamp": "2025-05-28T16:27:58.011Z",
+  "context": {
+    "phase": "update_file",
+    "owner": "HasanMosa112345",
+    "repo": "dss",
+    "path": "src/indesss.js"
+  },
+  "message": "Request failed with status code 422",
+  "stack": "AxiosError: Request failed with status code 422\n    at settle (C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:2049:12)\n    at IncomingMessage.handleStreamEnd (C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:3166:11)\n    at IncomingMessage.emit (node:events:530:35)\n    at endReadableNT (node:internal/streams/readable:1698:12)\n    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)\n    at Axios.request (C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:4276:41)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\routes\\github.js:367:22",
+  "status": 422,
+  "statusText": "Unprocessable Entity",
+  "data": {
+    "message": "Invalid request.\n\nFor 'properties/sha', nil is not a string.",
+    "documentation_url": "https://docs.github.com/rest/repos/contents#create-or-update-file-contents",
+    "status": "422"
+  },
+  "headers": {
+    "date": "Wed, 28 May 2025 16:27:58 GMT",
+    "content-type": "application/json; charset=utf-8",
+    "content-length": "188",
+    "x-oauth-scopes": "repo",
+    "x-accepted-oauth-scopes": "",
+    "x-oauth-client-id": "Ov23liqmVRU1aVroq3Wj",
+    "x-github-media-type": "github.v3; format=json",
+    "x-github-api-version-selected": "2022-11-28",
+    "x-ratelimit-limit": "5000",
+    "x-ratelimit-remaining": "4894",
+    "x-ratelimit-reset": "1748451015",
+    "x-ratelimit-used": "106",
+    "x-ratelimit-resource": "core",
+    "access-control-expose-headers": "ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Used, X-RateLimit-Resource, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type, X-GitHub-SSO, X-GitHub-Request-Id, Deprecation, Sunset",
+    "access-control-allow-origin": "*",
+    "strict-transport-security": "max-age=31536000; includeSubdomains; preload",
+    "x-frame-options": "deny",
+    "x-content-type-options": "nosniff",
+    "x-xss-protection": "0",
+    "referrer-policy": "origin-when-cross-origin, strict-origin-when-cross-origin",
+    "content-security-policy": "default-src 'none'",
+    "vary": "Accept-Encoding, Accept, X-Requested-With",
+    "server": "github.com",
+    "x-github-request-id": "0ABE:2C8DEE:2C3B5:4C81D:6837398A"
+  },
+  "requestUrl": "https://api.github.com/repos/HasanMosa112345/dss/contents/src/indesss.js",
+  "requestMethod": "put",
+  "requestHeaders": {
+    "Accept": "application/vnd.github.v3+json",
+    "Content-Type": "application/json",
+    "Authorization": "[REDACTED]",
+    "User-Agent": "GitHub-OAuth-App",
+    "Content-Length": "75",
+    "Accept-Encoding": "gzip, compress, deflate, br"
+  }
+}
+
+{
+  "id": "h8a0p12udsk",
+  "timestamp": "2025-05-28T16:28:00.346Z",
+  "context": {
+    "phase": "update_file",
+    "owner": "HasanMosa112345",
+    "repo": "dss",
+    "path": "src/indesss.js"
+  },
+  "message": "Request failed with status code 422",
+  "stack": "AxiosError: Request failed with status code 422\n    at settle (C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:2049:12)\n    at IncomingMessage.handleStreamEnd (C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:3166:11)\n    at IncomingMessage.emit (node:events:530:35)\n    at endReadableNT (node:internal/streams/readable:1698:12)\n    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)\n    at Axios.request (C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:4276:41)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\routes\\github.js:367:22",
+  "status": 422,
+  "statusText": "Unprocessable Entity",
+  "data": {
+    "message": "Invalid request.\n\nFor 'properties/sha', nil is not a string.",
+    "documentation_url": "https://docs.github.com/rest/repos/contents#create-or-update-file-contents",
+    "status": "422"
+  },
+  "headers": {
+    "date": "Wed, 28 May 2025 16:28:00 GMT",
+    "content-type": "application/json; charset=utf-8",
+    "content-length": "188",
+    "x-oauth-scopes": "repo",
+    "x-accepted-oauth-scopes": "",
+    "x-oauth-client-id": "Ov23liqmVRU1aVroq3Wj",
+    "x-github-media-type": "github.v3; format=json",
+    "x-github-api-version-selected": "2022-11-28",
+    "x-ratelimit-limit": "5000",
+    "x-ratelimit-remaining": "4893",
+    "x-ratelimit-reset": "1748451015",
+    "x-ratelimit-used": "107",
+    "x-ratelimit-resource": "core",
+    "access-control-expose-headers": "ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Used, X-RateLimit-Resource, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type, X-GitHub-SSO, X-GitHub-Request-Id, Deprecation, Sunset",
+    "access-control-allow-origin": "*",
+    "strict-transport-security": "max-age=31536000; includeSubdomains; preload",
+    "x-frame-options": "deny",
+    "x-content-type-options": "nosniff",
+    "x-xss-protection": "0",
+    "referrer-policy": "origin-when-cross-origin, strict-origin-when-cross-origin",
+    "content-security-policy": "default-src 'none'",
+    "vary": "Accept-Encoding, Accept, X-Requested-With",
+    "server": "github.com",
+    "x-github-request-id": "0ABE:2C8DEE:2C3FB:4C8BF:6837398E"
+  },
+  "requestUrl": "https://api.github.com/repos/HasanMosa112345/dss/contents/src/indesss.js",
+  "requestMethod": "put",
+  "requestHeaders": {
+    "Accept": "application/vnd.github.v3+json",
+    "Content-Type": "application/json",
+    "Authorization": "[REDACTED]",
+    "User-Agent": "GitHub-OAuth-App",
+    "Content-Length": "75",
+    "Accept-Encoding": "gzip, compress, deflate, br"
+  }
+}
+
+{
+  "id": "p43145gqsi",
+  "timestamp": "2025-05-28T16:29:46.581Z",
+  "context": {
+    "phase": "update_file",
+    "owner": "HasanMosa112345",
+    "repo": "dss",
+    "path": "src/indesss.js"
+  },
+  "message": "Request failed with status code 422",
+  "stack": "AxiosError: Request failed with status code 422\n    at settle (C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:2049:12)\n    at IncomingMessage.handleStreamEnd (C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:3166:11)\n    at IncomingMessage.emit (node:events:530:35)\n    at endReadableNT (node:internal/streams/readable:1698:12)\n    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)\n    at Axios.request (C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:4276:41)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\routes\\github.js:367:22",
+  "status": 422,
+  "statusText": "Unprocessable Entity",
+  "data": {
+    "message": "Invalid request.\n\nFor 'properties/sha', nil is not a string.",
+    "documentation_url": "https://docs.github.com/rest/repos/contents#create-or-update-file-contents",
+    "status": "422"
+  },
+  "headers": {
+    "date": "Wed, 28 May 2025 16:29:46 GMT",
+    "content-type": "application/json; charset=utf-8",
+    "content-length": "188",
+    "x-oauth-scopes": "repo",
+    "x-accepted-oauth-scopes": "",
+    "x-oauth-client-id": "Ov23liqmVRU1aVroq3Wj",
+    "x-github-media-type": "github.v3; format=json",
+    "x-github-api-version-selected": "2022-11-28",
+    "x-ratelimit-limit": "5000",
+    "x-ratelimit-remaining": "4892",
+    "x-ratelimit-reset": "1748451015",
+    "x-ratelimit-used": "108",
+    "x-ratelimit-resource": "core",
+    "access-control-expose-headers": "ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Used, X-RateLimit-Resource, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type, X-GitHub-SSO, X-GitHub-Request-Id, Deprecation, Sunset",
+    "access-control-allow-origin": "*",
+    "strict-transport-security": "max-age=31536000; includeSubdomains; preload",
+    "x-frame-options": "deny",
+    "x-content-type-options": "nosniff",
+    "x-xss-protection": "0",
+    "referrer-policy": "origin-when-cross-origin, strict-origin-when-cross-origin",
+    "content-security-policy": "default-src 'none'",
+    "vary": "Accept-Encoding, Accept, X-Requested-With",
+    "server": "github.com",
+    "x-github-request-id": "0AD4:2DDB72:26FD0:47F02:683739FA"
+  },
+  "requestUrl": "https://api.github.com/repos/HasanMosa112345/dss/contents/src/indesss.js",
+  "requestMethod": "put",
+  "requestHeaders": {
+    "Accept": "application/vnd.github.v3+json",
+    "Content-Type": "application/json",
+    "Authorization": "[REDACTED]",
+    "User-Agent": "GitHub-OAuth-App",
+    "Content-Length": "75",
+    "Accept-Encoding": "gzip, compress, deflate, br"
+  }
+}
+
+{
+  "id": "7paf4cqvrd6",
+  "timestamp": "2025-05-28T16:29:53.077Z",
+  "context": {
+    "phase": "update_file",
+    "owner": "HasanMosa112345",
+    "repo": "aaa",
+    "path": "src"
+  },
+  "message": "Request failed with status code 422",
+  "stack": "AxiosError: Request failed with status code 422\n    at settle (C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:2049:12)\n    at IncomingMessage.handleStreamEnd (C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:3166:11)\n    at IncomingMessage.emit (node:events:530:35)\n    at endReadableNT (node:internal/streams/readable:1698:12)\n    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)\n    at Axios.request (C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:4276:41)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\routes\\github.js:367:22",
+  "status": 422,
+  "statusText": "Unprocessable Entity",
+  "data": {
+    "message": "Invalid request.\n\nFor 'properties/sha', nil is not a string.",
+    "documentation_url": "https://docs.github.com/rest/repos/contents#create-or-update-file-contents",
+    "status": "422"
+  },
+  "headers": {
+    "date": "Wed, 28 May 2025 16:29:53 GMT",
+    "content-type": "application/json; charset=utf-8",
+    "content-length": "188",
+    "x-oauth-scopes": "repo",
+    "x-accepted-oauth-scopes": "",
+    "x-oauth-client-id": "Ov23liqmVRU1aVroq3Wj",
+    "x-github-media-type": "github.v3; format=json",
+    "x-github-api-version-selected": "2022-11-28",
+    "x-ratelimit-limit": "5000",
+    "x-ratelimit-remaining": "4890",
+    "x-ratelimit-reset": "1748451015",
+    "x-ratelimit-used": "110",
+    "x-ratelimit-resource": "core",
+    "access-control-expose-headers": "ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Used, X-RateLimit-Resource, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type, X-GitHub-SSO, X-GitHub-Request-Id, Deprecation, Sunset",
+    "access-control-allow-origin": "*",
+    "strict-transport-security": "max-age=31536000; includeSubdomains; preload",
+    "x-frame-options": "deny",
+    "x-content-type-options": "nosniff",
+    "x-xss-protection": "0",
+    "referrer-policy": "origin-when-cross-origin, strict-origin-when-cross-origin",
+    "content-security-policy": "default-src 'none'",
+    "vary": "Accept-Encoding, Accept, X-Requested-With",
+    "server": "github.com",
+    "x-github-request-id": "0AD4:2DDB72:27074:4805C:683739FD"
+  },
+  "requestUrl": "https://api.github.com/repos/HasanMosa112345/aaa/contents/src",
+  "requestMethod": "put",
+  "requestHeaders": {
+    "Accept": "application/vnd.github.v3+json",
+    "Content-Type": "application/json",
+    "Authorization": "[REDACTED]",
+    "User-Agent": "GitHub-OAuth-App",
+    "Content-Length": "68",
+    "Accept-Encoding": "gzip, compress, deflate, br"
+  }
+}
+
+{
+  "id": "b9yx6mamwz",
+  "timestamp": "2025-05-28T16:29:54.729Z",
+  "context": {
+    "phase": "update_file",
+    "owner": "HasanMosa112345",
+    "repo": "aaa",
+    "path": "src"
+  },
+  "message": "Request failed with status code 422",
+  "stack": "AxiosError: Request failed with status code 422\n    at settle (C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:2049:12)\n    at IncomingMessage.handleStreamEnd (C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:3166:11)\n    at IncomingMessage.emit (node:events:530:35)\n    at endReadableNT (node:internal/streams/readable:1698:12)\n    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)\n    at Axios.request (C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:4276:41)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\routes\\github.js:367:22",
+  "status": 422,
+  "statusText": "Unprocessable Entity",
+  "data": {
+    "message": "Invalid request.\n\nFor 'properties/sha', nil is not a string.",
+    "documentation_url": "https://docs.github.com/rest/repos/contents#create-or-update-file-contents",
+    "status": "422"
+  },
+  "headers": {
+    "date": "Wed, 28 May 2025 16:29:54 GMT",
+    "content-type": "application/json; charset=utf-8",
+    "content-length": "188",
+    "x-oauth-scopes": "repo",
+    "x-accepted-oauth-scopes": "",
+    "x-oauth-client-id": "Ov23liqmVRU1aVroq3Wj",
+    "x-github-media-type": "github.v3; format=json",
+    "x-github-api-version-selected": "2022-11-28",
+    "x-ratelimit-limit": "5000",
+    "x-ratelimit-remaining": "4889",
+    "x-ratelimit-reset": "1748451015",
+    "x-ratelimit-used": "111",
+    "x-ratelimit-resource": "core",
+    "access-control-expose-headers": "ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Used, X-RateLimit-Resource, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type, X-GitHub-SSO, X-GitHub-Request-Id, Deprecation, Sunset",
+    "access-control-allow-origin": "*",
+    "strict-transport-security": "max-age=31536000; includeSubdomains; preload",
+    "x-frame-options": "deny",
+    "x-content-type-options": "nosniff",
+    "x-xss-protection": "0",
+    "referrer-policy": "origin-when-cross-origin, strict-origin-when-cross-origin",
+    "content-security-policy": "default-src 'none'",
+    "vary": "Accept-Encoding, Accept, X-Requested-With",
+    "server": "github.com",
+    "x-github-request-id": "0AD4:2DDB72:27095:480A4:68373A01"
+  },
+  "requestUrl": "https://api.github.com/repos/HasanMosa112345/aaa/contents/src",
+  "requestMethod": "put",
+  "requestHeaders": {
+    "Accept": "application/vnd.github.v3+json",
+    "Content-Type": "application/json",
+    "Authorization": "[REDACTED]",
+    "User-Agent": "GitHub-OAuth-App",
+    "Content-Length": "68",
+    "Accept-Encoding": "gzip, compress, deflate, br"
+  }
+}
+
+{
+  "id": "hm56wzjbfm",
+  "timestamp": "2025-05-28T18:45:01.922Z",
+  "context": {
+    "phase": "update_file",
+    "owner": "HasanMosa112345",
+    "repo": "ad",
+    "path": "src/ind.js"
+  },
+  "message": "Request failed with status code 422",
+  "stack": "AxiosError: Request failed with status code 422\n    at settle (C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:2049:12)\n    at IncomingMessage.handleStreamEnd (C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:3166:11)\n    at IncomingMessage.emit (node:events:530:35)\n    at endReadableNT (node:internal/streams/readable:1698:12)\n    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)\n    at Axios.request (C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:4276:41)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\routes\\github.js:366:22",
+  "status": 422,
+  "statusText": "Unprocessable Entity",
+  "data": {
+    "message": "Invalid request.\n\nFor 'properties/sha', nil is not a string.",
+    "documentation_url": "https://docs.github.com/rest/repos/contents#create-or-update-file-contents",
+    "status": "422"
+  },
+  "headers": {
+    "date": "Wed, 28 May 2025 18:45:02 GMT",
+    "content-type": "application/json; charset=utf-8",
+    "content-length": "188",
+    "x-oauth-scopes": "repo",
+    "x-accepted-oauth-scopes": "",
+    "x-oauth-client-id": "Ov23liqmVRU1aVroq3Wj",
+    "x-github-media-type": "github.v3; format=json",
+    "x-github-api-version-selected": "2022-11-28",
+    "x-ratelimit-limit": "5000",
+    "x-ratelimit-remaining": "4988",
+    "x-ratelimit-reset": "1748461473",
+    "x-ratelimit-used": "12",
+    "x-ratelimit-resource": "core",
+    "access-control-expose-headers": "ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Used, X-RateLimit-Resource, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type, X-GitHub-SSO, X-GitHub-Request-Id, Deprecation, Sunset",
+    "access-control-allow-origin": "*",
+    "strict-transport-security": "max-age=31536000; includeSubdomains; preload",
+    "x-frame-options": "deny",
+    "x-content-type-options": "nosniff",
+    "x-xss-protection": "0",
+    "referrer-policy": "origin-when-cross-origin, strict-origin-when-cross-origin",
+    "content-security-policy": "default-src 'none'",
+    "vary": "Accept-Encoding, Accept, X-Requested-With",
+    "server": "github.com",
+    "x-github-request-id": "0AF1:37EA05:51AEB:A4C75:683759AA"
+  },
+  "requestUrl": "https://api.github.com/repos/HasanMosa112345/ad/contents/src/ind.js",
+  "requestMethod": "put",
+  "requestHeaders": {
+    "Accept": "application/vnd.github.v3+json",
+    "Content-Type": "application/json",
+    "Authorization": "[REDACTED]",
+    "User-Agent": "GitHub-OAuth-App",
+    "Content-Length": "71",
+    "Accept-Encoding": "gzip, compress, deflate, br"
+  }
+}
+
+{
+  "id": "2oqzrj74d3d",
+  "timestamp": "2025-05-28T18:51:07.154Z",
+  "context": {
+    "phase": "update_file",
+    "owner": "HasanMosa112345",
+    "repo": "as",
+    "path": "src/index.js"
+  },
+  "message": "Request failed with status code 422",
+  "stack": "AxiosError: Request failed with status code 422\n    at settle (C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:2049:12)\n    at IncomingMessage.handleStreamEnd (C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:3166:11)\n    at IncomingMessage.emit (node:events:530:35)\n    at endReadableNT (node:internal/streams/readable:1698:12)\n    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)\n    at Axios.request (C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:4276:41)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\routes\\github.js:380:28",
+  "status": 422,
+  "statusText": "Unprocessable Entity",
+  "data": {
+    "message": "Invalid request.\n\n\"sha\" wasn't supplied.",
+    "documentation_url": "https://docs.github.com/rest/repos/contents#create-or-update-file-contents",
+    "status": "422"
+  },
+  "headers": {
+    "date": "Wed, 28 May 2025 18:51:07 GMT",
+    "content-type": "application/json; charset=utf-8",
+    "content-length": "170",
+    "x-oauth-scopes": "repo",
+    "x-accepted-oauth-scopes": "",
+    "x-oauth-client-id": "Ov23liqmVRU1aVroq3Wj",
+    "x-github-media-type": "github.v3; format=json",
+    "x-github-api-version-selected": "2022-11-28",
+    "x-ratelimit-limit": "5000",
+    "x-ratelimit-remaining": "4967",
+    "x-ratelimit-reset": "1748461473",
+    "x-ratelimit-used": "33",
+    "x-ratelimit-resource": "core",
+    "access-control-expose-headers": "ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Used, X-RateLimit-Resource, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type, X-GitHub-SSO, X-GitHub-Request-Id, Deprecation, Sunset",
+    "access-control-allow-origin": "*",
+    "strict-transport-security": "max-age=31536000; includeSubdomains; preload",
+    "x-frame-options": "deny",
+    "x-content-type-options": "nosniff",
+    "x-xss-protection": "0",
+    "referrer-policy": "origin-when-cross-origin, strict-origin-when-cross-origin",
+    "content-security-policy": "default-src 'none'",
+    "vary": "Accept-Encoding, Accept, X-Requested-With",
+    "server": "github.com",
+    "x-github-request-id": "0AFC:1B58DF:54D3B:AA30A:68375B16"
+  },
+  "requestUrl": "https://api.github.com/repos/HasanMosa112345/as/contents/src/index.js",
+  "requestMethod": "put",
+  "requestHeaders": {
+    "Accept": "application/vnd.github.v3+json",
+    "Content-Type": "application/json",
+    "Authorization": "[REDACTED]",
+    "User-Agent": "GitHub-OAuth-App",
+    "Content-Length": "138",
+    "Accept-Encoding": "gzip, compress, deflate, br"
+  }
+}
+
+{
+  "id": "v8en2n16qd9",
+  "timestamp": "2025-05-28T18:52:49.924Z",
+  "context": {
+    "phase": "update_file",
+    "owner": "HasanMosa112345",
+    "repo": "ds",
+    "path": "src/index.js"
+  },
+  "message": "Request failed with status code 422",
+  "stack": "AxiosError: Request failed with status code 422\n    at settle (C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:2049:12)\n    at IncomingMessage.handleStreamEnd (C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:3166:11)\n    at IncomingMessage.emit (node:events:530:35)\n    at endReadableNT (node:internal/streams/readable:1698:12)\n    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)\n    at Axios.request (C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:4276:41)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\routes\\github.js:380:28",
+  "status": 422,
+  "statusText": "Unprocessable Entity",
+  "data": {
+    "message": "Invalid request.\n\n\"sha\" wasn't supplied.",
+    "documentation_url": "https://docs.github.com/rest/repos/contents#create-or-update-file-contents",
+    "status": "422"
+  },
+  "headers": {
+    "date": "Wed, 28 May 2025 18:52:50 GMT",
+    "content-type": "application/json; charset=utf-8",
+    "content-length": "170",
+    "x-oauth-scopes": "repo",
+    "x-accepted-oauth-scopes": "",
+    "x-oauth-client-id": "Ov23liqmVRU1aVroq3Wj",
+    "x-github-media-type": "github.v3; format=json",
+    "x-github-api-version-selected": "2022-11-28",
+    "x-ratelimit-limit": "5000",
+    "x-ratelimit-remaining": "4953",
+    "x-ratelimit-reset": "1748461473",
+    "x-ratelimit-used": "47",
+    "x-ratelimit-resource": "core",
+    "access-control-expose-headers": "ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Used, X-RateLimit-Resource, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type, X-GitHub-SSO, X-GitHub-Request-Id, Deprecation, Sunset",
+    "access-control-allow-origin": "*",
+    "strict-transport-security": "max-age=31536000; includeSubdomains; preload",
+    "x-frame-options": "deny",
+    "x-content-type-options": "nosniff",
+    "x-xss-protection": "0",
+    "referrer-policy": "origin-when-cross-origin, strict-origin-when-cross-origin",
+    "content-security-policy": "default-src 'none'",
+    "vary": "Accept-Encoding, Accept, X-Requested-With",
+    "server": "github.com",
+    "x-github-request-id": "0AB3:19160C:B24C6:1084B5:68375B7D"
+  },
+  "requestUrl": "https://api.github.com/repos/HasanMosa112345/ds/contents/src/index.js",
+  "requestMethod": "put",
+  "requestHeaders": {
+    "Accept": "application/vnd.github.v3+json",
+    "Content-Type": "application/json",
+    "Authorization": "[REDACTED]",
+    "User-Agent": "GitHub-OAuth-App",
+    "Content-Length": "134",
+    "Accept-Encoding": "gzip, compress, deflate, br"
+  }
+}
+
+{
+  "id": "l8obzzo9s1e",
+  "timestamp": "2025-05-28T18:53:04.846Z",
+  "context": {
+    "phase": "update_file",
+    "owner": "HasanMosa112345",
+    "repo": "ads",
+    "path": "aa.py"
+  },
+  "message": "Request failed with status code 422",
+  "stack": "AxiosError: Request failed with status code 422\n    at settle (C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:2049:12)\n    at IncomingMessage.handleStreamEnd (C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:3166:11)\n    at IncomingMessage.emit (node:events:530:35)\n    at endReadableNT (node:internal/streams/readable:1698:12)\n    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)\n    at Axios.request (C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:4276:41)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async C:\\Users\\hmosa\\OneDrive\\שולחן העבודה\\BS-PM-2025-TEAM7\\ci-cd-auth\\routes\\github.js:380:28",
+  "status": 422,
+  "statusText": "Unprocessable Entity",
+  "data": {
+    "message": "Invalid request.\n\n\"sha\" wasn't supplied.",
+    "documentation_url": "https://docs.github.com/rest/repos/contents#create-or-update-file-contents",
+    "status": "422"
+  },
+  "headers": {
+    "date": "Wed, 28 May 2025 18:53:04 GMT",
+    "content-type": "application/json; charset=utf-8",
+    "content-length": "170",
+    "x-oauth-scopes": "repo",
+    "x-accepted-oauth-scopes": "",
+    "x-oauth-client-id": "Ov23liqmVRU1aVroq3Wj",
+    "x-github-media-type": "github.v3; format=json",
+    "x-github-api-version-selected": "2022-11-28",
+    "x-ratelimit-limit": "5000",
+    "x-ratelimit-remaining": "4948",
+    "x-ratelimit-reset": "1748461473",
+    "x-ratelimit-used": "52",
+    "x-ratelimit-resource": "core",
+    "access-control-expose-headers": "ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Used, X-RateLimit-Resource, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type, X-GitHub-SSO, X-GitHub-Request-Id, Deprecation, Sunset",
+    "access-control-allow-origin": "*",
+    "strict-transport-security": "max-age=31536000; includeSubdomains; preload",
+    "x-frame-options": "deny",
+    "x-content-type-options": "nosniff",
+    "x-xss-protection": "0",
+    "referrer-policy": "origin-when-cross-origin, strict-origin-when-cross-origin",
+    "content-security-policy": "default-src 'none'",
+    "vary": "Accept-Encoding, Accept, X-Requested-With",
+    "server": "github.com",
+    "x-github-request-id": "0ACE:24E71C:54A46:AABBB:68375B8C"
+  },
+  "requestUrl": "https://api.github.com/repos/HasanMosa112345/ads/contents/aa.py",
+  "requestMethod": "put",
+  "requestHeaders": {
+    "Accept": "application/vnd.github.v3+json",
+    "Content-Type": "application/json",
+    "Authorization": "[REDACTED]",
+    "User-Agent": "GitHub-OAuth-App",
+    "Content-Length": "59",
+    "Accept-Encoding": "gzip, compress, deflate, br"
+  }
+}
+

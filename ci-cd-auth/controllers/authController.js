@@ -12,7 +12,7 @@ const clean = str => (typeof str === "string" ? str.trim() : str);
 exports.signup = async (req, res) => {
   let { username, email, password, confirmPassword, role } = req.body;
   username = clean(username);
-  email    = clean(email);
+  email = clean(email);
 
   if (!username || !email || !password || !confirmPassword || !role)
     return res.status(400).json({ message: "All fields are required." });
@@ -26,9 +26,15 @@ exports.signup = async (req, res) => {
 
   const newUser = new User({ username, email, password, role });
   await newUser.save();
+
+  if (role === 'lecturer') {
+    return res.status(201).json({ 
+      message: "Lecturer account created. Please wait for admin approval before logging in." 
+    });
+  }
+
   res.status(201).json({ message: "User registered successfully." });
 };
-
 /* ─────────────────────────────── LOGIN ───────────────────────────────── */
 exports.login = async (req, res) => {
   const { username, password } = req.body;          // “username” can be email, too
@@ -52,7 +58,9 @@ exports.login = async (req, res) => {
     $or: [{ username: username }, { email: username }]
   });
   if (!user) return res.status(404).json({ message: "User not found." });
-
+  if (user.role === 'lecturer' && !user.approved) {
+    return res.status(403).json({ message: "Your account is pending admin approval." });
+  }
   const isMatch = await bcrypt.compare(password, user.password);
   if (!isMatch) return res.status(401).json({ message: "Incorrect password." });
 

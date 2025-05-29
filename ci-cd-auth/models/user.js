@@ -29,6 +29,13 @@ const userSchema = new mongoose.Schema({
     type: String,
     unique: true,
     sparse: true
+  },
+    approved: {
+    type: Boolean,
+    default: function() {
+      // Automatically approve students, require approval for lecturers
+      return this.role !== 'lecturer';
+    }
   }
 });
 

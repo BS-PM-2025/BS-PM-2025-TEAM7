@@ -92,48 +92,61 @@
     }
 
     const tbody = document.querySelector("#usersTable tbody");
-    users.forEach(u => {
-      tbody.insertAdjacentHTML(
-        "beforeend",
-        `<tr>
-          <td><input id="u_${u._id}" value="${u.username}"></td>
-          <td><input id="e_${u._id}" value="${u.email || ""}"></td>
-          <td>
-            <select id="r_${u._id}">
-              <option value="student"  ${u.role === "student" ? "selected" : ""}>Student</option>
-              <option value="lecturer" ${u.role === "lecturer" ? "selected" : ""}>Lecturer</option>
-              <option value="admin"    ${u.role === "admin" ? "selected"   : ""}>Admin</option>
-            </select>
-          </td>
-          <td><input type="password" id="p_${u._id}" placeholder="New password"></td>
-          <td class="btn-group">
-            <button class="btn btn-save"   onclick="save('${u._id}')">Save</button>
-            <button class="btn btn-delete" onclick="removeUser('${u._id}')">Delete</button>
-          </td>
-        </tr>`
-      );
-    });
-  }
+  users.forEach(u => {
+    tbody.insertAdjacentHTML(
+      "beforeend",
+      `<tr>
+        <td><input id="u_${u._id}" value="${u.username}"></td>
+        <td><input id="e_${u._id}" value="${u.email || ""}"></td>
+        <td>
+          <select id="r_${u._id}">
+            <option value="student"  ${u.role === "student" ? "selected" : ""}>Student</option>
+            <option value="lecturer" ${u.role === "lecturer" ? "selected" : ""}>Lecturer</option>
+            <option value="admin"    ${u.role === "admin" ? "selected"   : ""}>Admin</option>
+          </select>
+        </td>
+        <td>
+          ${u.role === 'lecturer' ? 
+            `<input type="checkbox" id="a_${u._id}" ${u.approved ? 'checked' : ''}>
+             <label for="a_${u._id}">Approved</label>` : 
+            'N/A'}
+        </td>
+        <td><input type="password" id="p_${u._id}" placeholder="New password"></td>
+        <td class="btn-group">
+          <button class="btn btn-save" onclick="save('${u._id}')">Save</button>
+          <button class="btn btn-delete" onclick="removeUser('${u._id}')">Delete</button>
+        </td>
+      </tr>`
+    );
+  });
+}
 
   /* update user */
-  function save(id) {
-    const body = {
-      username: document.getElementById(`u_${id}`).value,
-      email   : document.getElementById(`e_${id}`).value,
-      role    : document.getElementById(`r_${id}`).value
-    };
-    const pwd = document.getElementById(`p_${id}`).value.trim();
-    if (pwd) body.password = pwd;
-
-    fetch(`/api/users/edit/${id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json", ...authHdr },
-      body: JSON.stringify(body)
-    })
-      .then(r => r.json())
-      .then(d => { alert(d.message || "Updated"); location.reload(); })
-      .catch(() => alert("Update failed"));
+function save(id) {
+  const body = {
+    username: document.getElementById(`u_${id}`).value,
+    email: document.getElementById(`e_${id}`).value,
+    role: document.getElementById(`r_${id}`).value
+  };
+  
+  // Add approval status for lecturers
+  const approvalCheckbox = document.getElementById(`a_${id}`);
+  if (approvalCheckbox) {
+    body.approved = approvalCheckbox.checked;
   }
+
+  const pwd = document.getElementById(`p_${id}`).value.trim();
+  if (pwd) body.password = pwd;
+
+  fetch(`/api/users/edit/${id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json", ...authHdr },
+    body: JSON.stringify(body)
+  })
+    .then(r => r.json())
+    .then(d => { alert(d.message || "Updated"); location.reload(); })
+    .catch(() => alert("Update failed"));
+}
 
   /* delete user */
   function removeUser(id) {

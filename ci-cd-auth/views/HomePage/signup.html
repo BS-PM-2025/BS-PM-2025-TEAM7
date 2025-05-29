@@ -287,6 +287,9 @@
       </form>
       <br>
       <p>Already have an account? <a href="/login">Login here</a></p>
+      <div id="approvalNotice" style="display: none; margin-top: 10px; font-size: 14px; color: #657EEF;">
+  Note: Lecturer accounts require admin approval before you can log in.
+</div>
     </div>
   </div>
 
@@ -318,6 +321,10 @@
         alert("Something went wrong.");
       }
     });
+      document.getElementById('role').addEventListener('change', function() {
+    const notice = document.getElementById('approvalNotice');
+    notice.style.display = this.value === 'lecturer' ? 'block' : 'none';
+  });
   </script>
 </body>
 </html>

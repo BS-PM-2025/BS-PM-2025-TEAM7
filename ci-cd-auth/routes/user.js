@@ -50,6 +50,11 @@ router.put(
       if (password) {
         updateFields.password = await bcrypt.hash(password, 10);
       }
+      if (requester.role === "admin") {
+  if (typeof req.body.approved !== 'undefined') {
+    updateFields.approved = req.body.approved;
+  }
+}
 
       const updated = await User.findByIdAndUpdate(
         targetId,
