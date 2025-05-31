@@ -3,6 +3,7 @@ const User   = require("../models/user");
 const bcrypt = require("bcrypt");
 const jwt    = require("jsonwebtoken");
 
+
 const JWT_SECRET = process.env.JWT_SECRET || "default_secret";
 
 /* small helper ---------------------------------------------------------- */
@@ -12,7 +13,7 @@ const clean = str => (typeof str === "string" ? str.trim() : str);
 exports.signup = async (req, res) => {
   let { username, email, password, confirmPassword, role } = req.body;
   username = clean(username);
-  email = clean(email);
+  email    = clean(email);
 
   if (!username || !email || !password || !confirmPassword || !role)
     return res.status(400).json({ message: "All fields are required." });
@@ -26,15 +27,9 @@ exports.signup = async (req, res) => {
 
   const newUser = new User({ username, email, password, role });
   await newUser.save();
-
-  if (role === 'lecturer') {
-    return res.status(201).json({ 
-      message: "Lecturer account created. Please wait for admin approval before logging in." 
-    });
-  }
-
   res.status(201).json({ message: "User registered successfully." });
 };
+
 /* ─────────────────────────────── LOGIN ───────────────────────────────── */
 exports.login = async (req, res) => {
   const { username, password } = req.body;          // “username” can be email, too
@@ -58,9 +53,7 @@ exports.login = async (req, res) => {
     $or: [{ username: username }, { email: username }]
   });
   if (!user) return res.status(404).json({ message: "User not found." });
-  if (user.role === 'lecturer' && !user.approved) {
-    return res.status(403).json({ message: "Your account is pending admin approval." });
-  }
+
   const isMatch = await bcrypt.compare(password, user.password);
   if (!isMatch) return res.status(401).json({ message: "Incorrect password." });
 
@@ -104,5 +97,71 @@ exports.updateProfile = async (req, res) => {
   } catch (err) {
     console.error("Profile update error:", err);
     res.status(500).json({ message: "Failed to update profile" });
+  }
+};
+
+/* ───────────────────────── FORGOT PASSWORD ───────────────────────────── */
+exports.forgotPassword = async (req, res) => {
+  const { email, username } = req.body;
+  
+  if (!email || !username) {
+    return res.status(400).json({ 
+      message: "Both email and username are required."
+    });
+  }
+
+  try {
+    const user = await User.findOne({ 
+      email: email.toLowerCase(),
+      username: { $regex: new RegExp(`^${username}$`, 'i') }
+    });
+
+    if (!user) {
+      return res.status(404).json({ 
+        message: "No account found with these credentials."
+      });
+    }
+
+    return res.json({ 
+      message: "User verified. You can now reset your password.",
+      email: email
+    });
+
+  } catch (err) {
+    console.error("Forgot password error:", err);
+    return res.status(500).json({ 
+      message: "An error occurred while processing your request."
+    });
+  }
+};
+
+exports.resetPassword = async (req, res) => {
+  const { email, username, password, confirmPassword } = req.body;
+
+  if (!email || !username || !password || !confirmPassword) {
+    return res.status(400).json({ message: "All fields are required." });
+  }
+
+  if (password !== confirmPassword) {
+    return res.status(400).json({ message: "Passwords do not match." });
+  }
+
+  try {
+    const user = await User.findOne({
+      email: email.toLowerCase(),
+      username: { $regex: new RegExp(`^${username}$`, 'i') },
+    });
+
+    if (!user) {
+      return res.status(404).json({ message: "Account not found." });
+    }
+
+    user.password = password; // ✅ No manual hash here
+    await user.save();
+
+    return res.json({ message: "Password has been reset successfully." });
+  } catch (err) {
+    console.error("Reset password error:", err);
+    return res.status(500).json({ message: "An error occurred while resetting your password." });
   }
 };

@@ -36,7 +36,9 @@ const userSchema = new mongoose.Schema({
       // Automatically approve students, require approval for lecturers
       return this.role !== 'lecturer';
     }
-  }
+  },
+    resetPasswordToken: String,
+  resetPasswordExpires: Date
 });
 
 // ✅ Hash password before saving, only if it’s new or changed

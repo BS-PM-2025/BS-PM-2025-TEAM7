@@ -39,6 +39,8 @@ app.use("/api", require("./routes/quiz")); // תומך ב־/api/submissions
 app.use("/api/chat", chatRoutes);
 app.use('/api/github', githubRouter); 
 // ---------- Frontend Pages ----------
+app.use(express.static(path.join(__dirname, "homepage")));
+
 app.get("/", (req, res) => {
   if (req.session) req.session.destroy(() => {});
   res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, private");
@@ -47,6 +49,10 @@ app.get("/", (req, res) => {
 
 app.get("/login", (req, res) =>
   res.sendFile(path.join(__dirname, "views", "HomePage", "login.html"))
+);
+
+app.get("/forgetpassword", (req, res) =>
+  res.sendFile(path.join(__dirname, "views", "HomePage", "forgetpassword.html"))
 );
 app.get("/student/github", (req, res) =>
   res.sendFile(path.join(__dirname, "views", "Student", "github.html"))
@@ -84,6 +90,9 @@ app.use((req, res, next) => {
   res.setHeader("Cache-Control", "no-store");
   next();
 });
+app.get("/forgetpassword", (req, res) =>
+  res.sendFile(path.join(__dirname, "views", "HomePage", "forgetpassword.html"))
+);
 
 // ---------- MongoDB Connection ----------
 const DB_URI = process.env.MONGO_URI || "mongodb://127.0.0.1:27017/ci_cd_learning";
