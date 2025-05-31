@@ -759,13 +759,15 @@
       </div>
       
       <!-- Content Card (Under Profile Card) -->
-      <div class="content-card">
-        <h2 class="content-title">Ready to Play, Learn, and Level Up?</h2>
-        <p class="content-text">Learn Git the fun way through interactive memory games and quick trivia challenges! You'll match terms with their meanings, answer real world coding questions, and build confidence as you go.</p>
-        <p class="content-text">The experience is short, smart, and stress free - perfect for beginners and curious minds alike.</p>
-        <p class="content-text">So go ahead choose a topic, start a game, and level up your skills with every move</p>
-        <a href="/about" class="start-button">Start Here</a>
+     <div class="content-card">
+        <section style="margin-top: 40px; padding: 20px; background: #fff; border-radius: 8px; box-shadow:0 2px 8px rgba(0,0,0,0.1);">
+          <h2>Your Feedback</h2>
+          <ul id="myFeedbackList" style="list-style:none; padding:0; margin-top:16px;">
+            <li>Loading feedback…</li>
+          </ul>
+        </section>
       </div>
+
 
       <!-- Quiz Results Section -->
       <div class="quiz-results-section">
@@ -995,6 +997,7 @@
         
         fetchStudentProgress();
         fetchQuizHistory();
+        fetchMyFeedback();
       }
     }
 
@@ -1211,9 +1214,52 @@ function saveProfile() {
     alert("Error updating profile: " + error.message);
   });
 }
+ async function fetchMyFeedback() {
+      const ul = document.getElementById("myFeedbackList");
+      ul.innerHTML = '<li class="loading">Loading feedback…</li>';
 
+      try {
+        const res = await fetch("/api/feedback/student/me", {
+          headers: { "Authorization": "Bearer " + sessionStorage.getItem("token") }
+        });
+        if (!res.ok) throw new Error(await res.text());
+
+        const { feedback } = await res.json();
+        renderMyFeedback(feedback);
+      } catch (err) {
+        console.error("❌ Error loading feedback:", err);
+        ul.innerHTML = '<li style="color:red;">Error loading feedback.</li>';
+      }
+    }
+
+    function renderMyFeedback(feedbackList) {
+      const ul = document.getElementById("myFeedbackList");
+      if (!Array.isArray(feedbackList) || feedbackList.length === 0) {
+        ul.innerHTML = '<li>No feedback yet.</li>';
+        return;
+      }
+
+      ul.innerHTML = feedbackList.map(fb => {
+        const date = new Date(fb.createdAt).toLocaleDateString();
+        const stars = "★".repeat(fb.rating) + "☆".repeat(5 - fb.rating);
+        // fb.lecturerId was populated with { username }
+        const lecturer = fb.lecturerId?.username || "Lecturer";
+
+        return `
+          <li style="margin-bottom:12px;">
+            <div>
+              <strong>${lecturer}</strong>
+              <span style="color:#666; font-size:12px; margin-left:8px;">${date}</span>
+            </div>
+            <div style="color:#f1c40f; margin:4px 0;">${stars}</div>
+            <div>${fb.comment || fb.message}</div>
+          </li>
+        `;
+      }).join("");
+    }
   editBtn.addEventListener("click", saveProfile, { once: true });
 
+  
   </script>
 </body>
 </html>

@@ -1,42 +1,57 @@
 // routes/feedback.js
 const express = require("express");
-const router = express.Router();
+const router  = express.Router();
 const {
   submitFeedback,
+  submitFeedbackToStudent,
   getAllFeedback,
   getCourseFeedback,
+  getFeedbackForStudent,
+  getMyFeedback,
   updateFeedback,
-  deleteFeedback,
+  deleteFeedback
 } = require("../controllers/feedbackController");
+const { authenticateToken, authorizeRole } = require("../middleware/auth");
 
-// Now import _both_ authenticateToken and authorizeRole
-const {
+// 1. Students submit general or course feedback (Home or Course page)
+router.post(
+  "/submit",
   authenticateToken,
-  authorizeRole,
-} = require("../middleware/auth");
+  authorizeRole("student"),
+  submitFeedback
+);
 
-// 1. Anyone logged in can _view_ all feedback
+// 2. Lecturers submit feedback to a specific student (Student Profile)
+router.post(
+  "/student/:id",
+  authenticateToken,
+  authorizeRole("lecturer"),
+  submitFeedbackToStudent
+);
+
+// 3. Anyone logged in views community/homepage feedback (students only)
 router.get(
   "/",
   authenticateToken,
   getAllFeedback
 );
 
-// 2. Get feedback for a specific course
+// 4. View feedback for a specific course (students only)
 router.get(
   "/course/:courseId",
   authenticateToken,
   getCourseFeedback
 );
 
-// 3. Only **students** may submit new feedback
-router.post(
-  "/submit",
+// 5. Students view feedback *about themselves* (lecturer → student only)
+router.get(
+  "/student/me",
   authenticateToken,
-  submitFeedback
+  authorizeRole("student"),
+  getMyFeedback
 );
 
-// 4. Only **lecturers** may edit existing feedback
+// 6. Lecturers edit their own feedback (lecturer → student only)
 router.put(
   "/:id",
   authenticateToken,
@@ -44,12 +59,20 @@ router.put(
   updateFeedback
 );
 
-// 5. Only **lecturers** may delete feedback
+// 7. Lecturers delete their own feedback (lecturer → student only)
 router.delete(
   "/:id",
   authenticateToken,
   authorizeRole("lecturer"),
   deleteFeedback
+);
+
+// 8. Lecturers view all feedback they’ve given to a particular student
+router.get(
+  "/student/:id",
+  authenticateToken,
+  authorizeRole("lecturer"),
+  getFeedbackForStudent
 );
 
 module.exports = router;

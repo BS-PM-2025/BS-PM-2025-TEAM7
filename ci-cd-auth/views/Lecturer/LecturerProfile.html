@@ -4,7 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Lecturer Dashboard</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <style>
     * {
       margin: 0;
@@ -378,6 +379,310 @@
       text-decoration: underline;
     }
 
+    /* Students List */
+    .students-section {
+      padding: 20px;
+      border-top: 1px solid #ddd;
+    }
+
+    .students-section h2 {
+      font-size: 24px;
+      color: #8b9aeb;
+      margin-bottom: 20px;
+    }
+
+    .students-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .student-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 16px;
+      margin-bottom: 8px;
+      background-color: #f9f9f9;
+      border-radius: 8px;
+      transition: background-color 0.2s;
+    }
+
+    .student-item:hover {
+      background-color: #f0f0f0;
+    }
+
+    .student-info {
+      flex: 1;
+    }
+
+    .student-name {
+      font-weight: 500;
+      color: #333;
+    }
+
+    .student-email {
+      font-size: 13px;
+      color: #666;
+    }
+
+    .feedback-btn {
+      background-color: #8b9aeb;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .feedback-btn:hover {
+      background-color: #7a89da;
+    }
+
+    .view-feedback-btn {
+      background-color: #4cceac;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background-color 0.2s;
+      margin-left: 8px;
+    }
+
+    .view-feedback-btn:hover {
+      background-color: #3dbd9b;
+    }
+
+    /* Feedback Modal */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .feedback-modal {
+      background-color: white;
+      border-radius: 12px;
+      width: 100%;
+      max-width: 500px;
+      padding: 30px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+      transform: translateY(20px);
+      transition: transform 0.3s ease;
+    }
+
+    .modal-overlay.active .feedback-modal {
+      transform: translateY(0);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .modal-title {
+      font-size: 22px;
+      font-weight: 600;
+      color: #8b9aeb;
+    }
+
+    .close-btn {
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      color: #999;
+    }
+
+    .feedback-form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .form-label {
+      font-weight: 500;
+      color: #555;
+    }
+
+    .feedback-textarea {
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      min-height: 120px;
+      resize: vertical;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .feedback-textarea:focus {
+      outline: none;
+      border-color: #8b9aeb;
+    }
+
+    .rating-container {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin: 10px 0;
+    }
+
+    .star {
+      font-size: 28px;
+      color: #ddd;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+
+    .star.active {
+      color: #ffc107;
+    }
+
+    .submit-btn {
+      background-color: #8b9aeb;
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .submit-btn:hover {
+      background-color: #7a89da;
+    }
+
+    /* Success Toast */
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background-color: #4cceac;
+      color: white;
+      padding: 16px 24px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+      z-index: 1001;
+    }
+
+    .toast.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .toast-icon {
+      font-size: 20px;
+    }
+
+    /* Feedback List Modal */
+    .feedback-list-modal {
+      background-color: white;
+      border-radius: 12px;
+      width: 100%;
+      max-width: 600px;
+      padding: 30px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+
+    .feedback-item {
+      padding: 15px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .feedback-item:last-child {
+      border-bottom: none;
+    }
+
+    .feedback-message {
+      margin-bottom: 8px;
+      color: #333;
+    }
+
+    .feedback-rating {
+      display: flex;
+      align-items: center;
+      color: #666;
+      font-size: 14px;
+    }
+
+    .feedback-date {
+      color: #999;
+      font-size: 12px;
+      margin-top: 5px;
+      text-align: right;
+    }
+
+    .feedback-stars {
+      color: #ffc107;
+      margin-left: 5px;
+    }
+
+    .no-feedback {
+      color: #666;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .student-feedback-list {
+      list-style: none;
+      padding-left: 16px;
+      margin-top: 8px;
+      border-left: 2px solid #ddd;
+    }
+    
+    .student-feedback-list li {
+      margin-bottom: 8px;
+      padding-left: 8px;
+      position: relative;
+    }
+    
+    .student-feedback-list li::before {
+      content: "•";
+      color: #8b9aeb;
+      font-weight: bold;
+      position: absolute;
+      left: -5px;
+    }
+    
+    .feedback-rating-stars {
+      color: #ffc107;
+      margin-left: 5px;
+    }
+
     @media (max-width: 1024px) {
       .page-container {
         flex-direction: column;
@@ -401,6 +706,22 @@
       
       .avatar-container {
         margin-top: 20px;
+      }
+
+      .feedback-modal {
+        width: 90%;
+        padding: 20px;
+      }
+      
+      .student-item {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      
+      .feedback-btn, .view-feedback-btn {
+        margin-top: 10px;
+        margin-left: 0;
+        width: 100%;
       }
     }
   </style>
@@ -432,7 +753,7 @@
             </svg>
           </button>
         </div>
-        
+       
         <div class="profile-info">
           <p><strong>Username:</strong> <span id="username2"></span></p>
           <p><strong>Email:</strong> <span id="email"></span></p>
@@ -452,13 +773,12 @@
         </div>
       </div>
       
-      <!-- Content Card (Under Profile Card) -->
+      <!-- Students List Card -->
       <div class="content-card">
-        <h2 class="content-title">Ready to Teach, Engage, and Inspire?</h2>
-        <p class="content-text">Teach CI/CD the fun way through interactive memory games and quick trivia challenges! You'll help students match terms with their meanings, answer real world coding questions, and build their confidence as they learn.</p>
-        <p class="content-text">The experience is short, smart, and effective - perfect for modern learning environments.</p>
-        <p class="content-text">So go ahead choose a topic, start a game, and watch your students level up their skills with every move</p>
-        <a href="#" class="start-button">Create new game</a>
+        <section class="students-section">
+          <h2>Your Students</h2>
+          <ul class="students-list" id="studentsList"></ul>
+        </section>
       </div>
     </div>
     
@@ -507,6 +827,54 @@
     </div>
   </div>
 
+  <!-- Feedback Modal -->
+  <div class="modal-overlay" id="feedbackModal">
+    <div class="feedback-modal">
+      <div class="modal-header">
+        <h3 class="modal-title">Give Feedback</h3>
+        <button class="close-btn" id="closeModal">&times;</button>
+      </div>
+      <form class="feedback-form" id="feedbackForm">
+        <input type="hidden" id="studentIdInput">
+        <div class="form-group">
+          <label class="form-label">Feedback Message</label>
+          <textarea class="feedback-textarea" id="feedbackMessage" placeholder="Write your feedback here..." required></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Rating</label>
+          <div class="rating-container" id="ratingStars">
+            <i class="fas fa-star star" data-rating="1"></i>
+            <i class="fas fa-star star" data-rating="2"></i>
+            <i class="fas fa-star star" data-rating="3"></i>
+            <i class="fas fa-star star" data-rating="4"></i>
+            <i class="fas fa-star star" data-rating="5"></i>
+          </div>
+          <input type="hidden" id="ratingInput" required>
+        </div>
+        <button type="submit" class="submit-btn">Submit Feedback</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Feedback List Modal -->
+  <div class="modal-overlay" id="feedbackListModal">
+    <div class="feedback-list-modal">
+      <div class="modal-header">
+        <h3 class="modal-title" id="feedbackListTitle">Feedback for Student</h3>
+        <button class="close-btn" id="closeFeedbackListModal">&times;</button>
+      </div>
+      <div id="feedbackListContent">
+        <!-- Feedback items will be inserted here -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Success Toast -->
+  <div class="toast" id="successToast">
+    <i class="fas fa-check-circle toast-icon"></i>
+    <span>Feedback submitted successfully!</span>
+  </div>
+
   <script>
     function goHome() {
       window.location.href = "/";
@@ -532,6 +900,23 @@
       return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase();
     }
 
+    function formatDate(dateString) {
+      const options = { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+      return new Date(dateString).toLocaleDateString(undefined, options);
+    }
+
+    function renderStars(rating) {
+      let stars = '';
+      for (let i = 0; i < 5; i++) {
+        if (i < rating) {
+          stars += '<i class="fas fa-star feedback-rating-stars"></i>';
+        } else {
+          stars += '<i class="far fa-star feedback-rating-stars"></i>';
+        }
+      }
+      return stars;
+    }
+
     // Check if token exists in session storage
     const token = sessionStorage.getItem("token");
     
@@ -551,6 +936,332 @@
     } else {
       window.location.href = "/login";
     }
+
+    // Fetch students list
+    fetch("/api/users/all?role=student", {
+      headers: { "Authorization": "Bearer " + token }
+    })
+    .then(r => r.json())
+    .then(students => {
+      const ul = document.getElementById("studentsList");
+      students.forEach(s => {
+        const li = document.createElement("li");
+        li.className = "student-item";
+        
+        const studentInfo = document.createElement("div");
+        studentInfo.className = "student-info";
+        
+        const name = document.createElement("div");
+        name.className = "student-name";
+        name.textContent = s.username;
+        
+        const email = document.createElement("div");
+        email.className = "student-email";
+        email.textContent = s.email;
+        
+        // Fetch feedback for this student
+        fetch(`/api/feedback/student/${s._id}`, {
+          headers: { "Authorization": "Bearer " + token }
+        })
+        .then(r => r.json())
+        .then(feedbacks => {
+          if (feedbacks.length > 0) {
+            const feedbackList = document.createElement("ul");
+            feedbackList.className = "student-feedback-list";
+            
+            // Show only the 3 most recent feedbacks
+            const recentFeedbacks = feedbacks.slice(0, 3);
+            recentFeedbacks.forEach(f => {
+              const feedbackItem = document.createElement("li");
+              feedbackItem.innerHTML = `
+                ${f.message.substring(0, 30)}${f.message.length > 30 ? '...' : ''}
+                <div class="feedback-rating">Rating: ${f.rating} ${renderStars(f.rating)}</div>
+              `;
+              feedbackList.appendChild(feedbackItem);
+            });
+            
+            // Add "View more" if there are more feedbacks
+            if (feedbacks.length > 3) {
+              const viewMore = document.createElement("li");
+              viewMore.textContent = `+${feedbacks.length - 3} more feedbacks...`;
+              feedbackList.appendChild(viewMore);
+            }
+            
+            studentInfo.appendChild(feedbackList);
+          }
+        })
+        .catch(console.error);
+        
+        studentInfo.appendChild(name);
+        studentInfo.appendChild(email);
+        
+        const btnContainer = document.createElement("div");
+        btnContainer.style.display = "flex";
+        btnContainer.style.gap = "8px";
+        
+        const feedbackBtn = document.createElement("button");
+        feedbackBtn.className = "feedback-btn";
+        feedbackBtn.textContent = "Give Feedback";
+        feedbackBtn.onclick = () => openFeedbackModal(s._id, s.username);
+        
+        const viewFeedbackBtn = document.createElement("button");
+        viewFeedbackBtn.className = "view-feedback-btn";
+        viewFeedbackBtn.textContent = "View Feedbacks";
+        viewFeedbackBtn.onclick = () => openFeedbackListModal(s._id, s.username);
+        
+        btnContainer.appendChild(feedbackBtn);
+        btnContainer.appendChild(viewFeedbackBtn);
+        
+        li.appendChild(studentInfo);
+        li.appendChild(btnContainer);
+        
+        ul.appendChild(li);
+      });
+    })
+    .catch(console.error);
+
+    // Feedback modal functionality
+    const feedbackModal = document.getElementById("feedbackModal");
+    const closeModalBtn = document.getElementById("closeModal");
+    const feedbackForm = document.getElementById("feedbackForm");
+    const stars = document.querySelectorAll(".star");
+    const ratingInput = document.getElementById("ratingInput");
+    const studentIdInput = document.getElementById("studentIdInput");
+    const successToast = document.getElementById("successToast");
+
+    // Feedback list modal elements
+    const feedbackListModal = document.getElementById("feedbackListModal");
+    const closeFeedbackListModalBtn = document.getElementById("closeFeedbackListModal");
+    const feedbackListContent = document.getElementById("feedbackListContent");
+    const feedbackListTitle = document.getElementById("feedbackListTitle");
+
+    let currentRating = 0;
+    let currentStudentId = "";
+    let currentStudentName = "";
+
+    function openFeedbackModal(studentId, studentName) {
+      currentStudentId = studentId;
+      currentStudentName = studentName;
+      document.querySelector(".modal-title").textContent = `Feedback for ${studentName}`;
+      studentIdInput.value = studentId;
+      feedbackModal.classList.add("active");
+    }
+
+    function openFeedbackListModal(studentId, studentName) {
+      currentStudentId = studentId;
+      currentStudentName = studentName;
+      feedbackListTitle.textContent = `Feedback for ${studentName}`;
+      
+      // Fetch feedback for this student
+      fetch(`/api/feedback/student/${studentId}`, {
+        headers: { "Authorization": "Bearer " + token }
+      })
+      .then(r => r.json())
+      .then(feedbacks => {
+        if (feedbacks.length === 0) {
+          feedbackListContent.innerHTML = '<div class="no-feedback">No feedback given yet for this student.</div>';
+        } else {
+          feedbackListContent.innerHTML = '';
+          feedbacks.forEach(feedback => {
+            const feedbackItem = document.createElement("div");
+            feedbackItem.className = "feedback-item";
+            feedbackItem.innerHTML = `
+              <div class="feedback-message">${feedback.message}</div>
+              <div class="feedback-rating">Rating: ${feedback.rating} ${renderStars(feedback.rating)}</div>
+              <div class="feedback-date">${formatDate(feedback.createdAt)}</div>
+            `;
+            feedbackListContent.appendChild(feedbackItem);
+          });
+        }
+        feedbackListModal.classList.add("active");
+      })
+      .catch(err => {
+        feedbackListContent.innerHTML = '<div class="no-feedback">Error loading feedback. Please try again.</div>';
+        console.error(err);
+      });
+    }
+
+    function closeFeedbackModal() {
+      feedbackModal.classList.remove("active");
+      // Reset form
+      feedbackForm.reset();
+      currentRating = 0;
+      ratingInput.value = "";
+      stars.forEach(star => star.classList.remove("active"));
+    }
+
+    function closeFeedbackListModal() {
+      feedbackListModal.classList.remove("active");
+    }
+
+    closeModalBtn.addEventListener("click", closeFeedbackModal);
+    closeFeedbackListModalBtn.addEventListener("click", closeFeedbackListModal);
+
+    // Star rating interaction
+    stars.forEach(star => {
+      star.addEventListener("click", () => {
+        const rating = parseInt(star.getAttribute("data-rating"));
+        currentRating = rating;
+        ratingInput.value = rating;
+        
+        stars.forEach((s, index) => {
+          if (index < rating) {
+            s.classList.add("active");
+          } else {
+            s.classList.remove("active");
+          }
+        });
+      });
+      
+      // Hover effect
+      star.addEventListener("mouseover", () => {
+        const rating = parseInt(star.getAttribute("data-rating"));
+        
+        stars.forEach((s, index) => {
+          if (index < rating) {
+            s.style.color = "#ffc107";
+          }
+        });
+      });
+      
+      star.addEventListener("mouseout", () => {
+        stars.forEach((s, index) => {
+          if (index >= currentRating) {
+            s.style.color = "#ddd";
+          }
+        });
+      });
+    });
+
+    // Form submission
+    feedbackForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      
+      const message = document.getElementById("feedbackMessage").value;
+      const rating = currentRating;
+      
+      if (!message || !rating) {
+        alert("Please provide both feedback message and rating");
+        return;
+      }
+      
+      fetch(`/api/feedback/student/${currentStudentId}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + token
+        },
+        body: JSON.stringify({ message, rating })
+      })
+      .then(res => {
+        if (!res.ok) throw new Error("Server rejected feedback");
+        return res.json();
+      })
+      .then(data => {
+          closeFeedbackModal();
+        showSuccessToast();
+      })
+      .catch(err => {
+        alert("Error: " + err.message);
+      });
+    });
+
+    function showSuccessToast() {
+      successToast.classList.add("visible");
+      setTimeout(() => {
+        successToast.classList.remove("visible");
+      }, 3000);
+    }
+
+    // Close modal when clicking outside
+    feedbackModal.addEventListener("click", (e) => {
+      if (e.target === feedbackModal) {
+        closeFeedbackModal();
+      }
+    });
+    function openFeedbackListModal(studentId, studentName) {
+  feedbackListTitle.textContent = `Feedback for ${studentName}`;
+  feedbackListContent.innerHTML = `<div class="no-feedback">Loading…</div>`;
+  feedbackListModal.classList.add("active");
+
+  fetch(`/api/feedback/student/${studentId}`, {
+    headers: { "Authorization": "Bearer " + token }
+  })
+  .then(r => {
+    if (!r.ok) throw new Error("Server error");
+    return r.json();
+  })
+  .then(({ feedback }) => {
+    if (feedback.length === 0) {
+      feedbackListContent.innerHTML = '<div class="no-feedback">No feedback yet.</div>';
+    } else {
+      feedbackListContent.innerHTML = "";
+      feedback.forEach(fb => {
+        const item = document.createElement("div");
+        item.className = "feedback-item";
+        item.innerHTML = `
+          <div class="feedback-message">${fb.message}</div>
+          <div class="feedback-rating">
+            Rating: ${fb.rating}
+            <span class="feedback-stars">${
+              "★".repeat(fb.rating) + "☆".repeat(5 - fb.rating)
+            }</span>
+          </div>
+          <div class="feedback-date">${new Date(fb.createdAt).toLocaleString()}</div>
+        `;
+        feedbackListContent.appendChild(item);
+      });
+    }
+  })
+  .catch(err => {
+    feedbackListContent.innerHTML = '<div class="no-feedback">Error loading feedback.</div>';
+    console.error(err);
+  });
+}
+ function openFeedbackListModal(studentId, studentName) {
+    feedbackListTitle.textContent = `Feedback for ${studentName}`;
+    feedbackListContent.innerHTML = `<div class="no-feedback">Loading…</div>`;
+    feedbackListModal.classList.add("active");
+
+    fetch(`/api/feedback/student/${studentId}`, {
+      headers: { "Authorization": "Bearer " + token }
+    })
+    .then(r => {
+      if (!r.ok) throw new Error("Server error");
+      return r.json();
+    })
+    .then(data => {
+      const feedbacks = data.feedback || [];
+      if (!feedbacks.length) {
+        feedbackListContent.innerHTML = '<div class="no-feedback">No feedback yet.</div>';
+        return;
+      }
+
+      feedbackListContent.innerHTML = "";
+      feedbacks.forEach(fb => {
+        const text  = fb.message ?? fb.comment ?? "(no message)";
+        const stars = "★".repeat(fb.rating) + "☆".repeat(5 - fb.rating);
+        const date  = new Date(fb.createdAt).toLocaleString();
+
+        const el = document.createElement("div");
+        el.className = "feedback-item";
+        el.innerHTML = `
+          <div class="feedback-message">${text}</div>
+          <div class="feedback-rating">Rating: ${fb.rating} ${stars}</div>
+          <div class="feedback-date">${date}</div>
+        `;
+        feedbackListContent.appendChild(el);
+      });
+    })
+    .catch(err => {
+      feedbackListContent.innerHTML = '<div class="no-feedback">Could not load feedback.</div>';
+      console.error(err);
+    });
+  }
+
+  closeFeedbackListModalBtn.addEventListener("click", () => {
+    feedbackListModal.classList.remove("active");
+  });
   </script>
 </body>
 </html>
