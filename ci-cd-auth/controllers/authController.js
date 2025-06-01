@@ -49,10 +49,16 @@ exports.login = async (req, res) => {
   /* --------------------------------------------------------------------- */
 
   // allow login with username **or** email
-  const user = await User.findOne({
-    $or: [{ username: username }, { email: username }]
-  });
+   const user = await User.findOne({
+    $or: [{ username }, { email: username }]
+  }).select("+approved");       
   if (!user) return res.status(404).json({ message: "User not found." });
+   /* 🔒 Block lecturers until an admin checks “Approved” */
+  if (user.role === "lecturer" && !user.approved) {
+    return res
+      .status(403)
+      .json({ message: "Account pending admin approval." });
+ }
 
   const isMatch = await bcrypt.compare(password, user.password);
   if (!isMatch) return res.status(401).json({ message: "Incorrect password." });

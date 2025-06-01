@@ -637,6 +637,122 @@
       padding: 6px;
       border-radius: 50%;
     }
+    /* === Memory-Game blurb & button =================================== */
+    .game-info{
+      margin-top:32px;
+      text-align:center;
+    }
+
+    .game-description{
+      font-size:14px;
+      color:#444;
+      line-height:1.45;
+      margin-bottom:18px;
+    }
+        /* === Fancy Upload Modal ========================================== */
+    .modal{
+      display:none;position:fixed;inset:0;
+      justify-content:center;align-items:center;
+      background:rgba(0,0,0,.6);z-index:100;
+    }
+    .modal.show{display:flex;}           /* <- add/remove this class in JS */
+
+    .modal-box{
+      position:relative;
+      background:#fff;border-radius:18px;
+      padding:40px 44px;width:95%;max-width:420px;
+      box-shadow:0 20px 50px rgba(0,0,0,.25);
+      animation:pop .35s ease;
+    }
+
+    @keyframes pop{
+      from{transform:scale(.88);opacity:0}
+      to  {transform:scale(1);opacity:1}
+    }
+
+    /* close X */
+    .modal-close{
+      position:absolute;top:18px;right:22px;
+      font-size:32px;line-height:1;background:none;border:none;
+      color:#aaa;cursor:pointer;transition:.25s;
+    }
+    .modal-close:hover{color:#000;transform:rotate(90deg);}
+
+    /* title */
+    .modal-title{
+      font:600 22px/1 'Inter',sans-serif;
+      color:#657EEF;text-align:center;margin-bottom:28px;
+    }
+
+    /* drop-zone */
+    .dropzone{
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      border:2px dashed #65EFBC;border-radius:14px;
+      padding:46px 24px;margin-bottom:30px;text-align:center;cursor:pointer;
+      transition:border-color .25s, background .25s;
+    }
+    .dropzone:hover{
+      border-color:#657EEF;background:rgba(101,126,239,.05);
+    }
+    .drop-icon{font-size:52px;margin-bottom:14px;}
+    .drop-text{font-size:15px;color:#555;line-height:1.45;}
+
+    .upload-confirm{
+      width:100%;background:#657EEF;color:#fff;border:none;border-radius:10px;
+      padding:14px 0;font:600 16px/1 'Inter',sans-serif;cursor:pointer;
+      transition:background .25s, transform .25s;
+    }
+    .upload-confirm:hover{
+      background:#4a65e6;transform:translateY(-2px);
+    }
+
+    .play-game-btn{
+      display:inline-block;
+      background:#657EEF;
+      color:#fff;
+      font-weight:600;
+      padding:12px 26px;
+      border-radius:8px;
+      text-decoration:none;
+      transition:background .25s, transform .25s;
+    }
+
+    .play-game-btn:hover{
+      background:#4a65e6;
+      transform:translateY(-2px);
+    }
+    /* === Avatar-photo buttons ========================================== */
+    .photo-btn-row{
+      display:flex;
+      gap:10px;
+      margin-top:14px;
+    }
+
+    .photo-btn{
+      border:none;
+      border-radius:8px;
+      padding:8px 16px;
+      font:600 14px/1 'Inter',sans-serif;
+      cursor:pointer;
+      transition:background .2s, transform .2s;
+      display:flex;
+      align-items:center;
+      gap:6px;
+    }
+
+    /* Upload = brand blue */
+    .upload-photo{
+      background:#657EEF;
+      color:#fff;
+    }
+    .upload-photo:hover{ background:#4a65e6; transform:translateY(-2px); }
+
+    /* Delete = alert red */
+    .delete-photo{
+      background:#ff4c4c;
+      color:#fff;
+    }
+    .delete-photo:hover{ background:#d93636; transform:translateY(-2px); }
 
     .edit-icon:hover {
       color: #4a65e6;
@@ -752,10 +868,15 @@
           
           <div class="level-container">
             <div class="level-title">Level: <span class="level-value" id="levelText">Beginner</span></div>
-             <a href="#" class="learn-more" id="uploadPhotoLink">Upload Photo</a>
-            <a href="#" class="learn-more" id="deletePhotoLink" style="margin-left:8px">Delete Photo</a>
+  
+
           </div>
+          
         </div>
+        <div class="photo-btn-row">
+              <button id="uploadPhotoLink"  class="photo-btn upload-photo"  title="Upload a new picture">📤 Upload</button>
+              <button id="deletePhotoLink"  class="photo-btn delete-photo"  title="Remove current picture">🗑️ Delete</button>
+            </div>
       </div>
       
       <!-- Content Card (Under Profile Card) -->
@@ -771,7 +892,7 @@
 
       <!-- Quiz Results Section -->
       <div class="quiz-results-section">
-        <h2 class="quiz-results-title">📊 Your Quiz Submissions</h2>
+        <h2 class="quiz-results-title">Your Quiz Submissions</h2>
         <div id="quizResultsContainer"></div>
       </div>
     </div>
@@ -818,18 +939,39 @@
         
         <a href="#" class="view-all-link">View all</a>
       </div>
+          <p class="game-description">
+          <strong>Git Memory Challenge -</strong> match Git commands to their meanings against the clock and climb the leaderboard.
+          </p>
+
+    <a href="/about" class="play-game-btn">
+      <strong>Play the Memory Game</strong>
+    </a>
+      </div>
     </div>
+    <div class="game-info">
+
   </div>
 
   <!-- Photo Upload Modal -->
-  <div id="photoModal" class="modal">
-    <div class="modal-content">
-      <span class="close">&times;</span>
-      <h2>Upload Profile Photo</h2>
-      <input type="file" id="photoInput" accept="image/*">
-      <button class="upload-btn" id="uploadBtn">Upload</button>
-    </div>
+<div id="photoModal" class="modal">
+  <div class="modal-box">
+    <button class="modal-close" title="Close">&times;</button>
+
+    <h2 class="modal-title">Upload Profile Photo</h2>
+
+    <!-- drag & drop zone -->
+    <input type="file" id="photoInput" accept="image/*" hidden>
+    <label for="photoInput" class="dropzone">
+      <span class="drop-icon">📸</span>
+      <span class="drop-text">
+        Drag an image here <br><em>or click to browse</em>
+      </span>
+    </label>
+
+    <button id="uploadBtn" class="upload-confirm">🚀 Upload</button>
   </div>
+</div>
+
 
   <!-- Photo View Modal -->
   <div id="viewPhotoModal" class="photo-modal">
@@ -886,7 +1028,7 @@
     document.addEventListener('DOMContentLoaded', function() {
       const modal = document.getElementById('photoModal');
       const uploadLink = document.getElementById('uploadPhotoLink');
-      const closeBtn = document.querySelector('.close');
+      const closeBtn = document.querySelector('.modal-close');
       const uploadBtn = document.getElementById('uploadBtn');
       const photoInput = document.getElementById('photoInput');
       const avatarContainer = document.getElementById('avatarContainer');

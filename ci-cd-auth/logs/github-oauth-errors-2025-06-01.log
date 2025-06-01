@@ -1,0 +1,110 @@
+{
+  "id": "qkrxto5qws7",
+  "timestamp": "2025-06-01T22:17:37.341Z",
+  "context": {
+    "phase": "fetch_repo_contents",
+    "owner": "MohammedGhara",
+    "repo": "NewOne",
+    "path": "src"
+  },
+  "message": "Request failed with status code 404",
+  "stack": "AxiosError: Request failed with status code 404\n    at settle (C:\\Users\\מוחמד גרה\\Desktop\\Poject Hadas\\BS-PM-2025-TEAM7-19\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:2049:12)\n    at Unzip.handleStreamEnd (C:\\Users\\מוחמד גרה\\Desktop\\Poject Hadas\\BS-PM-2025-TEAM7-19\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:3166:11)\n    at Unzip.emit (node:events:530:35)\n    at endReadableNT (node:internal/streams/readable:1698:12)\n    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)\n    at Axios.request (C:\\Users\\מוחמד גרה\\Desktop\\Poject Hadas\\BS-PM-2025-TEAM7-19\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:4276:41)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async C:\\Users\\מוחמד גרה\\Desktop\\Poject Hadas\\BS-PM-2025-TEAM7-19\\ci-cd-auth\\routes\\github.js:330:22",
+  "status": 404,
+  "statusText": "Not Found",
+  "data": {
+    "message": "Not Found",
+    "documentation_url": "https://docs.github.com/rest/repos/contents#get-repository-content",
+    "status": "404"
+  },
+  "headers": {
+    "date": "Sun, 01 Jun 2025 22:17:36 GMT",
+    "content-type": "application/json; charset=utf-8",
+    "x-oauth-scopes": "repo",
+    "x-accepted-oauth-scopes": "",
+    "x-oauth-client-id": "Ov23liqmVRU1aVroq3Wj",
+    "x-github-media-type": "github.v3; format=json",
+    "x-github-api-version-selected": "2022-11-28",
+    "x-ratelimit-limit": "5000",
+    "x-ratelimit-remaining": "4985",
+    "x-ratelimit-reset": "1748819797",
+    "x-ratelimit-used": "15",
+    "x-ratelimit-resource": "core",
+    "access-control-expose-headers": "ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Used, X-RateLimit-Resource, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type, X-GitHub-SSO, X-GitHub-Request-Id, Deprecation, Sunset",
+    "access-control-allow-origin": "*",
+    "strict-transport-security": "max-age=31536000; includeSubdomains; preload",
+    "x-frame-options": "deny",
+    "x-content-type-options": "nosniff",
+    "x-xss-protection": "0",
+    "referrer-policy": "origin-when-cross-origin, strict-origin-when-cross-origin",
+    "content-security-policy": "default-src 'none'",
+    "vary": "Accept-Encoding, Accept, X-Requested-With",
+    "transfer-encoding": "chunked",
+    "server": "github.com",
+    "x-github-request-id": "E12E:55C2:322A79:78413D:683CD180"
+  },
+  "requestUrl": "https://api.github.com/repos/MohammedGhara/NewOne/contents/src",
+  "requestMethod": "get",
+  "requestHeaders": {
+    "Accept": "application/vnd.github.v3+json",
+    "Authorization": "[REDACTED]",
+    "User-Agent": "GitHub-OAuth-App",
+    "Accept-Encoding": "gzip, compress, deflate, br"
+  }
+}
+
+{
+  "id": "4go89wbn3wc",
+  "timestamp": "2025-06-01T22:17:46.210Z",
+  "context": {
+    "phase": "delete_file",
+    "owner": "MohammedGhara",
+    "repo": "NewOne",
+    "path": "src/index.js"
+  },
+  "message": "Request failed with status code 404",
+  "stack": "AxiosError: Request failed with status code 404\n    at settle (C:\\Users\\מוחמד גרה\\Desktop\\Poject Hadas\\BS-PM-2025-TEAM7-19\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:2049:12)\n    at Unzip.handleStreamEnd (C:\\Users\\מוחמד גרה\\Desktop\\Poject Hadas\\BS-PM-2025-TEAM7-19\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:3166:11)\n    at Unzip.emit (node:events:530:35)\n    at endReadableNT (node:internal/streams/readable:1698:12)\n    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)\n    at Axios.request (C:\\Users\\מוחמד גרה\\Desktop\\Poject Hadas\\BS-PM-2025-TEAM7-19\\ci-cd-auth\\node_modules\\axios\\dist\\node\\axios.cjs:4276:41)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async C:\\Users\\מוחמד גרה\\Desktop\\Poject Hadas\\BS-PM-2025-TEAM7-19\\ci-cd-auth\\routes\\github.js:648:22",
+  "status": 404,
+  "statusText": "Not Found",
+  "data": {
+    "message": "Not Found",
+    "documentation_url": "https://docs.github.com/rest/repos/contents#delete-a-file",
+    "status": "404"
+  },
+  "headers": {
+    "date": "Sun, 01 Jun 2025 22:17:45 GMT",
+    "content-type": "application/json; charset=utf-8",
+    "x-oauth-scopes": "repo",
+    "x-accepted-oauth-scopes": "",
+    "x-oauth-client-id": "Ov23liqmVRU1aVroq3Wj",
+    "x-github-media-type": "github.v3; format=json",
+    "x-github-api-version-selected": "2022-11-28",
+    "x-ratelimit-limit": "5000",
+    "x-ratelimit-remaining": "4984",
+    "x-ratelimit-reset": "1748819797",
+    "x-ratelimit-used": "16",
+    "x-ratelimit-resource": "core",
+    "access-control-expose-headers": "ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Used, X-RateLimit-Resource, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type, X-GitHub-SSO, X-GitHub-Request-Id, Deprecation, Sunset",
+    "access-control-allow-origin": "*",
+    "strict-transport-security": "max-age=31536000; includeSubdomains; preload",
+    "x-frame-options": "deny",
+    "x-content-type-options": "nosniff",
+    "x-xss-protection": "0",
+    "referrer-policy": "origin-when-cross-origin, strict-origin-when-cross-origin",
+    "content-security-policy": "default-src 'none'",
+    "vary": "Accept-Encoding, Accept, X-Requested-With",
+    "transfer-encoding": "chunked",
+    "server": "github.com",
+    "x-github-request-id": "E130:B599A:302D03:764405:683CD189"
+  },
+  "requestUrl": "https://api.github.com/repos/MohammedGhara/NewOne/contents/src/index.js",
+  "requestMethod": "delete",
+  "requestHeaders": {
+    "Accept": "application/vnd.github.v3+json",
+    "Content-Type": "application/json",
+    "Authorization": "[REDACTED]",
+    "User-Agent": "GitHub-OAuth-App",
+    "Content-Length": "78",
+    "Accept-Encoding": "gzip, compress, deflate, br"
+  }
+}
+

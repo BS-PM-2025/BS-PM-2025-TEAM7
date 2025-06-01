@@ -726,6 +726,7 @@
     border-radius: 6px;
     margin-bottom: 15px;
   }
+  
     /* ---------- Empty State ---------- */
     .empty-state {
       text-align: center;
@@ -1324,18 +1325,23 @@ function renderFeedback(courseId) {
       fetch(`/api/videos/${videoId}/quiz`)
         .then(response => response.ok ? response.json() : null)
         .then(quiz => {
-          if(!quiz || !quiz.questions || quiz.questions.length === 0) {
-            quizContent.innerHTML = `
-              <div class="empty-state">
-                <p>${user?.role === "lecturer" ? "No quiz available. Create one below." : "No quiz available for this video yet."}</p>
-              </div>`;
-            
-            if(user?.role === "lecturer") {
-              renderQuizEditor(quizContent);
-            }
-            return;
-          }
-          
+         if(!quiz || !quiz.questions || quiz.questions.length === 0) {
+          quizContent.innerHTML = `
+            <div class="empty-state">
+              <p>${user?.role === "lecturer"
+                ? "No quiz available. Create one below."
+                : "No quiz available for this video yet."}
+              </p>
+            </div>
+            <div class="modal-actions">
+              <button class="btn close-modal" onclick="closeQuizModal()">Close</button>
+              ${user?.role === "lecturer"
+                ? '<button class="btn save-quiz" onclick="renderQuizEditor(quizContent)">Create Quiz</button>'
+                : ''}
+            </div>`;
+          return;            // nothing else to do
+        }
+
           if(user?.role === "student") {
             renderStudentQuiz(quizContent, quiz);
           } else if(user?.role === "lecturer") {

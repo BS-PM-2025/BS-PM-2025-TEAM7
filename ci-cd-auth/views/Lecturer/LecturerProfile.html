@@ -455,6 +455,20 @@
     .view-feedback-btn:hover {
       background-color: #3dbd9b;
     }
+        /* Avatar image inherits the circle */
+    .avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
+
+    /* ── full-screen viewer ─────────────────────────────── */
+    .full-photo-modal{display:none;position:fixed;inset:0;z-index:1300;
+      background:rgba(0,0,0,.8);justify-content:center;align-items:center;}
+    .full-photo-modal.show{display:flex;}
+
+    .full-photo-modal img{max-width:80vw;max-height:80vh;border-radius:8px;
+      box-shadow:0 12px 40px rgba(0,0,0,.35);}
+
+    .full-photo-close{position:absolute;top:30px;right:40px;font-size:46px;
+      color:#fff;font-weight:bold;cursor:pointer;line-height:1;}
+    .full-photo-close:hover{transform:rotate(90deg);}
 
     /* Feedback Modal */
     .modal-overlay {
@@ -682,6 +696,64 @@
       color: #ffc107;
       margin-left: 5px;
     }
+    /* === Avatar-photo buttons ========================================== */
+    .photo-btn-row{
+      display:flex;
+      gap:10px;
+      margin-top:14px;
+    } 
+
+    .photo-btn{
+      border:none;
+      border-radius:8px;
+      padding:8px 16px;
+      font:600 14px/1 'Inter',sans-serif;
+      cursor:pointer;
+      transition:background .2s, transform .2s;
+      display:flex;
+      align-items:center;
+      gap:6px;
+    }
+        /* ─── avatar-photo modal (shared) ─────────────────────── */
+    .photo-modal           {display:none;position:fixed;inset:0;
+                            background:rgba(0,0,0,.55);justify-content:center;align-items:center;z-index:1200;}
+    .photo-modal.show      {display:flex;}
+
+    .photo-modal-box       {background:#fff;border-radius:18px;padding:36px 40px;
+                            width:95%;max-width:420px;box-shadow:0 18px 40px rgba(0,0,0,.25);
+                            animation:pop .3s ease;}
+    @keyframes pop{from{transform:scale(.9);opacity:0;}to{transform:scale(1);opacity:1;}}
+
+    .modal-close           {position:absolute;top:18px;right:24px;font-size:32px;line-height:1;
+                            background:none;border:none;color:#aaa;cursor:pointer;transition:.2s;}
+    .modal-close:hover     {color:#000;transform:rotate(90deg);}
+
+    .modal-title           {font-size:22px;font-weight:600;color:#657EEF;text-align:center;margin-bottom:28px;}
+
+    .drop-zone             {border:2px dashed #657EEF99;border-radius:15px;display:flex;flex-direction:column;
+                            align-items:center;justify-content:center;height:220px;cursor:pointer;}
+    .drop-zone:hover       {background:#f8f9ff;}
+    .dz-icon               {font-size:48px;color:#8b9aeb;margin-bottom:16px;}
+    .dz-text               {text-align:center;color:#555;} .dz-text span{color:#888;font-style:italic;}
+
+    .upload-btn            {width:100%;margin-top:30px;padding:14px;background:#657EEF;color:#fff;
+                            border:none;border-radius:10px;font-size:16px;font-weight:600;cursor:pointer;}
+    .upload-btn:hover      {background:#4a65e6;transform:translateY(-2px);}
+
+    /* Upload = brand blue */
+    .upload-photo{
+      background:#657EEF;
+      color:#fff;
+    }
+    .upload-photo:hover{ background:#4a65e6; transform:translateY(-2px); }
+
+    /* Delete = alert red */
+    .delete-photo{
+      background:#ff4c4c;
+      color:#fff;
+    }
+    .delete-photo:hover{ background:#d93636; transform:translateY(-2px); }
+
 
     @media (max-width: 1024px) {
       .page-container {
@@ -739,6 +811,11 @@
       </ul>
     </div>
   </header>
+<!-- Big-photo overlay -->
+<div id="lecViewModal" class="full-photo-modal">
+  <span class="full-photo-close" id="lecCloseView">×</span>
+  <img id="lecFullImg" src="" alt="Profile photo">
+</div>
 
   <div class="page-container">
     <!-- Main Content (Left) -->
@@ -771,7 +848,13 @@
             <a href="#" class="learn-more">Account settings</a>
           </div>
         </div>
+        <div class="photo-btn-row">
+          <button id="uploadPhotoLink"  class="photo-btn upload-photo"  title="Upload a new picture">📤 Upload</button>
+          <button id="deletePhotoLink"  class="photo-btn delete-photo"  title="Remove current picture">🗑️ Delete</button>
+        </div>
+
       </div>
+
       
       <!-- Students List Card -->
       <div class="content-card">
@@ -868,6 +951,26 @@
       </div>
     </div>
   </div>
+<!-- Lecturer – Profile-photo modal -->
+<div id="lecPhotoModal" class="photo-modal">
+  <div class="photo-modal-box">
+    <button class="modal-close" id="lecClosePhoto">×</button>
+
+    <h2 class="modal-title">Upload Profile Photo</h2>
+
+    <!-- DROP ZONE -->
+    <input id="lecPhotoInput" type="file" accept="image/*" hidden>
+    <label for="lecPhotoInput"  class="drop-zone" id="lecDropZone">
+      <i class="fas fa-camera-retro dz-icon"></i>
+      <p class="dz-text">
+        Drag an image here<br>
+        <span>or click to browse</span>
+      </p>
+    </label>
+
+    <button class="upload-btn" id="lecUploadBtn">🚀 Upload</button>
+  </div>
+</div>
 
   <!-- Success Toast -->
   <div class="toast" id="successToast">
@@ -876,6 +979,83 @@
   </div>
 
   <script>
+    (() => {          
+
+  /* ===== basic helpers ===== */
+  const token   = sessionStorage.getItem("token");
+  const user    = token ? JSON.parse(atob(token.split('.')[1])) : null;
+  if (!user) return;                               // not logged-in
+
+  const key     = `profilePhoto_${user.id}`;       // localStorage key
+  const avatar  = document.getElementById('avatarInitials').parentElement;
+
+  /* ===== element refs ===== */
+  const modal   = document.getElementById('lecPhotoModal');
+  const dz      = document.getElementById('lecDropZone');
+  const input   = document.getElementById('lecPhotoInput');
+  const upload  = document.getElementById('lecUploadBtn');
+  const close   = document.getElementById('lecClosePhoto');
+  const openBtn = document.getElementById('uploadPhotoLink');
+  const delBtn  = document.getElementById('deletePhotoLink');
+  const viewModal = document.getElementById('lecViewModal');   
+  const fullImg   = document.getElementById('lecFullImg');     
+  const closeView = document.getElementById('lecCloseView');  
+   avatar.style.cursor = 'pointer';                            
+  avatar.onclick = () => {                                     
+     const src = localStorage.getItem(key);
+     if (!src) return;            // nothing to show yet
+     fullImg.src = src;
+     viewModal.classList.add('show');
+  };
+
+  closeView.onclick = () => viewModal.classList.remove('show'); 
+  viewModal.onclick = e => {                                   
+     if (e.target === viewModal) closeView.onclick();
+  };
+  /* ===== open / close ===== */
+  openBtn.onclick  = () => modal.classList.add('show');
+  close.onclick    = () => modal.classList.remove('show');
+  modal.onclick    = e => { if (e.target === modal) close.onclick(); };
+
+  /* ===== drag-and-drop ===== */
+  ;['dragenter','dragover'].forEach(evt => dz.addEventListener(evt, e => {
+      e.preventDefault(); dz.style.background = '#eef2ff';
+  }));
+  ;['dragleave','drop'].forEach(evt => dz.addEventListener(evt, e => {
+      e.preventDefault(); dz.style.background = '';
+  }));
+  dz.addEventListener('drop', e => { input.files = e.dataTransfer.files; });
+
+  /* ===== upload ===== */
+  const render = src => {
+     avatar.innerHTML = `<img src="${src}" style="width:100%;height:100%;object-fit:cover;">`;
+  };
+
+  // load saved photo on page-load
+  const saved = localStorage.getItem(key);
+  if (saved) render(saved);
+
+  upload.onclick = () => {
+      const file = input.files[0];
+      if (!file) return alert('Choose an image first 😊');
+
+      const reader = new FileReader();
+      reader.onload = e => {
+         localStorage.setItem(key, e.target.result);
+         render(e.target.result);
+         modal.classList.remove('show');
+      };
+      reader.readAsDataURL(file);
+  };
+
+  /* ===== delete ===== */
+  delBtn.onclick = () => {
+      localStorage.removeItem(key);
+      avatar.innerHTML = `<div class="avatar-initials">${avatar.dataset.initials}</div>
+                          <div class="avatar-decoration"></div>`;
+  };
+
+})();            // end IIFE
     function goHome() {
       window.location.href = "/";
     }
@@ -1263,5 +1443,6 @@
     feedbackListModal.classList.remove("active");
   });
   </script>
+  
 </body>
 </html>
