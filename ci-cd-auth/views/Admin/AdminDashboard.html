@@ -6,6 +6,7 @@
   <title>Admin Dashboard</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
+    /* ----------------- Global Reset & Body Styles ----------------- */
     * {
       margin: 0;
       padding: 0;
@@ -17,9 +18,10 @@
       background-color: #f8faff;
       color: #1f2328;
       line-height: 1.5;
-      padding-top: 80px;
+      padding-top: 80px; /* leave space for fixed header */
     }
 
+    /* ----------------- Header ----------------- */
     header {
       position: fixed;
       top: 0;
@@ -29,7 +31,6 @@
       background-color: #FFFFFF;
       border-bottom: 1px solid #d8dee4;
       display: flex;
-      justify-content: space-between;
       align-items: center;
       z-index: 10;
     }
@@ -85,6 +86,7 @@
       background-color: #657EEF;
     }
 
+    /* ----------------- Dashboard Container ----------------- */
     .dashboard-container {
       padding: 40px 10%;
     }
@@ -110,11 +112,13 @@
       font-size: 16px;
     }
 
+    /* ----------------- Admin Actions Buttons ----------------- */
     .admin-actions {
       display: flex;
       justify-content: center;
       gap: 16px;
       margin-top: 32px;
+      flex-wrap: wrap;
     }
 
     .admin-btn {
@@ -136,6 +140,7 @@
       transform: translateY(-1px);
     }
 
+    /* ----------------- Responsive Checks ----------------- */
     @media (max-width: 768px) {
       header {
         padding: 16px 5%;
@@ -160,25 +165,142 @@
         gap: 12px;
       }
     }
+
+    /* ----------------- Support Ticket Modal Overlay ----------------- */
+    #ticketOverlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(0,0,0,0.5);
+      display: none;           /* hidden by default */
+      align-items: center;
+      justify-content: center;
+      z-index: 1001;
+    }
+
+    #ticketOverlay.active {
+      display: flex;           /* show overlay when .active */
+    }
+
+    /* ----------------- Support Ticket Modal ----------------- */
+    #ticketModal {
+      background: #ffffff;
+      border-radius: 8px;
+      width: 90%;
+      max-width: 700px;
+      max-height: 80vh;
+      overflow-y: auto;
+      padding: 24px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+      position: relative;
+    }
+
+    #ticketModal h3 {
+      color: #657EEF;
+      font-size: 22px;
+      margin-bottom: 12px;
+      text-align: center;
+    }
+
+    #ticketModal .close-ticket-btn {
+      position: absolute;
+      top: 12px;
+      right: 16px;
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      color: #888;
+    }
+
+    #ticketModal .close-ticket-btn:hover {
+      color: #333;
+    }
+
+    #ticketsList {
+      margin-top: 16px;
+      list-style: none;
+      padding: 0;
+    }
+
+    .ticket-item {
+      border-bottom: 1px solid #e0e0e0;
+      padding: 16px 0;
+    }
+
+    .ticket-item:last-child {
+      border-bottom: none;
+    }
+
+    .ticket-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .ticket-header .subject {
+      font-weight: 600;
+      color: #1f2328;
+      font-size: 16px;
+    }
+
+    .ticket-header .timestamp {
+      font-size: 12px;
+      color: #888;
+    }
+
+    .ticket-body {
+      margin-bottom: 8px;
+      color: #444;
+      font-size: 14px;
+    }
+
+    .ticket-footer {
+      display: flex;
+      justify-content: flex-start;
+      gap: 12px;
+    }
+
+    .ticket-footer .student-name {
+      font-size: 13px;
+      color: #555;
+      font-style: italic;
+    }
+
+    /* Optional: scrollbar styling for modal */
+    #ticketModal::-webkit-scrollbar {
+      width: 6px;
+    }
+    #ticketModal::-webkit-scrollbar-thumb {
+      background-color: rgba(101,126,239,0.4);
+      border-radius: 3px;
+    }
+    #ticketModal::-webkit-scrollbar-track {
+      background-color: #f1f1f1;
+    }
   </style>
 </head>
 <body>
 
-
+  <!-- ==================== Fixed Header ==================== -->
   <header>
-        <div class="logo-container">
+    <div class="logo-container">
       <svg class="logo-img" viewBox="0 0 24 24" fill="#657EEF" xmlns="http://www.w3.org/2000/svg">
         <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.652.242 2.873.118 3.176.77.84 1.235 1.91 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
       </svg>
       <span class="logo-text">CI/CD</span>
-          <ul class="nav-links" id="nav-links">
-      <li><a href="/" class="active">Home</a></li>
-      <li><a href="/users-table" >View Users</a></li>
-      
-    </ul>
-    </div>
 
+      <ul class="nav-links" id="nav-links">
+        <li><a href="/" class="active">Home</a></li>
+        <li><a href="/users-table">View Users</a></li>
+      </ul>
+    </div>
   </header>
+
+  <!-- ==================== Dashboard Main ==================== -->
   <div class="dashboard-container">
     <div class="dashboard-box">
       <h2>Welcome, Admin 👋</h2>
@@ -188,9 +310,112 @@
         <a href="/users-table" class="admin-btn">👥 Manage Users</a>
         <a href="/courses" class="admin-btn">📚 Manage Courses</a>
         <a href="/feedback" class="admin-btn">💬 View Feedback</a>
+        <!-- ===== New Button: View Support Tickets ===== -->
+        <button id="viewTicketsBtn" class="admin-btn">🆘 View Support Tickets</button>
       </div>
     </div>
   </div>
 
+  <!-- ==================== Support Ticket Modal Overlay ==================== -->
+  <div id="ticketOverlay">
+    <div id="ticketModal">
+      <button class="close-ticket-btn" id="closeTicketModal">&times;</button>
+      <h3>Support Tickets</h3>
+      <ul id="ticketsList">
+        <!-- Tickets will be dynamically injected here -->
+        <li>Loading tickets…</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ==================== JavaScript for Modal + Fetch ==================== -->
+<script>
+  // ─── 1) Format a timestamp into a human-readable string ───────────────────────
+  function formatTimestamp(ts) {
+    const d = new Date(ts);
+    return d.toLocaleString(undefined, {
+      year:   'numeric',
+      month:  'short',
+      day:    'numeric',
+      hour:   '2-digit',
+      minute: '2-digit'
+    });
+  }
+
+  // ─── 2) Grab references to DOM elements ───────────────────────────────────────
+  const viewTicketsBtn   = document.getElementById('viewTicketsBtn');
+  const ticketOverlay    = document.getElementById('ticketOverlay');
+  const closeTicketModal = document.getElementById('closeTicketModal');
+  const ticketsList      = document.getElementById('ticketsList');
+
+  // ─── 3) “🆘 View Support Tickets” button → show overlay & fetch tickets ───────
+  viewTicketsBtn.addEventListener('click', async () => {
+    ticketOverlay.classList.add('active');
+    ticketsList.innerHTML = '<li>Loading tickets…</li>';
+
+    try {
+      const res = await fetch('/api/support/all', {
+        headers: {
+          'Content-Type':  'application/json',
+          'Authorization': 'Bearer ' + sessionStorage.getItem('token')
+        }
+      });
+      if (!res.ok) {
+        const errJson = await res.json().catch(() => null);
+        throw new Error((errJson && errJson.message) || `HTTP ${res.status}`);
+      }
+      const data = await res.json();
+      const tickets = data.support || [];
+
+      if (!Array.isArray(tickets) || tickets.length === 0) {
+        ticketsList.innerHTML = '<li>No support tickets found.</li>';
+        return;
+      }
+
+      // ─── 4) Render each ticket (showing “(Student)” or “(Lecturer)”) ─────────────
+      ticketsList.innerHTML = tickets.map(ticket => {
+        const dateStr     = formatTimestamp(ticket.createdAt);
+        const studentName = ticket.studentName || "Unknown";
+        const subjectText = ticket.subject      || "(No Subject)";
+        const bodyText    = ticket.message      || "(No message)";
+        const roleText    = ticket.role         || "Unknown";
+
+        return `
+          <li class="ticket-item">
+            <div class="ticket-header">
+              <span class="subject">${subjectText}</span>
+              <span class="timestamp">${dateStr}</span>
+            </div>
+            <div class="ticket-body">${bodyText}</div>
+            <div class="ticket-footer">
+              <span class="student-name">
+                Submitted by: ${studentName} (${roleText})
+              </span>
+            </div>
+          </li>
+        `;
+      }).join("");
+    } catch (err) {
+      console.error('Error loading support tickets:', err);
+      ticketsList.innerHTML = '<li style="color:red;">Error loading tickets. Please try again later.</li>';
+    }
+  });
+
+  // ─── 5) Close modal when “×” is clicked ───────────────────────────────────────
+  closeTicketModal.addEventListener('click', () => {
+    ticketOverlay.classList.remove('active');
+    ticketsList.innerHTML = '';
+  });
+
+  // ─── 6) Clicking outside the modal content closes it ─────────────────────────
+  ticketOverlay.addEventListener('click', (ev) => {
+    if (ev.target === ticketOverlay) {
+      ticketOverlay.classList.remove('active');
+      ticketsList.innerHTML = '';
+    }
+  });
+</script>
+
 </body>
 </html>
+

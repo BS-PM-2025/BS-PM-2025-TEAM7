@@ -234,6 +234,173 @@
         align-items: center;
       }
     }
+    /* ─────── “NEED HELP?” WIDGET CSS ─────── */
+    #helpWidgetContainer {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 1000;
+      text-align: center;
+      display: none;            /* initially hidden → shown via JS if role=student|lecturer */
+      cursor: pointer;
+    }
+    /* The circular “?” button */
+    #helpWidgetBtn {
+      width: 60px;
+      height: 60px;
+      border: none;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #657eef, #4a65e6);
+      color: white;
+      font-size: 32px;
+      line-height: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      transition: box-shadow 0.2s ease;
+      animation: pulse 2s ease-in-out infinite;
+    }
+    #helpWidgetBtn:hover {
+      box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+    }
+    @keyframes pulse {
+      0%   { transform: scale(1); }
+      50%  { transform: scale(1.08); }
+      100% { transform: scale(1); }
+    }
+    /* Tiny tooltip above the button */
+    #helpTooltip {
+      position: absolute;
+      bottom: 80px;
+      right: 50%;
+      transform: translateX(50%) translateY(10px);
+      background: #657eef;
+      color: #fff;
+      padding: 8px 12px;
+      border-radius: 4px;
+      font-size: 14px;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease-out, transform 0.2s ease-out;
+    }
+    #helpTooltip::before {
+      content: "";
+      position: absolute;
+      bottom: -6px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-width: 6px;
+      border-style: solid;
+      border-color: #657eef transparent transparent transparent;
+    }
+    /* Show the tooltip on hover */
+    #helpWidgetContainer:hover #helpTooltip {
+      opacity: 1;
+      transform: translateX(50%) translateY(0);
+    }
+    @media (max-width: 480px) {
+      #helpWidgetBtn {
+        width: 50px;
+        height: 50px;
+        font-size: 28px;
+      }
+      #helpTooltip {
+        font-size: 13px;
+        padding: 6px 10px;
+        bottom: 70px;
+      }
+    }
+
+    /* SUPPORT FORM OVERLAY – initially hidden */
+    #supportOverlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0,0,0,0.6);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+    }
+    #supportOverlay.active {
+      display: flex;
+    }
+    #supportModal {
+      background: #ffffff;
+      border-radius: 8px;
+      width: 90%;
+      max-width: 500px;
+      padding: 24px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+      position: relative;
+    }
+    #supportModal h2 {
+      font-size: 20px;
+      color: #333;
+      margin-bottom: 12px;
+      text-align: center;
+    }
+    #closeSupportBtn {
+      position: absolute;
+      top: 12px;
+      right: 16px;
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      color: #888;
+    }
+    #closeSupportBtn:hover {
+      color: #333;
+    }
+    #supportForm label {
+      display: block;
+      margin-top: 12px;
+      font-weight: 500;
+      color: #333;
+      font-size: 14px;
+    }
+    #supportForm input[type="text"],
+    #supportForm textarea {
+      width: 100%;
+      padding: 8px 12px;
+      margin-top: 4px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 14px;
+      resize: vertical;
+    }
+    #supportForm textarea {
+      min-height: 100px;
+    }
+    #supportForm .button-group {
+      margin-top: 16px;
+      text-align: right;
+    }
+    #supportForm .btn-submit,
+    #supportForm .btn-cancel {
+      padding: 8px 16px;
+      font-size: 14px;
+      border-radius: 4px;
+      border: none;
+      cursor: pointer;
+      margin-left: 8px;
+    }
+    #supportForm .btn-submit {
+      background-color: #657eef;
+      color: #fff;
+    }
+    #supportForm .btn-submit:hover {
+      background-color: #4a65e6;
+    }
+    #supportForm .btn-cancel {
+      background-color: #ccc;
+      color: #333;
+    }
   </style>
 </head>
 
@@ -272,70 +439,165 @@
       </div>
 
     </main>
-    
+     <!-- ───── “NEED HELP?” WIDGET HTML ───── -->
+  <div id="helpWidgetContainer">
+    <button id="helpWidgetBtn">?</button>
+    <span id="helpTooltip">Need help?</span>
+  </div>
+
+  <div id="supportOverlay">
+    <div id="supportModal">
+      <button id="closeSupportBtn">&times;</button>
+      <h2>Submit a Support Request</h2>
+      <form id="supportForm">
+        <label for="helpSubject">Subject</label>
+        <input
+          type="text"
+          id="helpSubject"
+          placeholder="Describe Your Problem! "
+          required
+        />
+        <label for="helpMessage">Message</label>
+        <textarea
+          id="helpMessage"
+          placeholder="Describe the issue or question you have"
+          required
+        ></textarea>
+        <div class="button-group">
+          <button type="button" class="btn-cancel" id="cancelSupportBtn">Cancel</button>
+          <button type="submit" class="btn-submit">Send Request</button>
+        </div>
+      </form>
+    </div>
+  </div>
 <!-- Navbar & Scripts for Token-Based Role Handling -->
 <script>
-  function logout() {
-    sessionStorage.removeItem("token");
-    window.location.href = "/login";
-  }
-
-  function parseJwt(token) {
-    try {
-      const base64Url = token.split('.')[1];
-      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-      const jsonPayload = decodeURIComponent(atob(base64).split('').map(c =>
-        '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join(''));
-      return JSON.parse(jsonPayload);
-    } catch (e) {
-      console.error("Invalid token", e);
-      return null;
+    function logout() {
+      sessionStorage.removeItem("token");
+      window.location.href = "/login";
     }
-  }
 
-  window.onload = () => {
-    const token = sessionStorage.getItem("token");
-    const navbar = document.querySelector("#nav-links");
-
-    if (token) {
-      const user = parseJwt(token);
-      if (!user) return;
-
-      // Clear out the default links
-      navbar.innerHTML = "";
-
-      if (user.role === "admin") {
-        navbar.innerHTML += '<li><a href="/admin-dashboard">Admin Dashboard</a></li>';
-      } 
-      else if (user.role === "lecturer") {
-        navbar.innerHTML += '<li><a href="/">Home</a></li>';
-        navbar.innerHTML += '<li><a href="/video/courses">Courses</a></li>';
-        navbar.innerHTML += '<li><a href="/LecturerProfile">Profile</a></li>';
-        navbar.innerHTML += '<li><a href="/chat">Chat</a></li>';        // ← Chat for lecturers
-      } 
-      else if (user.role === "student") {
-        navbar.innerHTML += '<li><a href="/">Home</a></li>';
-        navbar.innerHTML += '<li><a href="/video/courses">Courses</a></li>';
-        navbar.innerHTML += '<li><a href="/StudentProfile">Profile</a></li>';
-        navbar.innerHTML += '<li><a href="/chat">Chat</a></li>';        // ← Chat for students
+    function parseJwt(token) {
+      try {
+        const base64Url = token.split('.')[1];
+        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        const jsonPayload = decodeURIComponent(
+          atob(base64)
+            .split('')
+            .map(c => '%' + ('00'+c.charCodeAt(0).toString(16)).slice(-2))
+            .join('')
+        );
+        return JSON.parse(jsonPayload);
+      } catch (e) {
+        console.error("Invalid token", e);
+        return null;
       }
-
-      // Always show logout
-      navbar.innerHTML += '<li><a href="#" onclick="logout()">Logout</a></li>';
-    } 
-    else {
-      // Not logged in → show default links
-      navbar.innerHTML = `
-        <li><a href="/" class="active">Home</a></li>
-        <li><a href="/signup">Sign Up</a></li>
-        <li><a href="/login">Login</a></li>
-      `;
-      // Prevent back‐button to protected pages
-      history.pushState(null, null, location.href);
-      window.onpopstate = () => history.go(1);
     }
-  };
-</script>
+
+    window.onload = () => {
+      const token = sessionStorage.getItem("token");
+      const navbar = document.querySelector("#nav-links");
+      const helpContainer = document.getElementById("helpWidgetContainer");
+
+      if (token) {
+        const user = parseJwt(token);
+        if (!user) return;
+
+        // Build the navbar based on role:
+        navbar.innerHTML = "";
+        if (user.role === "admin") {
+          navbar.innerHTML += '<li><a href="/admin-dashboard">Admin Dashboard</a></li>';
+        } else if (user.role === "lecturer") {
+          navbar.innerHTML += '<li><a href="/">Home</a></li>';
+          navbar.innerHTML += '<li><a href="/video/courses">Courses</a></li>';
+          navbar.innerHTML += '<li><a href="/LecturerProfile">Profile</a></li>';
+          navbar.innerHTML += '<li><a href="/chat">Chat</a></li>';
+        } else if (user.role === "student") {
+          navbar.innerHTML += '<li><a href="/">Home</a></li>';
+          navbar.innerHTML += '<li><a href="/video/courses">Courses</a></li>';
+          navbar.innerHTML += '<li><a href="/StudentProfile">Profile</a></li>';
+          navbar.innerHTML += '<li><a href="/chat">Chat</a></li>';
+        }
+
+        // Always show Logout at the end
+        navbar.innerHTML += '<li><a href="#" onclick="logout()">Logout</a></li>';
+
+        // ─────────── SHOW “NEED HELP?” WIDGET IF STUDENT OR LECTURER ───────────
+        if (user.role === "student" || user.role === "lecturer") {
+          helpContainer.style.display = "block";
+        }
+      } else {
+        // Not logged in → show default links
+        navbar.innerHTML = `
+          <li><a href="/" class="active">Home</a></li>
+          <li><a href="/signup">Sign Up</a></li>
+          <li><a href="/login">Login</a></li>
+        `;
+        // Prevent back‐button to protected pages
+        history.pushState(null, null, location.href);
+        window.onpopstate = () => history.go(1);
+      }
+    };
+  </script>
+
+  <!-- ───────── SUPPORT WIDGET SCRIPT ───────── -->
+  <script>
+    const helpBtn = document.getElementById("helpWidgetBtn");
+    const supportOverlay = document.getElementById("supportOverlay");
+    const closeSupportBtn = document.getElementById("closeSupportBtn");
+    const cancelSupportBtn = document.getElementById("cancelSupportBtn");
+
+    helpBtn.addEventListener("click", () => {
+      supportOverlay.classList.add("active");
+    });
+    closeSupportBtn.addEventListener("click", () => {
+      supportOverlay.classList.remove("active");
+    });
+    cancelSupportBtn.addEventListener("click", () => {
+      supportOverlay.classList.remove("active");
+    });
+    supportOverlay.addEventListener("click", (e) => {
+      if (e.target === supportOverlay) {
+        supportOverlay.classList.remove("active");
+      }
+    });
+
+    const form = document.getElementById("supportForm");
+    form.addEventListener("submit", async (ev) => {
+      ev.preventDefault();
+      const subject = document.getElementById("helpSubject").value.trim();
+      const message = document.getElementById("helpMessage").value.trim();
+      if (!subject || !message) {
+        alert("Please fill out both fields.");
+        return;
+      }
+      const token = sessionStorage.getItem("token");
+      if (!token) {
+        alert("You must be logged in to send a support request.");
+        return;
+      }
+      try {
+        const res = await fetch("/api/support", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + token
+          },
+          body: JSON.stringify({ subject, message })
+        });
+        if (!res.ok) {
+          const err = await res.json();
+          throw new Error(err.message || "Server error");
+        }
+        alert("Support request sent! Our team will be in touch shortly.");
+        supportOverlay.classList.remove("active");
+        form.reset();
+      } catch (err) {
+        console.error("Error sending support request:", err);
+        alert("There was an error sending your request. Please try again later.");
+      }
+    });
+  </script>
 
 <div class="feedback-container" id="feedback-section">
   <div class="feedback-header">

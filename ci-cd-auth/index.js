@@ -15,6 +15,8 @@ const progressRoutes = require("./routes/progress");
 const quizRoutes = require("./routes/quiz");
 const chatRoutes = require("./routes/chat");
 const githubRouter = require('./routes/github');
+const supportRoutes   = require("./routes/support");  // ← NEW: support routes
+
 const app  = express();
 const PORT = process.env.PORT || 3000;
 
@@ -38,6 +40,8 @@ app.use("/api/progress", progressRoutes);
 app.use("/api", require("./routes/quiz")); // תומך ב־/api/submissions
 app.use("/api/chat", chatRoutes);
 app.use('/api/github', githubRouter); 
+app.use("/api/support",   supportRoutes); // ← NEW: mounts everything under /api/support
+
 // ---------- Frontend Pages ----------
 app.use(express.static(path.join(__dirname, "homepage")));
 
