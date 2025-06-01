@@ -57,6 +57,14 @@
       background: #5a6268;
     }
     
+    .btn-danger {
+      background: #dc3545;
+    }
+    
+    .btn-danger:hover {
+      background: #c82333;
+    }
+    
     .repo-list {
       margin-top: 30px;
       display: grid;
@@ -111,6 +119,7 @@
       border-radius: 4px;
       display: flex;
       align-items: center;
+      justify-content: space-between;
     }
     
     .file-item:hover {
@@ -234,9 +243,180 @@
       border-radius: 4px;
       display: none;
     }
+    
+    .file-actions {
+      display: flex;
+      gap: 5px;
+    }
+    
+    .file-action-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+      color: #6c757d;
+      padding: 2px 5px;
+      border-radius: 3px;
+    }
+    
+    .file-action-btn:hover {
+      background: #e1e4e8;
+    }
+    
+    .breadcrumb {
+      display: flex;
+      flex-wrap: wrap;
+      padding: 0.75rem 1rem;
+      margin-bottom: 1rem;
+      list-style: none;
+      background-color: #e9ecef;
+      border-radius: 0.25rem;
+    }
+    
+    .breadcrumb-item {
+      cursor: pointer;
+      color: #007bff;
+    }
+    
+    .breadcrumb-item + .breadcrumb-item::before {
+      display: inline-block;
+      padding-right: 0.5rem;
+      padding-left: 0.5rem;
+      color: #6c757d;
+      content: "/";
+    }
+    
+    .breadcrumb-item.active {
+      color: #6c757d;
+      cursor: default;
+    }
+    
+    .upload-area {
+      border: 2px dashed #d1d5da;
+      border-radius: 6px;
+      padding: 20px;
+      text-align: center;
+      margin-bottom: 20px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    
+    .upload-area:hover {
+      border-color: #657EEF;
+      background-color: #f8f9fa;
+    }
+    
+    .upload-area.dragover {
+      border-color: #657EEF;
+      background-color: #f0f4ff;
+    }
+    
+    .loading-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      display: none;
+    }
+    
+    .spinner {
+      width: 50px;
+      height: 50px;
+      border: 5px solid #f3f3f3;
+      border-top: 5px solid #657EEF;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .logo-img {
+      height: 32px;
+      width: 32px;
+    }
+    
+    .logo-text {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #657EEF;
+    }
+    
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 24px;
+      margin-left: auto;
+    }
+    
+    .nav-links a {
+      color: #1f2328;
+      font-weight: 500;
+      font-size: 14px;
+      text-decoration: none;
+      padding: 8px 0;
+      position: relative;
+    }
+    
+    .nav-links a:hover {
+      color: #657EEF;
+    }
+    
+    .nav-links .active {
+      color: #657EEF;
+    }
+    
+    .nav-links .active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: #657EEF;
+    }
+        header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 16px 10%;
+      background-color: #FFFFFF;
+      border-bottom: 1px solid #d8dee4;
+      display: flex;
+      justify-content: space-between;  /* Ensures space between logo and nav links */
+      align-items: center;
+      z-index: 10;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
   </style>
 </head>
 <body>
+      <header>
+        <div class="logo-container">
+      <svg class="logo-img" viewBox="0 0 24 24" fill="#657EEF" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.652.242 2.873.118 3.176.77.84 1.235 1.91 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
+      </svg>
+      <span class="logo-text">CI/CD</span>
+          <ul class="nav-links" id="nav-links">
+      <li><a href="#" >Home</a></li>
+      <li><a href="/video/courses" class="active">Courses</a></li>
+      <li><a href="/StudentProfile">Profile</a></li>
+    </ul>
+    </div>
+
+  </header>
   <div class="container">
     <h1>GitHub Repository Management</h1>
     
@@ -259,8 +439,7 @@
     <div id="repoManagement" style="display: none;">
       <div class="tabs">
         <div class="tab active" data-tab="repos">Repositories</div>
-        <div class="tab" data-tab="editor">Code Editor</div>
-        <div class="tab" data-tab="upload">Upload Repository</div>
+        <div class="tab" data-tab="editor">Code Editorr</div>
       </div>
       
       <div class="tab-content active" id="repos-tab">
@@ -291,6 +470,21 @@
         
         <div id="fileExplorer" class="file-explorer" style="display: none;">
           <h3 id="currentRepoName"></h3>
+          
+          <!-- Breadcrumb navigation -->
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb" id="breadcrumbNav">
+              <li class="breadcrumb-item active">Root</li>
+            </ol>
+          </nav>
+          
+          <!-- File upload area -->
+          <div class="upload-area" id="uploadArea">
+            <div class="icon">📤</div>
+            <p>Drag & drop files here or click to upload</p>
+            <input type="file" id="fileUpload" style="display: none;">
+          </div>
+          
           <div id="fileTree" class="empty-state">
             <div class="icon">📁</div>
             <p>Select a repository to view files</p>
@@ -310,6 +504,7 @@
           <div class="form-group" style="display: flex; gap: 10px;">
             <button class="btn" id="saveFileBtn">Commit Changes</button>
             <button class="btn btn-secondary" id="newFileBtn">New File</button>
+            <button class="btn btn-danger" id="deleteFileBtn" style="display: none;">Delete File</button>
           </div>
         </div>
       </div>
@@ -338,11 +533,21 @@
       </div>
     </div>
   </div>
+  
+  <!-- Loading overlay -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="spinner"></div>
+  </div>
 
   <script>
     // GitHub credentials will be stored in localStorage
     let githubToken = localStorage.getItem("githubToken");
     let githubUsername = localStorage.getItem("githubUsername");
+    
+    // Current repository and file tracking
+    let currentRepo = '';
+    let currentFile = null;
+    let currentPath = '';
     
     document.addEventListener('DOMContentLoaded', () => {
       // Check for URL parameters that indicate OAuth status
@@ -390,12 +595,95 @@
       document.getElementById('createRepoBtn').addEventListener('click', createRepo);
       document.getElementById('saveFileBtn').addEventListener('click', saveFile);
       document.getElementById('newFileBtn').addEventListener('click', newFile);
+      document.getElementById('deleteFileBtn').addEventListener('click', deleteFile);
       document.getElementById('repoSelect').addEventListener('change', loadRepoContents);
       document.getElementById('uploadRepoBtn').addEventListener('click', uploadRepository);
       document.getElementById('runDiagnosticBtn').addEventListener('click', runDiagnostic);
       
+      // File upload handling
+      setupFileUpload();
+      
       checkGitHubConnection();
     });
+    
+    function setupFileUpload() {
+      const uploadArea = document.getElementById('uploadArea');
+      const fileUpload = document.getElementById('fileUpload');
+      
+      // Click on upload area to trigger file input
+      uploadArea.addEventListener('click', () => {
+        fileUpload.click();
+      });
+      
+      // Handle file selection
+      fileUpload.addEventListener('change', (e) => {
+        if (e.target.files.length > 0) {
+          uploadFile(e.target.files[0]);
+        }
+      });
+      
+      // Drag and drop handling
+      uploadArea.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        uploadArea.classList.add('dragover');
+      });
+      
+      uploadArea.addEventListener('dragleave', () => {
+        uploadArea.classList.remove('dragover');
+      });
+      
+      uploadArea.addEventListener('drop', (e) => {
+        e.preventDefault();
+        uploadArea.classList.remove('dragover');
+        
+        if (e.dataTransfer.files.length > 0) {
+          uploadFile(e.dataTransfer.files[0]);
+        }
+      });
+    }
+    
+    function uploadFile(file) {
+      if (!currentRepo) {
+        showError('Please select a repository first');
+        return;
+      }
+      
+      // Ask for file path
+      const filePath = prompt(`Enter the path where you want to save "${file.name}" in the repository:`, currentPath ? `${currentPath}/${file.name}` : file.name);
+      
+      if (!filePath) return; // User cancelled
+      
+      showLoading(true);
+      
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('path', filePath);
+      formData.append('message', `Upload ${filePath}`);
+      
+      fetch(`/api/github/repos/${githubUsername}/${currentRepo}/upload`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${githubToken}`
+        },
+        body: formData
+      })
+      .then(response => {
+        if (!response.ok) throw new Error('Failed to upload file');
+        return response.json();
+      })
+      .then(() => {
+        showSuccess(`File "${filePath}" uploaded successfully!`);
+        // Refresh the file tree to show the new file
+        loadRepoContents();
+      })
+      .catch(error => {
+        console.error('Error uploading file:', error);
+        showError(`Failed to upload file: ${error.message}`);
+      })
+      .finally(() => {
+        showLoading(false);
+      });
+    }
     
     function getErrorMessage(errorCode) {
       const errorMessages = {
@@ -443,6 +731,10 @@
       setTimeout(() => {
         successAlert.style.display = 'none';
       }, 5000);
+    }
+    
+    function showLoading(show) {
+      document.getElementById('loadingOverlay').style.display = show ? 'flex' : 'none';
     }
     
     function runDiagnostic() {
@@ -539,6 +831,8 @@
     }
     
     function fetchRepositories() {
+      showLoading(true);
+      
       fetch('/api/github/repos', {
         headers: {
           Authorization: `Bearer ${githubToken}`
@@ -562,6 +856,7 @@
               <p>No repositories found. Create your first one!</p>
             </div>
           `;
+          showLoading(false);
           return;
         }
         
@@ -585,6 +880,8 @@
           option.textContent = repo.name;
           repoSelect.appendChild(option);
         });
+        
+        showLoading(false);
       })
       .catch(error => {
         console.error('Error fetching repositories:', error);
@@ -595,70 +892,73 @@
           </div>
         `;
         showError('Failed to fetch repositories. This could be due to an expired GitHub token. Try reconnecting your GitHub account.');
+        showLoading(false);
       });
     }
     
     function createRepo() {
-  const name = document.getElementById('repoName').value;
-  const description = document.getElementById('repoDescription').value;
-  const isPrivate = document.getElementById('repoPrivate').checked;
-  
-  if (!name) {
-    showError('Please enter a repository name');
-    return;
-  }
-  
-  const btn = document.getElementById('createRepoBtn');
-  btn.disabled = true;
-  btn.textContent = 'Creating...';
-  
-  // Define initial folder structure and files
-  const initialFiles = [
-    {
-      path: 'src/index.js',
-      content: '// Your code here\nconsole.log("Hello from your new repository!");',
-      message: 'Add initial index.js file'
-    },
-    {
-      path: 'README.md',
-      content: `# ${name}\n\n${description || 'A new GitHub repository'}`,
-      message: 'Add README.md'
+      const name = document.getElementById('repoName').value;
+      const description = document.getElementById('repoDescription').value;
+      const isPrivate = document.getElementById('repoPrivate').checked;
+      
+      if (!name) {
+        showError('Please enter a repository name');
+        return;
+      }
+      
+      const btn = document.getElementById('createRepoBtn');
+      btn.disabled = true;
+      btn.textContent = 'Creating...';
+      showLoading(true);
+      
+      // Define initial folder structure and files
+      const initialFiles = [
+        {
+          path: 'src/index.js',
+          content: '// Your code here\nconsole.log("Hello from your new repository!");',
+          message: 'Add initial index.js file'
+        },
+        {
+          path: 'README.md',
+          content: `# ${name}\n\n${description || 'A new GitHub repository'}`,
+          message: 'Add README.md'
+        }
+      ];
+      
+      fetch('/api/github/repos', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${githubToken}`
+        },
+        body: JSON.stringify({
+          name,
+          description,
+          isPrivate,
+          initialFiles
+        })
+      })
+      .then(response => {
+        if (!response.ok) throw new Error('Failed to create repository');
+        return response.json();
+      })
+      .then(() => {
+        showSuccess('Repository created successfully with initial files!');
+        fetchRepositories();
+        document.getElementById('repoName').value = '';
+        document.getElementById('repoDescription').value = '';
+        document.getElementById('repoPrivate').checked = false;
+      })
+      .catch(error => {
+        console.error('Error creating repository:', error);
+        showError('Failed to create repository: ' + error.message);
+      })
+      .finally(() => {
+        btn.disabled = false;
+        btn.textContent = 'Create Repository';
+        showLoading(false);
+      });
     }
-  ];
-  
-  fetch('/api/github/repos', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${githubToken}`
-    },
-    body: JSON.stringify({
-      name,
-      description,
-      isPrivate,
-      initialFiles
-    })
-  })
-  .then(response => {
-    if (!response.ok) throw new Error('Failed to create repository');
-    return response.json();
-  })
-  .then(() => {
-    showSuccess('Repository created successfully with initial files!');
-    fetchRepositories();
-    document.getElementById('repoName').value = '';
-    document.getElementById('repoDescription').value = '';
-    document.getElementById('repoPrivate').checked = false;
-  })
-  .catch(error => {
-    console.error('Error creating repository:', error);
-    showError('Failed to create repository: ' + error.message);
-  })
-  .finally(() => {
-    btn.disabled = false;
-    btn.textContent = 'Create Repository';
-  });
-}
     
     function loadRepoForEditor(repoName) {
       currentRepo = repoName;
@@ -687,7 +987,11 @@
       }
       
       currentRepo = repoName;
+      currentPath = ''; // Reset to root when changing repos
       document.getElementById('currentRepoName').textContent = repoName;
+      updateBreadcrumb();
+      
+      showLoading(true);
       
       fetch(`/api/github/repos/${githubUsername}/${repoName}/contents`, {
         headers: {
@@ -702,6 +1006,7 @@
         renderFileTree(contents);
         document.getElementById('fileExplorer').style.display = 'block';
         document.getElementById('fileEditor').style.display = 'none';
+        showLoading(false);
       })
       .catch(error => {
         console.error('Error loading repository contents:', error);
@@ -712,10 +1017,74 @@
           </div>
         `;
         showError('Failed to load repository contents: ' + error.message);
+        showLoading(false);
       });
     }
     
-    function renderFileTree(contents, path = '') {
+    function updateBreadcrumb() {
+      const breadcrumb = document.getElementById('breadcrumbNav');
+      breadcrumb.innerHTML = '';
+      
+      // Add root item
+      const rootItem = document.createElement('li');
+      rootItem.className = 'breadcrumb-item';
+      rootItem.textContent = 'Root';
+      rootItem.onclick = () => {
+        currentPath = '';
+        updateBreadcrumb();
+        loadRepoContents();
+      };
+      
+      if (currentPath === '') {
+        rootItem.className += ' active';
+        rootItem.onclick = null;
+      }
+      
+      breadcrumb.appendChild(rootItem);
+      
+      // Add path segments
+      if (currentPath) {
+        const segments = currentPath.split('/');
+        let currentSegmentPath = '';
+        
+        segments.forEach((segment, index) => {
+          currentSegmentPath += (index > 0 ? '/' : '') + segment;
+          
+          const item = document.createElement('li');
+          item.className = 'breadcrumb-item';
+          item.textContent = segment;
+          
+          if (index === segments.length - 1) {
+            item.className += ' active';
+          } else {
+            const path = currentSegmentPath;
+            item.onclick = () => {
+              currentPath = path;
+              updateBreadcrumb();
+              
+              fetch(`/api/github/repos/${githubUsername}/${currentRepo}/contents?path=${currentPath}`, {
+                headers: {
+                  Authorization: `Bearer ${githubToken}`
+                }
+              })
+              .then(response => {
+                if (!response.ok) throw new Error('Failed to load directory');
+                return response.json();
+              })
+              .then(contents => renderFileTree(contents))
+              .catch(error => {
+                console.error('Error loading directory:', error);
+                showError('Failed to load directory: ' + error.message);
+              });
+            };
+          }
+          
+          breadcrumb.appendChild(item);
+        });
+      }
+    }
+    
+    function renderFileTree(contents) {
       const fileTree = document.getElementById('fileTree');
       
       if (!contents || contents.length === 0) {
@@ -740,9 +1109,49 @@
         const fileItem = document.createElement('div');
         fileItem.className = `file-item ${item.type === 'file' ? 'file' : 'dir'}`;
         fileItem.dataset.icon = item.type === 'dir' ? '📁' : '📄';
-        fileItem.textContent = item.name;
+        
+        const itemContent = document.createElement('span');
+        itemContent.textContent = item.name;
+        fileItem.appendChild(itemContent);
+        
+        // Add file actions for files
+        if (item.type === 'file') {
+          const actions = document.createElement('div');
+          actions.className = 'file-actions';
+          
+          // Edit button
+          const editBtn = document.createElement('button');
+          editBtn.className = 'file-action-btn';
+          editBtn.innerHTML = '✏️';
+          editBtn.title = 'Edit';
+          editBtn.onclick = (e) => {
+            e.stopPropagation();
+            loadFileContent(item);
+          };
+          actions.appendChild(editBtn);
+          
+          // Delete button
+          const deleteBtn = document.createElement('button');
+          deleteBtn.className = 'file-action-btn';
+          deleteBtn.innerHTML = '🗑️';
+          deleteBtn.title = 'Delete';
+          deleteBtn.onclick = (e) => {
+            e.stopPropagation();
+            if (confirm(`Are you sure you want to delete ${item.name}?`)) {
+              deleteFileFromRepo(item);
+            }
+          };
+          actions.appendChild(deleteBtn);
+          
+          fileItem.appendChild(actions);
+        }
+        
         fileItem.onclick = () => {
           if (item.type === 'dir') {
+            currentPath = item.path;
+            updateBreadcrumb();
+            
+            showLoading(true);
             fetch(`/api/github/repos/${githubUsername}/${currentRepo}/contents?path=${item.path}`, {
               headers: {
                 Authorization: `Bearer ${githubToken}`
@@ -752,10 +1161,14 @@
               if (!response.ok) throw new Error('Failed to load directory');
               return response.json();
             })
-            .then(contents => renderFileTree(contents, item.path))
+            .then(contents => {
+              renderFileTree(contents);
+              showLoading(false);
+            })
             .catch(error => {
               console.error('Error loading directory:', error);
               showError('Failed to load directory: ' + error.message);
+              showLoading(false);
             });
           } else {
             loadFileContent(item);
@@ -769,6 +1182,9 @@
       currentFile = file;
       document.getElementById('filePath').value = file.path;
       document.getElementById('commitMessage').value = `Update ${file.name}`;
+      document.getElementById('deleteFileBtn').style.display = 'block';
+      
+      showLoading(true);
       
       fetch(file.download_url)
         .then(response => {
@@ -778,67 +1194,153 @@
         .then(content => {
           document.getElementById('fileContent').value = content;
           document.getElementById('fileEditor').style.display = 'block';
+          showLoading(false);
         })
         .catch(error => {
           console.error('Error loading file content:', error);
           showError('Failed to load file content: ' + error.message);
+          showLoading(false);
         });
     }
     
-    function saveFile() {
-      const path = document.getElementById('filePath').value;
-      const content = document.getElementById('fileContent').value;
-      const message = document.getElementById('commitMessage').value;
-      
-      if (!path || !content || !message) {
-        showError('Please fill in all fields');
-        return;
-      }
-      
-      const btn = document.getElementById('saveFileBtn');
-      btn.disabled = true;
-      btn.textContent = 'Saving...';
-      
-      // If editing an existing file, include the SHA
-      const sha = currentFile ? currentFile.sha : null;
-      
-      fetch(`/api/github/repos/${githubUsername}/${currentRepo}/contents/${path}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${githubToken}`
-        },
-        body: JSON.stringify({
-          content,
-          message,
-          sha
-        })
-      })
-      .then(response => {
-        if (!response.ok) throw new Error('Failed to save file');
-        return response.json();
-      })
-      .then(() => {
-        showSuccess('File saved successfully!');
-        loadRepoContents();
-      })
-      .catch(error => {
-        console.error('Error saving file:', error);
-        showError('Failed to save file: ' + error.message);
-      })
-      .finally(() => {
-        btn.disabled = false;
-        btn.textContent = 'Commit Changes';
-      });
+     function saveFile() {
+    const path = document.getElementById('filePath').value;
+    const content = document.getElementById('fileContent').value;
+    const message = document.getElementById('commitMessage').value;
+    
+    if (!path || !content || !message) {
+      showError('Please fill in all fields');
+      return;
     }
+    
+    const btn = document.getElementById('saveFileBtn');
+    btn.disabled = true;
+    btn.textContent = 'Saving...';
+    showLoading(true);
+    
+    // If editing an existing file, include the SHA
+    const sha = currentFile ? currentFile.sha : null;
+    
+    // Use the generic POST endpoint for all file paths to avoid routing issues
+    fetch(`/api/github/repos/${githubUsername}/${currentRepo}/update-file`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${githubToken}`
+      },
+      body: JSON.stringify({
+        path,
+        content,
+        message,
+        sha
+      })
+    })
+    .then(response => {
+      if (!response.ok) throw new Error('Failed to save file');
+      return response.json();
+    })
+    .then(() => {
+      showSuccess('File saved successfully!');
+      
+      // If we're in a directory, refresh that directory
+      if (currentPath) {
+        fetch(`/api/github/repos/${githubUsername}/${currentRepo}/contents?path=${currentPath}`, {
+          headers: {
+            Authorization: `Bearer ${githubToken}`
+          }
+        })
+        .then(response => response.json())
+        .then(contents => renderFileTree(contents))
+        .catch(error => console.error('Error refreshing directory:', error));
+      } else {
+        // Otherwise refresh the root
+        loadRepoContents();
+      }
+    })
+    .catch(error => {
+      console.error('Error saving file:', error);
+      showError('Failed to save file: ' + error.message);
+    })
+    .finally(() => {
+      btn.disabled = false;
+      btn.textContent = 'Commit Changes';
+      showLoading(false);
+    });
+  }
     
     function newFile() {
       currentFile = null;
-      document.getElementById('filePath').value = '';
+      document.getElementById('filePath').value = currentPath ? `${currentPath}/new-file.txt` : 'new-file.txt';
       document.getElementById('fileContent').value = '';
       document.getElementById('commitMessage').value = 'Add new file';
       document.getElementById('fileEditor').style.display = 'block';
+      document.getElementById('deleteFileBtn').style.display = 'none';
     }
+    
+    function deleteFile() {
+      if (!currentFile) {
+        showError('No file selected for deletion');
+        return;
+      }
+      
+      if (!confirm(`Are you sure you want to delete ${currentFile.name}?`)) {
+        return;
+      }
+      
+      deleteFileFromRepo(currentFile);
+    }
+    
+      function deleteFileFromRepo(file) {
+    showLoading(true);
+    
+    fetch(`/api/github/repos/${githubUsername}/${currentRepo}/delete-file`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${githubToken}`
+      },
+      body: JSON.stringify({
+        path: file.path,
+        message: `Delete ${file.name}`,
+        sha: file.sha
+      })
+    })
+    .then(response => {
+      if (!response.ok) throw new Error('Failed to delete file');
+      return response.json();
+    })
+    .then(() => {
+      showSuccess(`File ${file.name} deleted successfully!`);
+      
+      // If we were editing this file, close the editor
+      if (currentFile && currentFile.path === file.path) {
+        document.getElementById('fileEditor').style.display = 'none';
+        currentFile = null;
+      }
+      
+      // Refresh the file tree
+      if (currentPath) {
+        fetch(`/api/github/repos/${githubUsername}/${currentRepo}/contents?path=${currentPath}`, {
+          headers: {
+            Authorization: `Bearer ${githubToken}`
+          }
+        })
+        .then(response => response.json())
+        .then(contents => renderFileTree(contents))
+        .catch(error => console.error('Error refreshing directory:', error));
+      } else {
+        loadRepoContents();
+      }
+    })
+    .catch(error => {
+      console.error('Error deleting file:', error);
+      showError('Failed to delete file: ' + error.message);
+    })
+    .finally(() => {
+      showLoading(false);
+    });
+  }
+  
     
     function uploadRepository() {
       const name = document.getElementById('uploadRepoName').value;
@@ -854,6 +1356,7 @@
       const btn = document.getElementById('uploadRepoBtn');
       btn.disabled = true;
       btn.textContent = 'Uploading...';
+      showLoading(true);
       
       const formData = new FormData();
       formData.append('name', name);
@@ -887,6 +1390,7 @@
       .finally(() => {
         btn.disabled = false;
         btn.textContent = 'Upload Repository';
+        showLoading(false);
       });
     }
   </script>

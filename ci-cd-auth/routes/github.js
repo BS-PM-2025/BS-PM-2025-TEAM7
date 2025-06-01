@@ -4,6 +4,8 @@ const router = express.Router();
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
+const multer = require('multer');
+const upload = multer({ dest: 'uploads/' });
 
 // Create logs directory if it doesn't exist
 const logsDir = path.join(__dirname, '../logs');
@@ -346,10 +348,11 @@ router.get('/repos/:owner/:repo/contents', async (req, res) => {
   }
 });
 
-// Add to github.js
-router.put('/repos/:owner/:repo/contents/:path', async (req, res) => {
+// File content routes - Using separate routes for each path pattern
+// Route for root level files
+router.put('/repos/:owner/:repo/contents/:filename', async (req, res) => {
   try {
-    const { owner, repo, path } = req.params;
+    const { owner, repo, filename } = req.params;
     const { content, message, sha } = req.body;
     
     // Get token from Authorization header
@@ -360,6 +363,167 @@ router.put('/repos/:owner/:repo/contents/:path', async (req, res) => {
     
     const token = authHeader.split(' ')[1];
 
+    console.log(`Updating root file: ${filename} in repo ${owner}/${repo}`);
+    
+    const response = await axios.put(
+      `https://api.github.com/repos/${owner}/${repo}/contents/${filename}`,
+      {
+        message,
+        content: Buffer.from(content).toString('base64'),
+        sha: sha || null // sha is required for updates, null for new files
+      },
+      {
+        headers: { 
+          Authorization: `token ${token}`,
+          Accept: 'application/vnd.github.v3+json',
+          'User-Agent': 'GitHub-OAuth-App'
+        }
+      }
+    );
+
+    res.json(response.data);
+  } catch (err) {
+    const errorId = logOAuthError(err, {
+      phase: 'update_file',
+      owner: req.params.owner,
+      repo: req.params.repo,
+      path: req.params.filename
+    });
+    console.error("GitHub File Update Error:", err.message);
+    res.status(500).json({
+      error: true,
+      message: `Failed to update file: ${err.message}`,
+      errorId,
+      details: err.response ? err.response.data : null
+    });
+  }
+});
+
+// Route for files in src directory
+router.put('/repos/:owner/:repo/contents/src/:filename', async (req, res) => {
+  try {
+    const { owner, repo, filename } = req.params;
+    const filePath = `src/${filename}`;
+    const { content, message, sha } = req.body;
+    
+    // Get token from Authorization header
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return res.status(401).send("No authorization token provided");
+    }
+    
+    const token = authHeader.split(' ')[1];
+
+    console.log(`Updating src file: ${filePath} in repo ${owner}/${repo}`);
+    
+    const response = await axios.put(
+      `https://api.github.com/repos/${owner}/${repo}/contents/${filePath}`,
+      {
+        message,
+        content: Buffer.from(content).toString('base64'),
+        sha: sha || null // sha is required for updates, null for new files
+      },
+      {
+        headers: { 
+          Authorization: `token ${token}`,
+          Accept: 'application/vnd.github.v3+json',
+          'User-Agent': 'GitHub-OAuth-App'
+        }
+      }
+    );
+
+    res.json(response.data);
+  } catch (err) {
+    const errorId = logOAuthError(err, {
+      phase: 'update_file',
+      owner: req.params.owner,
+      repo: req.params.repo,
+      path: `src/${req.params.filename}`
+    });
+    console.error("GitHub File Update Error:", err.message);
+    res.status(500).json({
+      error: true,
+      message: `Failed to update file: ${err.message}`,
+      errorId,
+      details: err.response ? err.response.data : null
+    });
+  }
+});
+
+// Route for files in src/components directory
+router.put('/repos/:owner/:repo/contents/src/components/:filename', async (req, res) => {
+  try {
+    const { owner, repo, filename } = req.params;
+    const filePath = `src/components/${filename}`;
+    const { content, message, sha } = req.body;
+    
+    // Get token from Authorization header
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return res.status(401).send("No authorization token provided");
+    }
+    
+    const token = authHeader.split(' ')[1];
+
+    console.log(`Updating component file: ${filePath} in repo ${owner}/${repo}`);
+    
+    const response = await axios.put(
+      `https://api.github.com/repos/${owner}/${repo}/contents/${filePath}`,
+      {
+        message,
+        content: Buffer.from(content).toString('base64'),
+        sha: sha || null // sha is required for updates, null for new files
+      },
+      {
+        headers: { 
+          Authorization: `token ${token}`,
+          Accept: 'application/vnd.github.v3+json',
+          'User-Agent': 'GitHub-OAuth-App'
+        }
+      }
+    );
+
+    res.json(response.data);
+  } catch (err) {
+    const errorId = logOAuthError(err, {
+      phase: 'update_file',
+      owner: req.params.owner,
+      repo: req.params.repo,
+      path: `src/components/${req.params.filename}`
+    });
+    console.error("GitHub File Update Error:", err.message);
+    res.status(500).json({
+      error: true,
+      message: `Failed to update file: ${err.message}`,
+      errorId,
+      details: err.response ? err.response.data : null
+    });
+  }
+});
+
+// Generic file update handler for custom paths
+router.post('/repos/:owner/:repo/update-file', async (req, res) => {
+  try {
+    const { owner, repo } = req.params;
+    const { path, content, message, sha } = req.body;
+    
+    if (!path) {
+      return res.status(400).json({
+        error: true,
+        message: "File path is required"
+      });
+    }
+    
+    // Get token from Authorization header
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return res.status(401).send("No authorization token provided");
+    }
+    
+    const token = authHeader.split(' ')[1];
+
+    console.log(`Updating file via POST: ${path} in repo ${owner}/${repo}`);
+    
     const response = await axios.put(
       `https://api.github.com/repos/${owner}/${repo}/contents/${path}`,
       {
@@ -382,10 +546,235 @@ router.put('/repos/:owner/:repo/contents/:path', async (req, res) => {
       phase: 'update_file',
       owner: req.params.owner,
       repo: req.params.repo,
-      path: req.params.path
+      path: req.body.path
     });
     console.error("GitHub File Update Error:", err.message);
-    res.status(500).send(`Failed to update file (Error ID: ${errorId})`);
+    res.status(500).json({
+      error: true,
+      message: `Failed to update file: ${err.message}`,
+      errorId,
+      details: err.response ? err.response.data : null
+    });
+  }
+});
+
+// File deletion routes - Using separate routes for each path pattern
+// Route for root level files
+router.delete('/repos/:owner/:repo/contents/:filename', async (req, res) => {
+  try {
+    const { owner, repo, filename } = req.params;
+    const { message, sha } = req.body;
+    
+    if (!sha) {
+      return res.status(400).json({
+        error: true,
+        message: "SHA is required to delete a file"
+      });
+    }
+    
+    // Get token from Authorization header
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return res.status(401).send("No authorization token provided");
+    }
+    
+    const token = authHeader.split(' ')[1];
+
+    console.log(`Deleting root file: ${filename} in repo ${owner}/${repo}`);
+    
+    const response = await axios.delete(
+      `https://api.github.com/repos/${owner}/${repo}/contents/${filename}`,
+      {
+        headers: { 
+          Authorization: `token ${token}`,
+          Accept: 'application/vnd.github.v3+json',
+          'User-Agent': 'GitHub-OAuth-App'
+        },
+        data: {
+          message: message || `Delete ${filename}`,
+          sha
+        }
+      }
+    );
+
+    res.json(response.data);
+  } catch (err) {
+    const errorId = logOAuthError(err, {
+      phase: 'delete_file',
+      owner: req.params.owner,
+      repo: req.params.repo,
+      path: req.params.filename
+    });
+    console.error("GitHub File Delete Error:", err.message);
+    res.status(500).json({
+      error: true,
+      message: `Failed to delete file: ${err.message}`,
+      errorId,
+      details: err.response ? err.response.data : null
+    });
+  }
+});
+
+// Generic file delete handler for custom paths
+router.post('/repos/:owner/:repo/delete-file', async (req, res) => {
+  try {
+    const { owner, repo } = req.params;
+    const { path, message, sha } = req.body;
+    
+    if (!path) {
+      return res.status(400).json({
+        error: true,
+        message: "File path is required"
+      });
+    }
+    
+    if (!sha) {
+      return res.status(400).json({
+        error: true,
+        message: "SHA is required to delete a file"
+      });
+    }
+    
+    // Get token from Authorization header
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return res.status(401).send("No authorization token provided");
+    }
+    
+    const token = authHeader.split(' ')[1];
+
+    console.log(`Deleting file via POST: ${path} in repo ${owner}/${repo}`);
+    
+    const response = await axios.delete(
+      `https://api.github.com/repos/${owner}/${repo}/contents/${path}`,
+      {
+        headers: { 
+          Authorization: `token ${token}`,
+          Accept: 'application/vnd.github.v3+json',
+          'User-Agent': 'GitHub-OAuth-App'
+        },
+        data: {
+          message: message || `Delete ${path}`,
+          sha
+        }
+      }
+    );
+
+    res.json(response.data);
+  } catch (err) {
+    const errorId = logOAuthError(err, {
+      phase: 'delete_file',
+      owner: req.params.owner,
+      repo: req.params.repo,
+      path: req.body.path
+    });
+    console.error("GitHub File Delete Error:", err.message);
+    res.status(500).json({
+      error: true,
+      message: `Failed to delete file: ${err.message}`,
+      errorId,
+      details: err.response ? err.response.data : null
+    });
+  }
+});
+
+// New endpoint to upload a file directly
+router.post('/repos/:owner/:repo/upload', upload.single('file'), async (req, res) => {
+  try {
+    const { owner, repo } = req.params;
+    const { path, message } = req.body;
+    
+    if (!req.file) {
+      return res.status(400).json({
+        error: true,
+        message: "No file uploaded"
+      });
+    }
+    
+    if (!path) {
+      return res.status(400).json({
+        error: true,
+        message: "File path is required"
+      });
+    }
+    
+    // Get token from Authorization header
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return res.status(401).send("No authorization token provided");
+    }
+    
+    const token = authHeader.split(' ')[1];
+    
+    // Read the uploaded file
+    const fileContent = fs.readFileSync(req.file.path);
+    
+    // Check if file already exists to get SHA
+    let sha = null;
+    try {
+      const existingFile = await axios.get(
+        `https://api.github.com/repos/${owner}/${repo}/contents/${path}`,
+        {
+          headers: { 
+            Authorization: `token ${token}`,
+            Accept: 'application/vnd.github.v3+json',
+            'User-Agent': 'GitHub-OAuth-App'
+          }
+        }
+      );
+      
+      if (existingFile.data && existingFile.data.sha) {
+        sha = existingFile.data.sha;
+      }
+    } catch (error) {
+      // File doesn't exist, which is fine for new uploads
+      console.log(`File ${path} doesn't exist yet, creating new file`);
+    }
+    
+    // Upload to GitHub
+    const response = await axios.put(
+      `https://api.github.com/repos/${owner}/${repo}/contents/${path}`,
+      {
+        message: message || `Upload ${path}`,
+        content: fileContent.toString('base64'),
+        sha
+      },
+      {
+        headers: { 
+          Authorization: `token ${token}`,
+          Accept: 'application/vnd.github.v3+json',
+          'User-Agent': 'GitHub-OAuth-App'
+        }
+      }
+    );
+    
+    // Clean up the temporary file
+    fs.unlinkSync(req.file.path);
+    
+    res.json(response.data);
+  } catch (err) {
+    // Clean up the temporary file if it exists
+    if (req.file && req.file.path) {
+      try {
+        fs.unlinkSync(req.file.path);
+      } catch (unlinkErr) {
+        console.error("Error deleting temporary file:", unlinkErr);
+      }
+    }
+    
+    const errorId = logOAuthError(err, {
+      phase: 'upload_file',
+      owner: req.params.owner,
+      repo: req.params.repo,
+      path: req.body.path
+    });
+    console.error("GitHub File Upload Error:", err.message);
+    res.status(500).json({
+      error: true,
+      message: `Failed to upload file: ${err.message}`,
+      errorId,
+      details: err.response ? err.response.data : null
+    });
   }
 });
 
@@ -507,13 +896,12 @@ router.get('/diagnostic', async (req, res) => {
     results.connectivity.github = {
       status: 'success',
       statusCode: response.status,
-      data: response.data
+      message: response.data
     };
   } catch (err) {
     results.connectivity.github = {
       status: 'error',
-      message: err.message,
-      code: err.code
+      message: err.message
     };
     
     if (err.response) {
