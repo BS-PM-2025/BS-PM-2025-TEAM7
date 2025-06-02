@@ -886,11 +886,51 @@
     setupAuth();
     setupSearch();
     fetchVideos();
+    setupPDFUploadForms();
     
     if (user?.role === "student") {
       document.getElementById('githubSection').style.display = 'block';
       checkGitHubConnection();
     }
+  }
+  
+  /* ---------- PDF Upload Form Setup ---------- */
+  function setupPDFUploadForms() {
+    // Add event listeners to all PDF upload forms after videos are rendered
+    setTimeout(() => {
+      document.querySelectorAll('.pdf-upload-form').forEach(form => {
+        form.addEventListener('submit', function(e) {
+          e.preventDefault();
+          
+          const formData = new FormData(this);
+          const courseId = formData.get('courseId');
+          
+          fetch('/api/pdfs/upload', {
+            method: 'POST',
+            headers: {
+              'Authorization': 'Bearer ' + token
+            },
+            body: formData
+          })
+          .then(response => response.json())
+          .then(data => {
+            if (data.success) {
+              alert('PDF uploaded successfully!');
+              // Clear form
+              this.reset();
+              // Refresh PDFs for this course
+              fetchPDFs(courseId);
+            } else {
+              alert('Failed to upload PDF: ' + (data.message || 'Unknown error'));
+            }
+          })
+          .catch(error => {
+            console.error('Error uploading PDF:', error);
+            alert('Failed to upload PDF. Please try again.');
+          });
+        });
+      });
+    }, 1000); // Give time for videos to render
   }
   
   /* ---------- Feedback Functions ---------- */
@@ -1206,6 +1246,76 @@ function renderFeedback(courseId) {
       renderVideos(filteredVideos);
     }
 
+    /* ---------- PDF Management ---------- */
+    function fetchPDFs(courseId) {
+      fetch(`/api/pdfs/course/${courseId}`, {
+        headers: {
+          Authorization: "Bearer " + token
+        }
+      })
+      .then(response => response.json())
+      .then(pdfs => {
+        renderPDFs(courseId, pdfs);
+      })
+      .catch(error => {
+        console.error("Error fetching PDFs:", error);
+        document.getElementById(`pdf-list-${courseId}`).innerHTML = '<p>Failed to load PDF materials.</p>';
+      });
+    }
+    
+    function renderPDFs(courseId, pdfs) {
+      const pdfList = document.getElementById(`pdf-list-${courseId}`);
+      
+      if (!pdfs || pdfs.length === 0) {
+        pdfList.innerHTML = '<p style="color: #6b7280; font-style: italic; margin: 10px 0;">No PDF materials available for this course.</p>';
+        return;
+      }
+      
+      let pdfHTML = '<div style="margin-top: 10px;">';
+      pdfs.forEach(pdf => {
+        pdfHTML += `
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px; border: 1px solid #e2e8f0; border-radius: 6px; margin-bottom: 8px;">
+            <span style="font-weight: 500;">${pdf.title}</span>
+            <div>
+              <a href="/uploads/${pdf.filename}" target="_blank" class="btn quiz-btn" style="padding: 4px 10px; font-size: 12px;">
+                ${user?.role === "student" ? "Download" : "View"}
+              </a>
+              ${user?.role === "lecturer" ? `
+                <button class="btn delete-btn" onclick="deletePDF('${pdf._id}')" style="padding: 4px 10px; font-size: 12px; margin-left: 5px;">
+                  Delete
+                </button>
+              ` : ''}
+            </div>
+          </div>
+        `;
+      });
+      pdfHTML += '</div>';
+      
+      pdfList.innerHTML = pdfHTML;
+    }
+    
+    function deletePDF(pdfId) {
+      if (!confirm("Are you sure you want to delete this PDF?")) return;
+      
+      fetch(`/api/pdfs/${pdfId}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: "Bearer " + token
+        }
+      })
+      .then(response => response.json())
+      .then(() => {
+        alert("PDF deleted successfully!");
+        // Refresh all PDFs for all courses
+        allVideos.forEach(video => {
+          fetchPDFs(video._id);
+        });
+      })
+      .catch(() => {
+        alert("Failed to delete PDF. Please try again.");
+      });
+    }
+    
     /* ---------- Video Management ---------- */
     function fetchVideos() {
       fetch("/api/videos/all")
@@ -1213,6 +1323,11 @@ function renderFeedback(courseId) {
         .then(videos => {
           allVideos = videos || [];
           renderVideos(allVideos);
+          
+          // Fetch PDFs for each video after rendering
+          videos.forEach(video => {
+            fetchPDFs(video._id);
+          });
         })
         .catch(() => {
           document.getElementById("videoList").innerHTML = `
@@ -1244,15 +1359,33 @@ function renderFeedback(courseId) {
           </video>
           <div class="video-info">
             <h3>${video.title}</h3>
-            <div class="video-actions">
+            
+            <!-- PDF Section -->
+            <div class="pdf-section" id="pdf-section-${video._id}">
+              <h4>Course Materials (PDFs)</h4>
+              <div class="pdf-list" id="pdf-list-${video._id}"></div>
               ${user?.role === "lecturer" ? `
-                <button class="btn delete-btn" onclick="deleteVideo('${video._id}')">Delete</button>
+                <form class="pdf-upload-form" id="pdf-upload-form-${video._id}" style="margin-top: 15px;">
+                  <input type="hidden" name="courseId" value="${video._id}">
+                  <div class="upload-form-group" style="margin-bottom: 10px;">
+                    <input type="text" name="title" placeholder="PDF Title" required style="padding: 8px 12px; font-size: 14px;">
+                  </div>
+                  <div class="upload-form-group" style="margin-bottom: 10px;">
+                    <input type="file" name="pdf" accept=".pdf" required style="font-size: 14px;">
+                  </div>
+                  <button type="submit" class="btn quiz-btn" style="padding: 6px 12px; font-size: 13px;">Upload PDF</button>
+                </form>
               ` : ''}
-              <button class="btn quiz-btn" onclick="showQuiz('${video._id}', '${video.title}')">
-                ${user?.role === "lecturer" ? "Edit Quiz" : "Take Quiz"}
-              </button>
             </div>
             
+            <div class="video-actions">
+              ${user?.role === "lecturer" ? `
+                <button class="btn delete-btn" onclick="deleteVideo(\'${video._id}\')">Delete Video</button>
+              ` : ''}
+              <button class="btn quiz-btn" onclick="showQuiz(\'${video._id}\', \'${video.title}\')">
+                ${user?.role === "lecturer" ? "Edit Quiz" : "Take Quiz"}
+              </button>
+            </div>           
             <!-- Feedback Section -->
               <div class="feedback-section">
                 <div class="feedback-header">

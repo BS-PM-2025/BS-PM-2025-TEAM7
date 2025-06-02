@@ -16,7 +16,7 @@ const quizRoutes = require("./routes/quiz");
 const chatRoutes = require("./routes/chat");
 const githubRouter = require('./routes/github');
 const supportRoutes   = require("./routes/support");  // ← NEW: support routes
-
+const pdfRoutes = require('./routes/pdfRoutes');
 const app  = express();
 const PORT = process.env.PORT || 3000;
 
@@ -30,7 +30,7 @@ if (!fs.existsSync(uploadPath)) {
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "public"))); // serve /public
-
+app.use("/uploads", express.static(path.join(__dirname, "public", "uploads")));
 // ---------- API Routes ----------
 app.use("/api/auth", authRoutes);
 app.use("/api/feedback", feedbackRoutes);
@@ -41,7 +41,7 @@ app.use("/api", require("./routes/quiz")); // תומך ב־/api/submissions
 app.use("/api/chat", chatRoutes);
 app.use('/api/github', githubRouter); 
 app.use("/api/support",   supportRoutes); // ← NEW: mounts everything under /api/support
-
+app.use('/api/pdfs', require('./routes/pdfRoutes'));
 // ---------- Frontend Pages ----------
 app.use(express.static(path.join(__dirname, "homepage")));
 
