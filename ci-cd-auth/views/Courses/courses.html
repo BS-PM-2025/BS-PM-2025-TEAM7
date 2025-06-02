@@ -1219,6 +1219,8 @@ function renderFeedback(courseId) {
         navbar.innerHTML += `
           <li><a href="/">Home</a></li>
           <li><a href="/video/courses" class="active">Courses</a></li>
+          <li><a href="/lecturers" ${location.pathname === "/lecturers" ? 'class="active"' : ''}>Contact</a></li>
+
           <li><a href="/StudentProfile">Profile</a></li>`;
       }
       

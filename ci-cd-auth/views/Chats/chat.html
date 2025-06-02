@@ -1,49 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Chat • CI/CD</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
   <style>
-    /* ===== GLOBAL STYLES ===== */
+    /* ===== GLOBAL ===== */
     :root {
-      --primary: #657EEF;
-      --primary-light: #818cf8;
-      --primary-dark: #4c5bc5;
-      --accent: #00ffc3;
-      --accent-dark: #00e0b2;
-      --text: #1f2328;
-      --text-light: #6b7280;
+      --primary: #657eef;
+      --border: #e2e8f0;
       --bg: #f8faff;
       --bg-card: #ffffff;
-      --border: #e2e8f0;
-      --shadow: 0 1px 3px rgba(0,0,0,0.05);
+      --text: #1f2328;
+      --text-light: #6b7280;
+      --shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
       --radius-sm: 8px;
       --radius-md: 12px;
-      --radius-lg: 16px;
-      --space-xs: 8px;
       --space-sm: 12px;
       --space-md: 16px;
       --space-lg: 24px;
       --transition: all 0.15s ease-out;
     }
-    
+
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
-    
+
     body {
-      font-family: 'Inter', sans-serif;
+      font-family: "Inter", sans-serif;
       background: var(--bg);
       color: var(--text);
-      line-height: 1.5;
       -webkit-font-smoothing: antialiased;
     }
 
-    /* ===== HEADER ===== */
+    /* ===== FIXED HEADER/NAV ===== */
     header {
       position: fixed;
       top: 0;
@@ -57,52 +53,50 @@
       z-index: 100;
       box-shadow: var(--shadow);
     }
-    
+
     .logo-container {
       display: flex;
       align-items: center;
       gap: var(--space-sm);
     }
-    
+
     .logo-img {
       width: 32px;
       height: 32px;
       fill: var(--primary);
     }
-    
+
     .logo-text {
       font-size: 1.25rem;
       font-weight: 600;
       color: var(--primary);
-      letter-spacing: -0.5px;
     }
-    
+
     .nav-links {
       list-style: none;
       display: flex;
       gap: var(--space-lg);
       margin-left: auto;
     }
-    
+
     .nav-links a {
       text-decoration: none;
       color: var(--text-light);
       font-weight: 500;
       font-size: 14px;
-      padding: var(--space-xs) 0;
       position: relative;
       transition: var(--transition);
     }
-    
+
     .nav-links a:hover,
     .nav-links a.active {
       color: var(--primary);
     }
-    
+
     .nav-links a.active::after {
-      content: '';
+      content: "";
       position: absolute;
-      bottom: 0;
+      bottom: -2px;
       left: 0;
       width: 100%;
       height: 2px;
@@ -110,199 +104,220 @@
       border-radius: 2px;
     }
 
-    /* ===== MAIN CONTENT ===== */
+    /* ===== MAIN LAYOUT ===== */
     main {
-      padding: 120px 10% 60px;
-      max-width: 900px;
+      padding: 120px 10% 30px; /* leave room for fixed header */
+      max-width: 1200px;
       margin: 0 auto;
+      display: grid;
+      grid-template-columns: 200px 1fr; /* 200px sidebar */
+      grid-gap: var(--space-md);
+    }
+
+    h1 {
+      grid-column: 1 / -1;
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: var(--space-sm);
+    }
+
+    /* ===== SIDEBAR ===== */
+    .sidebar {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      box-shadow: var(--shadow);
+      overflow-y: auto;
+      height: calc(100vh - 160px); /* fill below header */
+      padding: var(--space-sm) var(--space-sm);
+    }
+
+    .sidebar h2 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: var(--space-sm);
+      padding-left: var(--space-sm);
+      color: var(--text);
+    }
+
+    .conv {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+      padding: var(--space-sm);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: background 0.2s;
+      margin-bottom: var(--space-sm);
+    }
+
+    .conv:hover {
+      background: rgba(101, 126, 239, 0.08);
+    }
+
+    .conv.active {
+      background: rgba(101, 126, 239, 0.16);
+    }
+
+    .conv .avatar {
+      flex-shrink: 0;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: #ffffff;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      overflow: hidden;
+    }
+
+    .conv .avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .conv .name {
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    /* ===== CHAT AREA ===== */
+    .chat-container {
+      display: flex;
+      flex-direction: column;
+      height: calc(100vh - 160px); /* account for header */
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    /* Top: show "Chat with [username]" */
+    .chat-header {
+      padding: var(--space-sm) var(--space-md);
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--border);
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    /* Chat messages scrollable window */
+    .chat-window {
+      flex: 1;
+      padding: var(--space-md);
+      background: var(--bg);
+      overflow-y: auto;
       display: flex;
       flex-direction: column;
       gap: var(--space-lg);
     }
-    
-    h1 {
-      font-size: 2rem;
-      font-weight: 700;
-      color: var(--text);
-      margin-bottom: var(--space-sm);
-    }
-
-    /* ===== USER SELECTOR ===== */
-    .chat-select {
-      display: flex;
-      align-items: center;
-      gap: var(--space-sm);
-      background: var(--bg-card);
-      padding: var(--space-sm);
-      border-radius: var(--radius-sm);
-      box-shadow: var(--shadow);
-      border: 1px solid var(--border);
-    }
-    
-    .chat-select label {
-      font-size: 14px;
-      color: var(--text-light);
-      font-weight: 500;
-      white-space: nowrap;
-    }
-    
-    .chat-select select {
-      flex: 1;
-      padding: 10px 12px;
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      background: var(--bg-card);
-      font-family: inherit;
-      font-size: 14px;
-      transition: var(--transition);
-      appearance: none;
-      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-      background-repeat: no-repeat;
-      background-position: right 10px center;
-      background-size: 16px;
-    }
-    
-    .chat-select select:focus {
-      outline: none;
-      border-color: var(--primary-light);
-      box-shadow: 0 0 0 3px rgba(101, 126, 239, 0.1);
-    }
-    
-    .chat-select button {
-      padding: 10px 20px;
-      background: var(--primary);
-      color: white;
-      border: none;
-      border-radius: var(--radius-sm);
-      font-weight: 600;
-      font-size: 14px;
-      cursor: pointer;
-      transition: var(--transition);
-      white-space: nowrap;
-    }
-    
-    .chat-select button:hover {
-      background: var(--primary-dark);
-    }
-
-    /* ===== CHAT CARD ===== */
-    .chat-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-      box-shadow: var(--shadow);
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      height: 500px;
-    }
-    
-    .chat-window {
-      flex: 1;
-      padding: var(--space-md);
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: var(--space-md);
-      background: var(--bg);
-    }
 
     /* ===== MESSAGE BUBBLES ===== */
     .message {
-      max-width: 75%;
+      max-width: 70%;
       padding: var(--space-sm) var(--space-md);
       border-radius: var(--radius-md);
       position: relative;
-      font-size: 15px;
-      line-height: 1.5;
+      font-size: 0.95rem;
+      line-height: 1.4;
       animation: fadeIn 0.2s ease-out;
-      box-shadow: var(--shadow);
       word-break: break-word;
+      box-shadow: var(--shadow);
     }
-    
+
     .message.me {
       margin-left: auto;
       background: var(--primary);
-      color: white;
+      color: #fff;
       border-bottom-right-radius: var(--radius-sm);
     }
-    
+
     .message.them {
       background: var(--bg-card);
       color: var(--text);
       border-bottom-left-radius: var(--radius-sm);
     }
-    
+
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(6px) }
-      to { opacity: 1; transform: translateY(0) }
+      from {
+        opacity: 0;
+        transform: translateY(6px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
-    
-    /* Message tails */
+
+    /* Message “tail” */
     .message.me::after,
     .message.them::after {
-      content: '';
+      content: "";
       position: absolute;
       bottom: 0;
-      width: 12px;
-      height: 12px;
+      width: 10px;
+      height: 10px;
       background: inherit;
     }
-    
+
     .message.me::after {
-      right: -6px;
+      right: -5px;
       clip-path: polygon(0 0, 100% 0, 100% 100%);
     }
-    
+
     .message.them::after {
-      left: -6px;
+      left: -5px;
       clip-path: polygon(0 0, 0 100%, 100% 0);
     }
-    
-    /* Message metadata */
+
+    /* Message metadata (sender & time) */
     .message .meta {
       display: block;
-      font-size: 12px;
-      margin-bottom: 6px;
+      font-size: 0.75rem;
+      margin-bottom: 4px;
       font-weight: 500;
     }
-    
+
     .message.me .meta {
       text-align: right;
       color: rgba(255, 255, 255, 0.85);
     }
-    
+
     .message.them .meta {
       color: var(--text-light);
     }
-    
-    /* Delete button (lecturer only) */
+
+    /* If lecturer: small delete button in bubble */
     .message button {
       position: absolute;
-      top: 8px;
-      right: 8px;
-      width: 20px;
-      height: 20px;
+      top: 6px;
+      right: 6px;
+      width: 18px;
+      height: 18px;
       border: none;
       border-radius: 50%;
-      background: var(--accent);
-      color: #1f4037;
-      font-size: 11px;
-      line-height: 20px;
+      background: #ff4c4c;
+      color: #fff;
+      font-size: 10px;
+      line-height: 18px;
       opacity: 0;
       cursor: pointer;
       transition: var(--transition);
-      display: flex;
-      align-items: center;
-      justify-content: center;
     }
-    
+
     .message:hover button {
       opacity: 1;
     }
-    
+
     .message button:hover {
-      background: var(--accent-dark);
+      background: #d93636;
       transform: scale(1.1);
     }
 
@@ -315,49 +330,49 @@
       border-top: 1px solid var(--border);
       gap: var(--space-sm);
     }
-    
+
     .chat-input textarea {
       flex: 1;
-      padding: 12px 16px;
+      padding: 10px 14px;
       border: 1px solid var(--border);
       border-radius: var(--radius-md);
       resize: none;
       font-family: inherit;
-      font-size: 15px;
-      min-height: 50px;
-      max-height: 120px;
+      font-size: 0.9rem;
+      min-height: 40px;
+      max-height: 100px;
       transition: var(--transition);
       background: var(--bg);
     }
-    
+
     .chat-input textarea:focus {
       outline: none;
       border-color: var(--primary-light);
       box-shadow: 0 0 0 3px rgba(101, 126, 239, 0.1);
     }
-    
+
     .chat-input textarea::placeholder {
       color: var(--text-light);
       opacity: 0.6;
     }
-    
+
     .send-btn {
-      padding: 12px 24px;
+      padding: 10px 16px;
       background: var(--primary);
-      color: white;
+      color: #fff;
       border: none;
       border-radius: var(--radius-md);
       font-weight: 600;
-      font-size: 15px;
+      font-size: 0.9rem;
       cursor: pointer;
       transition: var(--transition);
-      height: 50px;
+      height: 36px;
     }
-    
+
     .send-btn:hover {
-      background: var(--primary-dark);
+      background: var(--primary-light);
     }
-    
+
     .send-btn:disabled {
       background: var(--border);
       cursor: not-allowed;
@@ -370,11 +385,11 @@
       align-items: center;
       justify-content: center;
       text-align: center;
-      padding: var(--space-xl);
+      padding: var(--space-lg);
       color: var(--text-light);
       flex: 1;
     }
-    
+
     .empty-state svg {
       width: 48px;
       height: 48px;
@@ -383,59 +398,61 @@
       stroke-width: 1.5;
       opacity: 0.7;
     }
-    
+
     .empty-state h3 {
-      font-size: 18px;
+      font-size: 1rem;
       font-weight: 600;
-      margin-bottom: var(--space-xs);
+      margin-bottom: var(--space-sm);
       color: var(--text);
     }
-    
+
     .empty-state p {
-      font-size: 14px;
-      max-width: 300px;
+      font-size: 0.85rem;
+      max-width: 280px;
     }
 
-    /* ===== RESPONSIVE ADJUSTMENTS ===== */
+    /* ===== RESPONSIVE ===== */
     @media (max-width: 768px) {
       header {
         padding: var(--space-sm) 5%;
       }
-      
+
       main {
-        padding: 100px 5% 40px;
+        padding: 100px 5% 20px;
+        grid-template-columns: 160px 1fr;
       }
-      
-      .chat-card {
-        height: calc(100vh - 220px);
+
+      .sidebar {
+        height: calc(100vh - 140px);
       }
-      
+
+      .chat-container {
+        height: calc(100vh - 140px);
+      }
+
       .message {
-        max-width: 85%;
+        max-width: 80%;
       }
-      
+
       .nav-links {
-        gap: var(--space-md);
+        gap: var(--space-sm);
       }
     }
-    
-    /* ===== SCROLLBAR STYLING ===== */
+
+    /* ===== SCROLLBAR ===== */
     ::-webkit-scrollbar {
-      width: 8px;
+      width: 6px;
     }
-    
     ::-webkit-scrollbar-track {
-      background: rgba(0,0,0,0.03);
-      border-radius: 4px;
+      background: rgba(0, 0, 0, 0.03);
+      border-radius: 3px;
     }
-    
     ::-webkit-scrollbar-thumb {
-      background: rgba(0,0,0,0.1);
-      border-radius: 4px;
+      background: rgba(0, 0, 0, 0.1);
+      border-radius: 3px;
     }
-    
     ::-webkit-scrollbar-thumb:hover {
-      background: rgba(0,0,0,0.15);
+      background: rgba(0, 0, 0, 0.15);
     }
   </style>
 </head>
@@ -443,9 +460,17 @@
 <body>
   <header>
     <div class="logo-container">
- <svg class="logo-img" viewBox="0 0 24 24" fill="#657EEF" xmlns="http://www.w3.org/2000/svg">
-        <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.652.242 2.873.118 3.176.77.84 1.235 1.91 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
-      </svg>      <span class="logo-text">CI/CD</span>
+      <svg
+        class="logo-img"
+        viewBox="0 0 24 24"
+        fill="#657EEF"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.652.242 2.873.118 3.176.77.84 1.235 1.91 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"
+        />
+      </svg>
+      <span class="logo-text">CI/CD</span>
     </div>
     <ul class="nav-links">
       <li><a href="/">Home</a></li>
@@ -458,130 +483,219 @@
   <main>
     <h1>Chat</h1>
 
-    <div class="chat-select">
-      <label for="userSelect">Chat&nbsp;with:</label>
-      <select id="userSelect"><option>Loading…</option></select>
-      <button id="openChat">Open Chat</button>
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+      <h2>Conversations</h2>
+      <div id="conversations">
+        <!-- JS will inject each .conv here -->
+      </div>
     </div>
 
-    <div class="chat-card">
-      <div class="chat-window" id="messages"></div>
+    <!-- CHAT AREA -->
+    <div class="chat-container">
+      <!-- Top: show "Chat with [username]" -->
+      <div class="chat-header" id="chatHeader">
+        Select a conversation
+      </div>
+
+      <!-- Messages -->
+      <div class="chat-window" id="messages">
+        <div class="empty-state">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+          </svg>
+          <h3>No conversation selected</h3>
+          <p>Click on a name on the left to view messages.</p>
+        </div>
+      </div>
+
+      <!-- Input -->
       <div class="chat-input">
-        <textarea id="msgInput" rows="2" placeholder="Type a message…"></textarea>
-        <button class="send-btn" id="sendBtn">Send</button>
+        <textarea id="msgInput" rows="1" placeholder="Type a message…"></textarea>
+        <button class="send-btn" id="sendBtn">➤</button>
       </div>
     </div>
   </main>
 
   <script>
-    function logout(){sessionStorage.removeItem("token");window.location="/login";}
+    function logout() {
+      sessionStorage.removeItem("token");
+      window.location = "/login";
+    }
 
-    document.addEventListener("DOMContentLoaded",async()=>{
-      const token=sessionStorage.getItem("token")||localStorage.getItem("token");
-      if(!token)return window.location.replace("/login");
+    document.addEventListener("DOMContentLoaded", async () => {
+      const token = sessionStorage.getItem("token") || localStorage.getItem("token");
+      if (!token) return window.location.replace("/login");
 
-      const {role:myRole,id:myId}=JSON.parse(atob(token.split('.')[1]||''));
-      const counterpart=myRole==="lecturer"?"student":"lecturer";
+      // Decode JWT payload
+      const payload = JSON.parse(atob(token.split(".")[1] || ""));
+      const myRole = payload.role; // "lecturer" or "student"
+      const myId = payload.id;
 
-      const sel=document.getElementById("userSelect"), box=document.getElementById("messages");
-      const userMap={}; // id -> username
+      // 1) Fetch all users of the opposite role
+      const counterpart = myRole === "lecturer" ? "student" : "lecturer";
+      const usersRes = await fetch(`/api/users/all?role=${counterpart}`, {
+        headers: { Authorization: "Bearer " + token },
+      });
+      const users = await usersRes.json();
 
-      /* populate dropdown and username map */
-      const uRes=await fetch(`/api/users/all?role=${counterpart}`,{headers:{Authorization:"Bearer "+token}});
-      const users=await uRes.json();
-      sel.innerHTML='<option value="">-- select --</option>';
-      users.forEach(u=>{
-        userMap[u._id]=u.username;
-        const opt=document.createElement("option");
-        opt.value=u._id; opt.textContent=`${u.username} (${u.role})`;
-        sel.appendChild(opt);
+      // 2) Build sidebar: for each user, show avatar if available, otherwise initial
+      const convPane = document.getElementById("conversations");
+      users.forEach((u) => {
+        const tile = document.createElement("div");
+        tile.className = "conv";
+        tile.dataset.id = u._id;
+
+        // Choose: if u.avatarUrl exists, embed <img>. Otherwise show first letter.
+        let avatarHTML;
+        if (u.avatarUrl) {
+          avatarHTML = `<div class="avatar">
+                          <img src="${u.avatarUrl}" alt="${u.username}'s avatar" />
+                        </div>`;
+        } else {
+          // fallback: first letter
+          const initial = u.username.charAt(0).toUpperCase();
+          avatarHTML = `<div class="avatar">${initial}</div>`;
+        }
+
+        tile.innerHTML = `
+          ${avatarHTML}
+          <span class="name">${u.username}</span>
+        `;
+        tile.onclick = () => openChat(u._id, u.username, tile);
+        convPane.appendChild(tile);
       });
 
-      document.getElementById("openChat").onclick=()=>openChat(sel.value);
+      // References for chat area
+      const chatHeader = document.getElementById("chatHeader");
+      const messagesBox = document.getElementById("messages");
+      const sendBtn = document.getElementById("sendBtn");
 
-      async function openChat(uid){
-        if(!uid)return alert("Please select a user to chat with");
-        window.currentChat=uid;
-        
-        const res=await fetch(`/api/chat/conversation/${uid}`,{headers:{Authorization:"Bearer "+token}});
-        const msgs=await res.json();
-        box.innerHTML="";
-        
-        if(msgs.length === 0) {
-          const emptyState = document.createElement("div");
-          emptyState.className = "empty-state";
-          emptyState.innerHTML = `
+      // 3) openChat( userId, username, tileElement )
+      async function openChat(userId, username, tileElement) {
+        // (a) Highlight selected conversation
+        document.querySelectorAll(".conv").forEach((c) => c.classList.remove("active"));
+        tileElement.classList.add("active");
+
+        // (b) Show “Chat with [username]” at top
+        chatHeader.textContent = `Chat with ${username}`;
+
+        // (c) Fetch the conversation history from server
+        const convoRes = await fetch(`/api/chat/conversation/${userId}`, {
+          headers: { Authorization: "Bearer " + token },
+        });
+        const msgs = await convoRes.json();
+
+        // (d) Clear previous messages
+        messagesBox.innerHTML = "";
+
+        // (e) If no messages yet, render the “empty-state” placeholder
+        if (!msgs.length) {
+          const empty = document.createElement("div");
+          empty.className = "empty-state";
+          empty.innerHTML = `
             <svg viewBox="0 0 24 24" fill="none">
-              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
             </svg>
             <h3>No messages yet</h3>
-            <p>Start the conversation by sending your first message</p>
+            <p>Send the first message below.</p>
           `;
-          box.appendChild(emptyState);
+          messagesBox.appendChild(empty);
         } else {
-          msgs.forEach(m=>{
-            const senderId   = typeof m.sender === "object" ? m.sender._id  : m.sender;
-            const senderName = senderId===myId
-                                  ? "Me"
-                                  : (typeof m.sender === "object" ? m.sender.username : (userMap[senderId]||"Unknown"));
+          // (f) Render each message bubble
+          msgs.forEach((m) => {
+            const senderId = typeof m.sender === "object" ? m.sender._id : m.sender;
+            const isMine = senderId === myId;
+            const senderName = isMine ? "Me" : username;
 
-            const ts  = new Date(m.timestamp);
-            const metaDate = ts.toLocaleDateString([], {month:"short",day:"numeric",year:"numeric"});
-            const metaTime = ts.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+            const ts = new Date(m.timestamp);
+            const metaDate = ts.toLocaleDateString([], {
+              month: "short",
+              day: "numeric",
+              year: "numeric",
+            });
+            const metaTime = ts.toLocaleTimeString([], {
+              hour: "2-digit",
+              minute: "2-digit",
+            });
 
-            const div=document.createElement("div");
-            div.className="message "+(senderId===myId?"me":"them");
-            div.innerHTML=`<span class="meta">${senderName} • ${metaDate} at ${metaTime}</span>${m.content}`;
+            const div = document.createElement("div");
+            div.className = "message " + (isMine ? "me" : "them");
+            div.innerHTML = `<span class="meta">${senderName} • ${metaDate} at ${metaTime}</span>${m.content}`;
 
-            if(myRole==="lecturer"){
-              const del=document.createElement("button");
-              del.textContent="✕";
-              del.onclick=async()=>{
-                if(confirm("Are you sure you want to delete this message?")) {
-                  await fetch(`/api/chat/${m._id}`,{method:"DELETE",headers:{Authorization:"Bearer "+token}});
-                  openChat(uid);
+            // (g) If I’m a lecturer, allow deletion
+            if (myRole === "lecturer") {
+              const del = document.createElement("button");
+              del.textContent = "✕";
+              del.onclick = async () => {
+                if (confirm("Delete this message?")) {
+                  await fetch(`/api/chat/${m._id}`, {
+                    method: "DELETE",
+                    headers: { Authorization: "Bearer " + token },
+                  });
+                  // refresh after deletion
+                  openChat(userId, username, tileElement);
                 }
               };
               div.appendChild(del);
             }
-            box.appendChild(div);
+
+            messagesBox.appendChild(div);
           });
         }
-        box.scrollTop=box.scrollHeight;
+
+        // (h) Scroll to bottom
+        messagesBox.scrollTop = messagesBox.scrollHeight;
+
+        // Remember which chat is open
+        window.currentChat = userId;
       }
 
-      document.getElementById("sendBtn").onclick=async()=>{
-        const txt=document.getElementById("msgInput").value.trim();
-        if(!txt||!window.currentChat)return;
-        
-        const btn = document.getElementById("sendBtn");
-        btn.disabled = true;
-        btn.textContent = "Sending...";
-        
+      // 4) Send new message when the arrow button is clicked
+      sendBtn.onclick = async () => {
+        const txtArea = document.getElementById("msgInput");
+        const text = txtArea.value.trim();
+        if (!text || !window.currentChat) return;
+
+        sendBtn.disabled = true;
+        sendBtn.textContent = "…";
+
         try {
-          await fetch("/api/chat/send",{
-            method:"POST",
-            headers:{'Content-Type':'application/json',Authorization:"Bearer "+token},
-            body:JSON.stringify({recipientId:window.currentChat,content:txt})
+          await fetch("/api/chat/send", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + token,
+            },
+            body: JSON.stringify({
+              recipientId: window.currentChat,
+              content: text,
+            }),
           });
-          document.getElementById("msgInput").value="";
-          await openChat(window.currentChat);
-        } catch (error) {
-          console.error("Error sending message:", error);
-          alert("Failed to send message");
+
+          // Clear text and refresh the conversation
+          txtArea.value = "";
+          const tileEl = document.querySelector(`.conv[data-id='${window.currentChat}']`);
+          const username = tileEl.querySelector(".name").textContent;
+          await openChat(window.currentChat, username, tileEl);
+        } catch (e) {
+          console.error("Send failed:", e);
+          alert("Failed to send message.");
         } finally {
-          btn.disabled = false;
-          btn.textContent = "Send";
+          sendBtn.disabled = false;
+          sendBtn.textContent = "➤";
         }
       };
-      
-      // Allow sending with Enter key (Shift+Enter for new line)
-      document.getElementById("msgInput").addEventListener("keydown", (e) => {
-        if(e.key === "Enter" && !e.shiftKey) {
-          e.preventDefault();
-          document.getElementById("sendBtn").click();
-        }
-      });
+
+      // 5) Allow “Enter” to send (Shift+Enter for newline)
+      document
+        .getElementById("msgInput")
+        .addEventListener("keydown", (e) => {
+          if (e.key === "Enter" && !e.shiftKey) {
+            e.preventDefault();
+            sendBtn.click();
+          }
+        });
     });
   </script>
 </body>

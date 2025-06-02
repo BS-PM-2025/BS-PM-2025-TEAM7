@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Lecturers – CI/CD Learning</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+  /* ---------- BASE + HEADER  (unchanged) ---------- */
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:Inter,sans-serif;background:#fff;color:#1f2328;line-height:1.5}
+  header{position:fixed;top:0;left:0;width:100%;padding:16px 10%;
+         background:#fff;border-bottom:1px solid #d8dee4;display:flex;align-items:center;z-index:10}
+  .logo-container{display:flex;align-items:center;gap:12px}
+  .logo-img{height:32px;width:32px}
+  .logo-text{font-size:1.25rem;font-weight:600;color:#657EEF}
+  .nav-links{list-style:none;display:flex;gap:24px;margin-left:auto}
+  .nav-links a{color:#1f2328;font-weight:500;font-size:14px;text-decoration:none;padding:8px 0;position:relative}
+  .nav-links a:hover{color:#657EEF}
+  .nav-links .active{color:#657EEF}
+  .nav-links .active::after{content:'';position:absolute;bottom:0;left:0;width:100%;height:2px;background:#657EEF}
+
+  /* ---------- MAIN LAYOUT ---------- */
+  main{padding:140px 10% 80px;max-width:1200px;margin:0 auto}
+
+  /* ---------- HERO ---------- */
+  .hero{margin-bottom:40px;text-align:center}
+  .hero h1{font-size:36px;font-weight:700;color:#657EEF;margin-bottom:8px}
+  .hero p{font-size:18px;color:#556;max-width:600px;margin:0 auto}
+
+  /* ---------- SEARCH ---------- */
+  .search-wrap{max-width:450px;margin:30px auto 0;position:relative}
+  .search-wrap input{width:100%;padding:12px 20px 12px 44px;border:1px solid #65EFBC;
+                     border-radius:30px;font-size:15px;box-shadow:0 2px 8px rgba(0,0,0,.05);transition:.25s}
+  .search-wrap input:focus{outline:none;border-color:#657EEF;box-shadow:0 2px 12px rgba(139,154,235,.2)}
+  .search-wrap svg{position:absolute;left:16px;top:50%;transform:translateY(-50%);color:#657EEF;height:18px;width:18px}
+
+  /* ---------- TABLE CARD ---------- */
+  .card{background:#fff;border:1px solid #e5e7eb;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,.06);
+        padding:0;overflow:hidden}
+  table{width:100%;border-collapse:collapse}
+  thead th{background:#657EEF;color:#fff;font-weight:600;padding:14px;position:sticky;top:0}
+  tbody tr:nth-child(odd){background:#f9fafb}
+  th,td{padding:14px}
+  td{white-space:nowrap}
+  tbody tr:hover{background:#eef2ff}
+  .empty{margin:50px 0;text-align:center;color:#6b7280}
+
+  /* ---------- MOBILE ---------- */
+  @media(max-width:640px){
+    thead{display:none}
+    tbody tr{display:block;margin:0 0 12px;border:1px solid #e5e7eb;border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+    tbody td{display:flex;justify-content:space-between;padding:10px 14px;border:none;border-bottom:1px solid #f3f4f6}
+    tbody td:last-child{border-bottom:none}
+    tbody td::before{content:attr(data-label);font-weight:600;color:#6b7280}
+  }
+  </style>
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header>
+  <div class="logo-container">
+    <!-- same SVG logo -->
+    <svg class="logo-img" viewBox="0 0 24 24" fill="#657EEF" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.652.242 2.873.118 3.176.77.84 1.235 1.91 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
+    </svg>
+    <span class="logo-text">CI/CD</span>
+  </div>
+  <ul class="nav-links" id="nav-links"></ul>
+</header>
+
+<main>
+  <!-- ===== HERO ===== -->
+  <div class="hero">
+    <h1>Lecturers List</h1>
+    <p>All approved lecturers on the platform.</p>
+  </div>
+
+  <!-- ===== SEARCH BAR ===== -->
+  <div class="search-wrap">
+    <input type="text" id="searchInput" placeholder="Search lecturer by name…" />
+    <!-- tiny search icon -->
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"
+         viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m16 16 5 5"/></svg>
+  </div>
+
+  <!-- ===== TABLE IN A CARD ===== -->
+  <div class="card" id="tableCard" style="margin-top:35px;display:none">
+    <table>
+      <thead><tr><th>Username</th><th>Email</th></tr></thead>
+      <tbody id="lecturersBody"></tbody>
+    </table>
+  </div>
+
+  <div id="emptyState" class="empty" style="display:none">No lecturers found.</div>
+</main>
+
+<script>
+/* ---------- TOKEN / NAV ---------- */
+const token  = sessionStorage.getItem("token");
+if(!token){ location.href="/login"; }
+
+function parseJwt(tok){ try{return JSON.parse(atob(tok.split('.')[1].replace(/-/g,'+').replace(/_/g,'/')));}catch(_){return null;} }
+const user   = parseJwt(token);
+const navbar = document.getElementById("nav-links");
+
+function logout(){ sessionStorage.clear(); location.href="/login"; }
+
+function renderNav(){
+  navbar.innerHTML='';
+  if(user.role==="admin"){
+    navbar.innerHTML+='<li><a href="/admin-dashboard">Admin Dashboard</a></li>';
+  }else if(user.role==="lecturer"){
+    navbar.innerHTML+=`
+      <li><a href="/">Home</a></li>
+      <li><a href="/video/courses">Courses</a></li>
+      <li><a href="/LecturerProfile">Profile</a></li>`;
+  }else{
+    navbar.innerHTML+=`
+      <li><a href="/">Home</a></li>
+      <li><a href="/video/courses">Courses</a></li>
+      <li><a href="/lecturers" class="active">Contact</a></li>
+      <li><a href="/StudentProfile">Profile</a></li>`;
+  }
+  navbar.innerHTML+='<li><a href="#" onclick="logout()">Logout</a></li>';
+}
+renderNav();
+
+/* ---------- FETCH & RENDER TABLE ---------- */
+let lecturers=[];
+
+function fillTable(list){
+  const body = document.getElementById("lecturersBody");
+  body.innerHTML='';
+  if(!list.length){ document.getElementById("emptyState").style.display="block"; document.getElementById("tableCard").style.display="none"; return;}
+  list.forEach(l=>{
+    const tr=document.createElement("tr");
+    tr.innerHTML=`<td data-label="Username">${l.username}</td><td data-label="Email">${l.email}</td>`;
+    body.appendChild(tr);
+  });
+  document.getElementById("tableCard").style.display="block";
+  document.getElementById("emptyState").style.display="none";
+}
+
+fetch("/api/users/all?role=lecturer",{headers:{Authorization:"Bearer "+token}})
+ .then(r=>r.ok?r.json():Promise.reject(r))
+ .then(data=>{lecturers=data;fillTable(lecturers);})
+ .catch(()=>{document.getElementById("emptyState").textContent="Failed to load lecturers.";document.getElementById("emptyState").style.display="block";});
+
+/* ---------- LIVE SEARCH ---------- */
+document.getElementById("searchInput").addEventListener("input",e=>{
+  const q=e.target.value.toLowerCase();
+  const filtered=lecturers.filter(l=>l.username.toLowerCase().includes(q));
+  fillTable(filtered);
+});
+</script>
+</body>
+</html>

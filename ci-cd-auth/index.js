@@ -4,7 +4,7 @@ const path       = require("path");
 const fs         = require("fs");
 const bodyParser = require("body-parser");
 const dotenv     = require("dotenv");
-
+const { authenticateToken } = require("./middleware/auth"); 
 dotenv.config();
 
 const authRoutes     = require("./routes/auth");
@@ -49,6 +49,9 @@ app.get("/", (req, res) => {
   if (req.session) req.session.destroy(() => {});
   res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, private");
   res.sendFile(path.join(__dirname, "views", "HomePage", "home.html"));
+});
+app.get("/lecturers", (req, res) => {
+  res.sendFile(path.join(__dirname, "views", "Lecturer", "lecturers.html"));
 });
 
 app.get("/login", (req, res) =>
