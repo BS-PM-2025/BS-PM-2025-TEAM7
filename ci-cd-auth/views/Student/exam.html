@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Student Exam</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #f5f5f5;
+    }
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+      margin-bottom: 30px;
+    }
+    .exam-info {
+      background: #e8f4fc;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      border-left: 5px solid #3498db;
+    }
+    .question {
+      background: white;
+      padding: 20px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .question-text {
+      font-weight: bold;
+      margin-bottom: 15px;
+      font-size: 1.1em;
+      color: #2c3e50;
+    }
+    .option {
+      margin-bottom: 10px;
+      padding: 10px;
+      border-radius: 5px;
+      transition: background-color 0.2s;
+    }
+    .option:hover {
+      background-color: #f0f8ff;
+    }
+    .option input {
+      margin-right: 10px;
+      transform: scale(1.1);
+    }
+    #submit-btn {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      font-size: 1.1em;
+      background-color: #3498db;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 20px;
+      transition: background-color 0.2s;
+    }
+    #submit-btn:hover {
+      background-color: #2980b9;
+    }
+    #submit-btn:disabled {
+      background-color: #95a5a6;
+      cursor: not-allowed;
+    }
+    #message {
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 8px;
+      text-align: center;
+    }
+    .success {
+      background-color: #d4edda;
+      color: #155724;
+      border-left: 5px solid #28a745;
+    }
+    .error {
+      background-color: #f8d7da;
+      color: #721c24;
+      border-left: 5px solid #dc3545;
+    }
+    .warning {
+      background-color: #fff3cd;
+      color: #856404;
+      border-left: 5px solid #ffc107;
+    }
+    .loading {
+      text-align: center;
+      padding: 20px;
+      font-style: italic;
+      color: #7f8c8d;
+    }
+    .certificate-link {
+      display: inline-block;
+      margin-top: 15px;
+      padding: 10px 15px;
+      background-color: #28a745;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+      transition: background-color 0.2s;
+    }
+    .certificate-link:hover {
+      background-color: #218838;
+    }
+    .attempt-info {
+      font-weight: bold;
+      color: #3498db;
+    }
+  </style>
+</head>
+<body>
+  <h1>Student Examination</h1>
+
+  <div id="exam-info" class="exam-info">
+    <p>Loading exam information...</p>
+  </div>
+
+  <div class="exam-info">
+    <label for="student-email" style="display: block; margin-bottom: 5px; font-weight: bold;">Your Email Address:</label>
+    <input type="email" id="student-email" placeholder="Enter your email address" required 
+           style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc; margin-bottom: 10px;">
+  </div>
+
+  <div id="exam-container">
+    <p class="loading">Please wait while we load your exam...</p>
+  </div>
+
+  <button id="submit-btn" disabled>Submit Exam</button>
+
+  <div id="message"></div>
+
+  <script>
+    // Get student ID from URL or use hardcoded for testing
+    const urlParams = new URLSearchParams(window.location.search);
+    let studentId = urlParams.get('studentId') ; 
+    
+    // DOM elements
+    const examContainer = document.getElementById('exam-container');
+    const examInfo = document.getElementById('exam-info');
+    const submitBtn = document.getElementById('submit-btn');
+    const messageEl = document.getElementById('message');
+
+    let questions = [];
+    let attemptNumber = 0;
+    let totalQuestions = 0;
+
+    // Initialize the exam
+    document.addEventListener('DOMContentLoaded', () => {
+      fetchQuestions();
+    });
+
+    // Fetch exam questions from API
+    async function fetchQuestions() {
+      try {
+        showMessage("Loading your exam...", 'info');
+        
+        const response = await fetch(`/api/exam?studentId=${studentId}`, {
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          credentials: 'include'
+        });
+
+        // Check if response is JSON
+        const contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+          const text = await response.text();
+          throw new Error(`Server returned unexpected format: ${text.substring(0, 100)}`);
+        }
+
+        const data = await response.json();
+        
+        if (!response.ok) {
+          throw new Error(data.message || 'Failed to load exam');
+        }
+
+        questions = data.questions;
+        attemptNumber = data.attemptNumber;
+        totalQuestions = data.totalQuestions;
+
+        // Update exam info display
+        examInfo.innerHTML = `
+          <p class="attempt-info">Attempt: ${attemptNumber} of 3</p>
+          <p><strong>Total Questions:</strong> ${totalQuestions}</p>
+        `;
+
+        if (questions.length === 0) {
+          throw new Error("No questions available for this exam");
+        }
+
+        renderQuestions();
+        showMessage("Exam loaded successfully. Good luck!", 'success');
+      } catch (error) {
+        console.error('Exam load error:', error);
+        examContainer.innerHTML = `
+          <div class="error">
+            <p>Failed to load exam:</p>
+            <p>${error.message}</p>
+            ${error.message.includes('passed') ? 
+              '<p><a href="/api/exam/certificate?studentId=' + studentId + '" class="certificate-link">View Certificate</a></p>' : ''}
+          </div>
+        `;
+        submitBtn.disabled = true;
+      }
+    }
+
+    // Render questions to the page
+    function renderQuestions() {
+      examContainer.innerHTML = '';
+      
+      questions.forEach((question, index) => {
+        const questionDiv = document.createElement('div');
+        questionDiv.className = 'question';
+        questionDiv.id = `question-${question._id}`;
+
+        const questionText = document.createElement('div');
+        questionText.className = 'question-text';
+        questionText.textContent = `${index + 1}. ${question.text}`;
+        questionDiv.appendChild(questionText);
+
+        question.options.forEach((option, optionIndex) => {
+          const optionDiv = document.createElement('div');
+          optionDiv.className = 'option';
+
+          const input = document.createElement('input');
+          input.type = 'radio';
+          input.name = `question-${question._id}`;
+          input.value = optionIndex;
+          input.id = `q${index}-opt${optionIndex}`;
+          input.required = true;
+
+          const label = document.createElement('label');
+          label.htmlFor = input.id;
+          label.textContent = option.text;
+
+          optionDiv.appendChild(input);
+          optionDiv.appendChild(label);
+          questionDiv.appendChild(optionDiv);
+        });
+
+        examContainer.appendChild(questionDiv);
+      });
+
+      submitBtn.disabled = false;
+    }
+
+    // Handle exam submission
+    submitBtn.addEventListener('click', async () => {
+      // Get student email
+      const userEmail = document.getElementById('student-email').value.trim();
+      
+      // Validate email
+      if (!userEmail) {
+        showMessage('Please enter your email address', 'error');
+        document.getElementById('student-email').focus();
+        return;
+      }
+      
+      // Validate email format
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(userEmail)) {
+        showMessage('Please enter a valid email address', 'error');
+        document.getElementById('student-email').focus();
+        return;
+      }
+      
+      // Gather answers
+      const answers = questions.map(question => {
+        const selected = document.querySelector(`input[name="question-${question._id}"]:checked`);
+        return {
+          question: question._id,
+          selectedOption: selected ? parseInt(selected.value) : null
+        };
+      });
+
+      // Validate all questions answered
+      const unanswered = answers.filter(a => a.selectedOption === null).length;
+      if (unanswered > 0) {
+        showMessage(`Please answer all questions. ${unanswered} remaining.`, 'error');
+        
+        // Highlight unanswered questions
+        answers.forEach(a => {
+          if (a.selectedOption === null) {
+            document.getElementById(`question-${a.question}`).style.borderLeft = '5px solid #dc3545';
+          }
+        });
+        return;
+      }
+
+      submitBtn.disabled = true;
+      showMessage("Submitting your exam...", 'warning');
+
+      try {
+        const response = await fetch('/api/exam/submit', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify({ userEmail, studentId, answers })
+        });
+
+        // Check response type
+        const contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+          const text = await response.text();
+          throw new Error(`Unexpected response: ${text.substring(0, 100)}`);
+        }
+
+        const result = await response.json();
+        
+        if (!response.ok) {
+          throw new Error(result.message || 'Submission failed');
+        }
+
+        // Display results
+        let resultHTML = `
+          <p><strong>Score:</strong> ${result.score.toFixed(2)}%</p>
+          <p><strong>Result:</strong> <span class="${result.passed ? 'success' : 'error'}">${
+            result.passed ? "PASSED" : "NOT PASSED"
+          }</span></p>
+          <p><strong>Correct Answers:</strong> ${result.correctAnswers}/${result.totalQuestions}</p>
+          <p><strong>Attempt:</strong> ${result.attemptNumber} of 3</p>
+        `;
+
+        if (result.passed) {
+          resultHTML += `
+    <div class="certificate-message">
+      <h2>Certificate of Completion</h2>
+      <p>This certifies that you have successfully passed the exam.</p>
+      <p>Well done!</p>
+    </div>
+  `;
+        } else if (result.attemptNumber < 3) {
+          resultHTML += `
+            <p>You can try again. ${3 - result.attemptNumber} attempts remaining.</p>
+            <button onclick="window.location.reload()" style="
+              margin-top: 15px;
+              padding: 10px 15px;
+              background-color: #3498db;
+              color: white;
+              border: none;
+              border-radius: 5px;
+              cursor: pointer;
+            ">
+              Try Again
+            </button>
+          `;
+        } else {
+          resultHTML += `
+            <p>You've used all 3 attempts. Please contact support.</p>
+          `;
+        }
+
+        showMessage(resultHTML, result.passed ? 'success' : 'warning');
+        
+        // Disable all inputs
+        document.querySelectorAll('input[type="radio"]').forEach(input => {
+          input.disabled = true;
+        });
+
+      } catch (error) {
+        console.error('Submission error:', error);
+        showMessage(`Submission failed: ${error.message}`, 'error');
+        submitBtn.disabled = false;
+      }
+    });
+
+    // Helper function to show messages
+    function showMessage(content, type = '') {
+  messageEl.innerHTML = '';
+  messageEl.className = '';  // clear previous classes
+  if (type) {
+    messageEl.classList.add(type);
+  }
+  
+  if (typeof content === 'string') {
+    // Render content as HTML so tags are parsed
+    messageEl.innerHTML = content;
+  } else {
+    // If content is DOM nodes or fragments, insert them directly
+    messageEl.innerHTML = '';
+    messageEl.appendChild(content);
+  }
+}
+
+  </script>
+</body>
+</html>

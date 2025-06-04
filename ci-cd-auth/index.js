@@ -16,6 +16,8 @@ const quizRoutes = require("./routes/quiz");
 const chatRoutes = require("./routes/chat");
 const githubRouter = require('./routes/github');
 const supportRoutes   = require("./routes/support");  // ← NEW: support routes
+const examRoutes = require("./routes/exam");
+
 const pdfRoutes = require('./routes/pdfRoutes');
 const app  = express();
 const PORT = process.env.PORT || 3000;
@@ -42,65 +44,37 @@ app.use("/api/chat", chatRoutes);
 app.use('/api/github', githubRouter); 
 app.use("/api/support",   supportRoutes); // ← NEW: mounts everything under /api/support
 app.use('/api/pdfs', require('./routes/pdfRoutes'));
+app.use("/api/exam", examRoutes);
+
 // ---------- Frontend Pages ----------
-app.use(express.static(path.join(__dirname, "homepage")));
 
-app.get("/", (req, res) => {
-  if (req.session) req.session.destroy(() => {});
-  res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, private");
-  res.sendFile(path.join(__dirname, "views", "HomePage", "home.html"));
+// Frontend Routes
+const frontendRoutes = {
+  "/": "HomePage/home.html",
+  "/login": "HomePage/login.html",
+  "/forgetpassword": "HomePage/forgetpassword.html",
+  "/student/github": "Student/github.html",
+  "/signup": "HomePage/signup.html",
+  "/about": "HomePage/about.html",
+  "/StudentProfile": "Student/studentProfile.html",
+  "/admin-dashboard": "Admin/adminDashboard.html",
+  "/LecturerProfile": "Lecturer/lecturerProfile.html",
+  "/video/courses": "Courses/courses.html",
+  "/users-table": "Admin/usersTable.html",
+  "/chat": "Chats/chat.html",
+  "/exam": "Student/exam.html",
+  "/exam-management": "Lecturer/exam-management.html"
+};
+
+Object.entries(frontendRoutes).forEach(([route, filePath]) => {
+  app.get(route, (req, res) => {
+    res.sendFile(path.join(__dirname, "views", filePath));
+  });
 });
-app.get("/lecturers", (req, res) => {
-  res.sendFile(path.join(__dirname, "views", "Lecturer", "lecturers.html"));
-});
-
-app.get("/login", (req, res) =>
-  res.sendFile(path.join(__dirname, "views", "HomePage", "login.html"))
-);
-
-app.get("/forgetpassword", (req, res) =>
-  res.sendFile(path.join(__dirname, "views", "HomePage", "forgetpassword.html"))
-);
-app.get("/student/github", (req, res) =>
-  res.sendFile(path.join(__dirname, "views", "Student", "github.html"))
-);
-app.get("/signup", (req, res) =>
-  res.sendFile(path.join(__dirname, "views", "HomePage", "signup.html"))
-);
-app.get("/about", (req, res) =>
-  res.sendFile(path.join(__dirname, "views", "HomePage", "about.html"))
-);
-app.get("/StudentProfile", (req, res) =>
-  res.sendFile(path.join(__dirname, "views", "Student", "studentProfile.html"))
-);
-
-app.get("/admin-dashboard", (req, res) =>
-  res.sendFile(path.join(__dirname, "views", "Admin", "adminDashboard.html"))
-);
-
-app.get("/LecturerProfile", (req, res) =>
-  res.sendFile(path.join(__dirname, "views", "Lecturer", "lecturerProfile.html"))
-);
-
-app.get("/video/courses", (req, res) =>
-  res.sendFile(path.join(__dirname, "views", "Courses", "courses.html"))
-);
-
-app.get("/users-table", (req, res) =>
-  res.sendFile(path.join(__dirname, "views", "Admin", "usersTable.html"))
-);
-app.get("/chat", (req, res) => {
-  res.sendFile(path.join(__dirname, "views", "Chats", "chat.html"));
-});
-// ---------- Prevent caching on dynamic routes ----------
 app.use((req, res, next) => {
   res.setHeader("Cache-Control", "no-store");
   next();
 });
-app.get("/forgetpassword", (req, res) =>
-  res.sendFile(path.join(__dirname, "views", "HomePage", "forgetpassword.html"))
-);
-
 // ---------- MongoDB Connection ----------
 const DB_URI = process.env.MONGO_URI || "mongodb://127.0.0.1:27017/ci_cd_learning";
 

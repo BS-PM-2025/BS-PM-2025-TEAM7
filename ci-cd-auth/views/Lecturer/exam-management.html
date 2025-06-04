@@ -1,0 +1,618 @@
+// views/lecturer/exam-mangment.js
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exam Management</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #FFFFFF;
+      color: #1f2328;
+      line-height: 1.5;
+      padding: 100px 10% 40px;
+    }
+
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 16px 10%;
+      background-color: #FFFFFF;
+      border-bottom: 1px solid #d8dee4;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 10;
+    }
+
+    .management-container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .section-title {
+      font-size: 24px;
+      font-weight: 600;
+      color: #657EEF;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #657EEF;
+    }
+
+    .question-form {
+      background-color: #f8f9fa;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 30px;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: 500;
+      margin-bottom: 5px;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+    }
+
+    .options-container {
+      margin-top: 15px;
+    }
+
+    .option-row {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+      background-color: #fff;
+      padding: 10px;
+      border-radius: 4px;
+      border: 1px solid #ddd;
+    }
+
+    .option-input {
+      flex-grow: 1;
+      margin-right: 10px;
+    }
+
+    .option-correct {
+      display: flex;
+      align-items: center;
+      white-space: nowrap;
+    }
+
+    .option-correct input {
+      margin-right: 5px;
+    }
+
+    .btn-add-option {
+      background-color: #657EEF;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      padding: 8px 12px;
+      font-size: 14px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .btn-submit {
+      background-color: #00ffc3;
+      color: #1f4037;
+      border: none;
+      border-radius: 6px;
+      padding: 12px 24px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.2s, transform 0.1s;
+      margin-top: 20px;
+    }
+
+    .btn-submit:hover {
+      background-color: #00e0b2;
+      transform: translateY(-1px);
+    }
+
+    .questions-list {
+      margin-top: 40px;
+    }
+
+    .question-card {
+      background-color: #fff;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    .question-text {
+      font-weight: 600;
+      font-size: 18px;
+      margin-bottom: 15px;
+    }
+
+    .question-options {
+      list-style: none;
+      margin-bottom: 15px;
+    }
+
+    .question-option {
+      padding: 8px 10px;
+      margin-bottom: 8px;
+      background-color: #f8f9fa;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+    }
+
+    .question-option.correct {
+      background-color: #d4edda;
+      border-left: 4px solid #28a745;
+    }
+
+    .question-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .btn-edit {
+      background-color: #657EEF;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      padding: 8px 12px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .btn-delete {
+      background-color: #dc3545;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      padding: 8px 12px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 40px 0;
+      color: #666;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 20px;
+    }
+
+    .loading-spinner {
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #657EEF;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 15px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @media (max-width: 768px) {
+      body {
+        padding: 80px 5% 20px;
+      }
+
+      header {
+        padding: 16px 5%;
+      }
+
+      .question-form {
+        padding: 15px;
+      }
+
+      .option-row {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .option-input {
+        margin-right: 0;
+        margin-bottom: 10px;
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo-container">
+      <svg class="logo-img" viewBox="0 0 24 24" fill="#657EEF" xmlns="http://www.w3.org/2000/svg" width="32" height="32">
+        <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.652.242 2.873.118 3.176.77.84 1.235 1.91 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
+      </svg>
+      <span class="logo-text">CI/CD</span>
+    </div>
+    <div id="nav-links"></div>
+  </header>
+
+  <div class="management-container">
+    <h1 class="section-title">Exam Question Management</h1>
+    
+    <div class="question-form" id="question-form">
+      <h2>Add New Question</h2>
+      <form id="add-question-form">
+        <div class="form-group">
+          <label for="question-text">Question Text</label>
+          <textarea id="question-text" class="form-control" rows="3" required></textarea>
+        </div>
+        
+        <div class="form-group">
+          <label>Options</label>
+          <div class="options-container" id="options-container">
+            <div class="option-row">
+              <input type="text" class="form-control option-input" placeholder="Option text" required>
+              <div class="option-correct">
+                <input type="radio" name="correct-option" value="0" required>
+                <label>Correct Answer</label>
+              </div>
+            </div>
+            <div class="option-row">
+              <input type="text" class="form-control option-input" placeholder="Option text" required>
+              <div class="option-correct">
+                <input type="radio" name="correct-option" value="1" required>
+                <label>Correct Answer</label>
+              </div>
+            </div>
+          </div>
+          
+          <button type="button" class="btn-add-option" id="add-option-btn">+ Add Option</button>
+        </div>
+        
+        <button type="submit" class="btn-submit">Save Question</button>
+      </form>
+    </div>
+    
+    <div class="loading" id="loading">
+      <div class="loading-spinner"></div>
+      <p>Loading questions...</p>
+    </div>
+    
+    <div class="questions-list" id="questions-list"></div>
+  </div>
+
+  <script>
+    // Authentication check
+    window.onload = () => {
+      const token = sessionStorage.getItem("token");
+      if (!token) {
+        window.location.href = "/login";
+        return;
+      }
+
+      const user = parseJwt(token);
+      if (!user || (user.role !== "lecturer" && user.role !== "admin")) {
+        window.location.href = "/";
+        return;
+      }
+
+      // Update navbar
+      updateNavbar(user);
+      
+      // Load questions
+      loadQuestions();
+      
+      // Set up event listeners
+      document.getElementById("add-option-btn").addEventListener("click", addOptionRow);
+      document.getElementById("add-question-form").addEventListener("submit", saveQuestion);
+    };
+
+    function parseJwt(token) {
+      try {
+        const base64Url = token.split('.')[1];
+        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        const jsonPayload = decodeURIComponent(
+          atob(base64)
+            .split('')
+            .map(c => '%' + ('00'+c.charCodeAt(0).toString(16)).slice(-2))
+            .join('')
+        );
+        return JSON.parse(jsonPayload);
+      } catch (e) {
+        console.error("Invalid token", e);
+        return null;
+      }
+    }
+
+    function updateNavbar(user) {
+      const navbar = document.getElementById("nav-links");
+      navbar.innerHTML = `
+        <ul class="nav-links">
+          <li><a href="/">Home</a></li>
+          <li><a href="/video/courses">Courses</a></li>
+          <li><a href="/LecturerProfile">Profile</a></li>
+          <li><a href="/chat">Chat</a></li>
+          <li><a href="#" onclick="logout()">Logout</a></li>
+        </ul>
+      `;
+    }
+
+    function logout() {
+      sessionStorage.removeItem("token");
+      window.location.href = "/login";
+    }
+
+    // Question management functionality
+    let optionCount = 2;
+
+    function addOptionRow() {
+      const optionsContainer = document.getElementById("options-container");
+      const newRow = document.createElement("div");
+      newRow.className = "option-row";
+      
+      newRow.innerHTML = `
+        <input type="text" class="form-control option-input" placeholder="Option text" required>
+        <div class="option-correct">
+          <input type="radio" name="correct-option" value="${optionCount}" required>
+          <label>Correct Answer</label>
+        </div>
+      `;
+      
+      optionsContainer.appendChild(newRow);
+      optionCount++;
+    }
+
+    async function saveQuestion(event) {
+      event.preventDefault();
+      
+      const questionText = document.getElementById("question-text").value.trim();
+      const optionRows = document.querySelectorAll(".option-row");
+      const options = [];
+      
+      let correctOptionIndex = -1;
+      const radios = document.getElementsByName("correct-option");
+      for (let i = 0; i < radios.length; i++) {
+        if (radios[i].checked) {
+          correctOptionIndex = parseInt(radios[i].value);
+          break;
+        }
+      }
+      
+      if (correctOptionIndex === -1) {
+        alert("Please select a correct answer");
+        return;
+      }
+      
+      optionRows.forEach((row, index) => {
+        const optionText = row.querySelector(".option-input").value.trim();
+        options.push({
+          text: optionText,
+          isCorrect: index === correctOptionIndex
+        });
+      });
+      
+      try {
+        const token = sessionStorage.getItem("token");
+        const response = await fetch('/api/exam/questions', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            text: questionText,
+            options: options
+          })
+        });
+        
+        if (!response.ok) {
+          const error = await response.json();
+          alert(error.message);
+          return;
+        }
+        
+        // Reset form
+        document.getElementById("add-question-form").reset();
+        document.getElementById("options-container").innerHTML = `
+          <div class="option-row">
+            <input type="text" class="form-control option-input" placeholder="Option text" required>
+            <div class="option-correct">
+              <input type="radio" name="correct-option" value="0" required>
+              <label>Correct Answer</label>
+            </div>
+          </div>
+          <div class="option-row">
+            <input type="text" class="form-control option-input" placeholder="Option text" required>
+            <div class="option-correct">
+              <input type="radio" name="correct-option" value="1" required>
+              <label>Correct Answer</label>
+            </div>
+          </div>
+        `;
+        optionCount = 2;
+        
+        // Reload questions
+        loadQuestions();
+      } catch (error) {
+        console.error("Error saving question:", error);
+        alert("Failed to save question. Please try again later.");
+      }
+    }
+
+    async function loadQuestions() {
+      try {
+        document.getElementById("loading").style.display = "block";
+        document.getElementById("questions-list").innerHTML = "";
+        
+        const token = sessionStorage.getItem("token");
+        const response = await fetch('/api/exam/questions', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        
+        document.getElementById("loading").style.display = "none";
+        
+        if (!response.ok) {
+          const error = await response.json();
+          alert(error.message);
+          return;
+        }
+        
+        const questions = await response.json();
+        
+        if (questions.length === 0) {
+          document.getElementById("questions-list").innerHTML = `
+            <div class="empty-state">
+              <p>No questions added yet. Create your first question above.</p>
+            </div>
+          `;
+          return;
+        }
+        
+        renderQuestions(questions);
+      } catch (error) {
+        document.getElementById("loading").style.display = "none";
+        console.error("Error loading questions:", error);
+        alert("Failed to load questions. Please try again later.");
+      }
+    }
+
+    function renderQuestions(questions) {
+      const container = document.getElementById("questions-list");
+      container.innerHTML = `<h2 class="section-title">Existing Questions</h2>`;
+      
+      questions.forEach(question => {
+        const questionCard = document.createElement("div");
+        questionCard.className = "question-card";
+        questionCard.dataset.id = question._id;
+        
+        let optionsHtml = "";
+        question.options.forEach((option, index) => {
+          optionsHtml += `
+            <li class="question-option ${option.isCorrect ? 'correct' : ''}">
+              ${option.text}
+              ${option.isCorrect ? ' <strong>(Correct Answer)</strong>' : ''}
+            </li>
+          `;
+        });
+        
+        questionCard.innerHTML = `
+          <div class="question-text">${question.text}</div>
+          <ul class="question-options">
+            ${optionsHtml}
+          </ul>
+          <div class="question-actions">
+            <button class="btn-edit" onclick="editQuestion('${question._id}')">Edit</button>
+            <button class="btn-delete" onclick="deleteQuestion('${question._id}')">Delete</button>
+          </div>
+        `;
+        
+        container.appendChild(questionCard);
+      });
+    }
+
+    async function deleteQuestion(id) {
+      if (!confirm("Are you sure you want to delete this question?")) {
+        return;
+      }
+      
+      try {
+        const token = sessionStorage.getItem("token");
+        const response = await fetch(`/api/exam/questions/${id}`, {
+          method: 'DELETE',
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        
+        if (!response.ok) {
+          const error = await response.json();
+          alert(error.message);
+          return;
+        }
+        
+        // Reload questions
+        loadQuestions();
+      } catch (error) {
+        console.error("Error deleting question:", error);
+        alert("Failed to delete question. Please try again later.");
+      }
+    }
+
+    async function editQuestion(id) {
+      try {
+        const token = sessionStorage.getItem("token");
+        const response = await fetch(`/api/exam/questions/${id}`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        
+        if (!response.ok) {
+          const error = await response.json();
+          alert(error.message);
+          return;
+        }
+        
+        const question = await response.json();
+        
+        // Populate form with question data
+        document.getElementById("question-text").value = question.text;
+        
+        // Reset options container
+        const optionsContainer = document.getElementById("options-container");
+        optionsContainer.innerHTML = "";
+        
+        // Add option rows for each option
+        question.options.forEach((option, index) => {
+          const optionRow = document.createElement("div");
+          optionRow.className = "option-row";
+          
+          optionRow.innerHTML = `
+            <input type="text" class="form-control option-input" placeholder="Option text" value="${option.text}" required>
+            <div class="option-correct">
+              <input type="radio" name="correct-option" value="${index}" ${option.isCorrect ? 'checked' : ''} required>
+              <label>Correct Answer</label>
+            </div>
+          `;
+          
+          optionsContainer.appendChild(optionRow);
+        });
+        
+        optionCount = question.options.length;
+        
+        // Scroll to form
+        document.getElementById("question-form").scrollIntoView({ behavior: 'smooth' });
+      } catch (error) {
+        console.error("Error loading question for edit:", error);
+        alert("Failed to load question. Please try again later.");
+      }
+    }
+  </script>
+</body>
+</html>

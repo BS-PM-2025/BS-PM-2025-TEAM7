@@ -1,0 +1,312 @@
+//views/certificate.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Certificate</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f8f9fa;
+      color: #1f2328;
+      line-height: 1.5;
+      padding: 40px 0;
+    }
+
+    .certificate-container {
+      max-width: 900px;
+      margin: 0 auto;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .certificate-inner {
+      border: 2px solid #657EEF;
+      padding: 40px;
+      text-align: center;
+      position: relative;
+      background-color: #fff;
+      z-index: 1;
+    }
+
+    .certificate-header {
+      margin-bottom: 30px;
+    }
+
+    .certificate-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 36px;
+      color: #657EEF;
+      margin-bottom: 10px;
+      letter-spacing: 1px;
+    }
+
+    .certificate-subtitle {
+      font-size: 18px;
+      color: #666;
+      font-weight: 500;
+    }
+
+    .certificate-body {
+      margin-bottom: 40px;
+    }
+
+    .certificate-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 32px;
+      color: #1f2328;
+      margin: 20px 0;
+    }
+
+    .certificate-text {
+      font-size: 18px;
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+
+    .certificate-score {
+      font-size: 24px;
+      font-weight: 600;
+      color: #657EEF;
+      margin: 20px 0;
+    }
+
+    .certificate-footer {
+      margin-top: 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    .certificate-date {
+      font-size: 16px;
+      color: #666;
+    }
+
+    .certificate-signature {
+      font-family: 'Playfair Display', serif;
+      font-size: 24px;
+      color: #1f2328;
+      margin-top: 10px;
+    }
+
+    .certificate-id {
+      font-size: 14px;
+      color: #999;
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+    }
+
+    .certificate-logo {
+      width: 60px;
+      height: 60px;
+      margin-bottom: 20px;
+    }
+
+    .certificate-seal {
+      position: absolute;
+      bottom: 40px;
+      left: 40px;
+      width: 100px;
+      height: 100px;
+      opacity: 0.2;
+    }
+
+    .certificate-background {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0.03;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .print-btn {
+      background-color: #657EEF;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 12px 24px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.2s;
+      margin: 20px auto;
+      display: block;
+    }
+
+    .print-btn:hover {
+      background-color: #4a65e6;
+    }
+
+    @media print {
+      body {
+        padding: 0;
+        background-color: #fff;
+      }
+
+      .certificate-container {
+        box-shadow: none;
+        padding: 0;
+      }
+
+      .print-btn {
+        display: none;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .certificate-inner {
+        padding: 20px;
+      }
+
+      .certificate-title {
+        font-size: 28px;
+      }
+
+      .certificate-name {
+        font-size: 24px;
+      }
+
+      .certificate-text {
+        font-size: 16px;
+      }
+
+      .certificate-footer {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+
+      .certificate-signature {
+        margin-top: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="certificate-container">
+    <div class="certificate-background">
+      <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 800 800">
+        <path d="M400,100 Q550,25 700,100 T1000,100 T1300,100 T1600,100" stroke="#657EEF" fill="none" stroke-width="2" />
+        <path d="M400,200 Q550,125 700,200 T1000,200 T1300,200 T1600,200" stroke="#657EEF" fill="none" stroke-width="2" />
+        <path d="M400,300 Q550,225 700,300 T1000,300 T1300,300 T1600,300" stroke="#657EEF" fill="none" stroke-width="2" />
+        <path d="M400,400 Q550,325 700,400 T1000,400 T1300,400 T1600,400" stroke="#657EEF" fill="none" stroke-width="2" />
+        <path d="M400,500 Q550,425 700,500 T1000,500 T1300,500 T1600,500" stroke="#657EEF" fill="none" stroke-width="2" />
+        <path d="M400,600 Q550,525 700,600 T1000,600 T1300,600 T1600,600" stroke="#657EEF" fill="none" stroke-width="2" />
+        <path d="M400,700 Q550,625 700,700 T1000,700 T1300,700 T1600,700" stroke="#657EEF" fill="none" stroke-width="2" />
+        <path d="M400,800 Q550,725 700,800 T1000,800 T1300,800 T1600,800" stroke="#657EEF" fill="none" stroke-width="2" />
+      </svg>
+    </div>
+    <div class="certificate-inner">
+      <div class="certificate-header">
+        <svg class="certificate-logo" viewBox="0 0 24 24" fill="#657EEF" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.652.242 2.873.118 3.176.77.84 1.235 1.91 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
+        </svg>
+        <h1 class="certificate-title">Certificate of Achievement</h1>
+        <p class="certificate-subtitle">CI/CD Learning Platform</p>
+      </div>
+
+      <div class="certificate-body">
+        <p class="certificate-text">This is to certify that</p>
+        <h2 class="certificate-name" id="student-name">Student Name</h2>
+        <p class="certificate-text">has successfully completed the final exam with a score of</p>
+        <p class="certificate-score" id="exam-score">92%</p>
+        <p class="certificate-text">demonstrating proficiency in CI/CD concepts and practices.</p>
+      </div>
+
+      <div class="certificate-footer">
+        <div>
+          <p class="certificate-date" id="issue-date">June 2, 2025</p>
+          <p>Issue Date</p>
+        </div>
+        <div>
+          <p class="certificate-signature">CI/CD Learning Platform</p>
+          <p>Authorized Signature</p>
+        </div>
+      </div>
+
+      <svg class="certificate-seal" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="50" cy="50" r="45" fill="none" stroke="#657EEF" stroke-width="2" />
+        <circle cx="50" cy="50" r="40" fill="none" stroke="#657EEF" stroke-width="1" />
+        <text x="50" y="50" text-anchor="middle" dominant-baseline="middle" fill="#657EEF" font-size="12">CERTIFIED</text>
+        <text x="50" y="65" text-anchor="middle" dominant-baseline="middle" fill="#657EEF" font-size="8">CI/CD EXPERT</text>
+      </svg>
+
+      <p class="certificate-id" id="certificate-id">CERT-123456</p>
+    </div>
+  </div>
+
+  <button class="print-btn" onclick="window.print()">Print Certificate</button>
+
+  <script>
+    // Authentication check
+    window.onload = () => {
+      const token = sessionStorage.getItem("token");
+      if (!token) {
+        window.location.href = "/login";
+        return;
+      }
+
+      // Get certificate ID from URL
+      const urlParts = window.location.pathname.split('/');
+      const certificateId = urlParts[urlParts.length - 1];
+      
+      // Load certificate data
+      loadCertificateData(certificateId);
+    };
+
+    async function loadCertificateData(certificateId) {
+      try {
+        const token = sessionStorage.getItem("token");
+        const response = await fetch(`/api/certificates/${certificateId}/data`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+
+        if (!response.ok) {
+          const error = await response.json();
+          alert(error.message);
+          window.location.href = "/StudentProfile";
+          return;
+        }
+
+        const data = await response.json();
+        
+        // Update certificate with data
+        document.getElementById("student-name").textContent = data.studentName;
+        document.getElementById("exam-score").textContent = `${Math.round(data.score)}%`;
+        document.getElementById("certificate-id").textContent = data.certificateId;
+        
+        // Format date
+        const issueDate = new Date(data.issueDate);
+        const formattedDate = issueDate.toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        });
+        document.getElementById("issue-date").textContent = formattedDate;
+      } catch (error) {
+        console.error("Error loading certificate data:", error);
+        alert("Failed to load certificate data. Please try again later.");
+      }
+    }
+  </script>
+</body>
+</html>
