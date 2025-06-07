@@ -22,7 +22,8 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.14.0",
     "multer": "^1.4.5-lts.2",
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "pdfkit": "^0.17.1"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",

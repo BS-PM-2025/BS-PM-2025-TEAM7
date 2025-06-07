@@ -3,396 +3,366 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Student Exam</title>
+  <title>Student Exam · CI/CD Learning</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 20px;
-      background-color: #f5f5f5;
-    }
-    h1 {
-      text-align: center;
-      color: #2c3e50;
-      margin-bottom: 30px;
-    }
-    .exam-info {
-      background: #e8f4fc;
-      padding: 15px;
-      border-radius: 8px;
-      margin-bottom: 20px;
-      border-left: 5px solid #3498db;
-    }
-    .question {
-      background: white;
-      padding: 20px;
-      margin-bottom: 15px;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
-    .question-text {
-      font-weight: bold;
-      margin-bottom: 15px;
-      font-size: 1.1em;
-      color: #2c3e50;
-    }
-    .option {
-      margin-bottom: 10px;
-      padding: 10px;
-      border-radius: 5px;
-      transition: background-color 0.2s;
-    }
-    .option:hover {
-      background-color: #f0f8ff;
-    }
-    .option input {
-      margin-right: 10px;
-      transform: scale(1.1);
-    }
-    #submit-btn {
-      display: block;
-      width: 100%;
-      padding: 12px;
-      font-size: 1.1em;
-      background-color: #3498db;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      margin-top: 20px;
-      transition: background-color 0.2s;
-    }
-    #submit-btn:hover {
-      background-color: #2980b9;
-    }
-    #submit-btn:disabled {
-      background-color: #95a5a6;
-      cursor: not-allowed;
-    }
-    #message {
-      margin-top: 20px;
-      padding: 15px;
-      border-radius: 8px;
-      text-align: center;
-    }
-    .success {
-      background-color: #d4edda;
-      color: #155724;
-      border-left: 5px solid #28a745;
-    }
-    .error {
-      background-color: #f8d7da;
-      color: #721c24;
-      border-left: 5px solid #dc3545;
-    }
-    .warning {
-      background-color: #fff3cd;
-      color: #856404;
-      border-left: 5px solid #ffc107;
-    }
-    .loading {
-      text-align: center;
-      padding: 20px;
-      font-style: italic;
-      color: #7f8c8d;
-    }
-    .certificate-link {
-      display: inline-block;
-      margin-top: 15px;
-      padding: 10px 15px;
-      background-color: #28a745;
-      color: white;
-      text-decoration: none;
-      border-radius: 5px;
-      transition: background-color 0.2s;
-    }
-    .certificate-link:hover {
-      background-color: #218838;
-    }
-    .attempt-info {
-      font-weight: bold;
-      color: #3498db;
-    }
+  /* ───── PALETTE ───── */
+  :root {
+    --brand:       #657EEF;
+    --accent:      #00FFC3;
+    --border:      #65EFBC;
+    --bg:          #f5f7fb;
+    --txt:         #1f2328;
+  }
+
+  /* ───── RESET ───── */
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--txt);
+    line-height: 1.6;
+    padding: 0 16px 60px;
+  }
+
+  /* ───── NAVBAR ───── */
+  header {
+    position: sticky;
+    top: 0;
+    width: 100%;
+    background: #fff;
+    border-bottom: 2px solid var(--border);
+    z-index: 20;
+  }
+  .nav-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 12px 0;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .logo-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .logo-img {
+    width: 32px; height: 32px;
+  }
+  .logo-text {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--brand);
+  }
+  .nav-links {
+    list-style: none;
+    margin-left: auto;
+    display: flex;
+    gap: 20px;
+  }
+  .nav-links a {
+    text-decoration: none;
+    color: var(--txt);
+    font-weight: 500;
+    position: relative;
+    padding: 4px 0;
+  }
+  .nav-links a:hover,
+  .nav-links .active {
+    color: var(--brand);
+  }
+  .nav-links .active::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--brand);
+  }
+
+  /* ───── MAIN WRAP ───── */
+  .main-wrap {
+    max-width: 900px;
+    margin: 0 auto;
+    animation: fadeIn .6s ease;
+  }
+
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px) } to { opacity: 1; transform: translateY(0) } }
+
+  /* ───── INFO BANNER ───── */
+  .info-banner {
+    background: #e8f4fc;
+    border-left: 6px solid var(--brand);
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin: 28px 0 18px;
+  }
+  .attempt { font-weight: 600; color: var(--brand) }
+
+  /* ───── PROGRESS BAR ───── */
+  #progressWrap {
+    height: 10px; background: #e2e8f0;
+    border-radius: 8px; overflow: hidden; margin: 10px 0 24px;
+  }
+  #progressBar {
+    height:100%; width:0%;
+    background: linear-gradient(90deg, var(--brand), var(--accent));
+    transition: width .3s ease;
+  }
+
+  /* ───── QUESTIONS ───── */
+  .question {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 26px 24px;
+    margin-bottom: 22px;
+    box-shadow: 0 4px 14px rgba(0,0,0,.06);
+  }
+  .question-text { font-weight:600; font-size:18px; margin-bottom:18px }
+  .options { display:flex; flex-direction:column; gap:10px }
+  .option {
+    display:flex; align-items:center; gap:10px;
+    border:1px solid #dfe6ef; border-radius:8px;
+    padding:10px 14px; cursor:pointer;
+    transition: background .25s, border .25s;
+  }
+  .option:hover { background:#f0f8ff }
+  .option input { accent-color: var(--brand); transform: scale(1.2) }
+  .option.selected {
+    background: #eef2ff;
+    border-color: var(--brand);
+  }
+  .option.selected span { font-weight:600; color:var(--brand) }
+
+  /* ───── BUTTONS ───── */
+  .btn {
+    display:block;
+    width:100%; max-width:260px;
+    margin:32px auto 0;
+    padding:14px;
+    font-size:17px;
+    font-weight:600;
+    color:#fff;
+    background:var(--brand);
+    border:none;
+    border-radius:999px;
+    cursor:pointer;
+    transition: background .25s, transform .2s;
+  }
+  .btn:hover { background:#546de8 }
+  .btn:disabled { background:#a3b1f7; cursor:not-allowed }
+
+  /* ───── MESSAGES ───── */
+  #message {
+    margin-top:28px; text-align:center;
+    border-radius:12px; padding:18px;
+    display:none;
+  }
+  .success { background:#d4edda; color:#155724; border-left:6px solid #28a745 }
+  .error   { background:#f8d7da; color:#721c24; border-left:6px solid #dc3545 }
+  .warning { background:#fff3cd; color:#856404; border-left:6px solid #ffc107 }
+
+  /* ───── CERTIFICATE ───── */
+  .certificate-msg {
+    margin-top:24px; padding:22px;
+    border:2px dashed var(--accent);
+    border-radius:12px; background:#e6fffa; color:#0b5345;
+  }
+  .certificate-link {
+    display:inline-block;
+    margin-top:14px;
+    padding:10px 18px;
+    background:var(--accent);
+    color:#003d30;
+    text-decoration:none;
+    border-radius:8px;
+    font-weight:600;
+    transition: background .25s;
+  }
+  .certificate-link:hover { background:#14e8ba }
+
+  /* ───── MOBILE ───── */
+  @media(max-width:540px){
+    .question { padding:20px }
+    .question-text { font-size:16px }
+  }
   </style>
 </head>
 <body>
-  <h1>Student Examination</h1>
+  <!-- ───── NAVBAR ───── -->
+  <header>
+    <div class="nav-container">
+      <div class="logo-container">
+        <svg class="logo-img" viewBox="0 0 24 24" fill="var(--brand)" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.652.242 2.873.118 3.176.77.84 1.235 1.91 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
+        </svg>
+        <span class="logo-text">CI/CD</span>
+      </div>
+      <ul class="nav-links" id="nav-links"></ul>
+    </div>
+  </header>
 
-  <div id="exam-info" class="exam-info">
-    <p>Loading exam information...</p>
+  <div class="main-wrap">
+    <!-- ───── INFO BANNER ───── -->
+    <div id="exam-info" class="info-banner">Loading exam information…</div>
+
+    <!-- ───── EMAIL INPUT ───── -->
+    <div class="info-banner" style="background:#f3fffd;border-left-color:var(--accent)">
+      <label for="student-email" style="font-weight:600;margin-bottom:6px;display:block">Your Email Address</label>
+      <input type="email" id="student-email" placeholder="name@example.com" required
+             style="width:100%;padding:11px 14px;border:1px solid #cbd5e1;border-radius:8px;font-size:15px">
+    </div>
+
+    <!-- ───── PROGRESS BAR ───── -->
+    <div id="progressWrap"><div id="progressBar"></div></div>
+
+    <!-- ───── QUESTIONS ───── -->
+    <div id="exam-container">
+      <p style="text-align:center;color:#7f8c8d;font-style:italic">Please wait, loading…</p>
+    </div>
+
+    <!-- ───── SUBMIT BUTTON ───── -->
+    <button id="submit-btn" class="btn" disabled>Submit Exam</button>
+
+    <!-- ───── MESSAGE BOX ───── -->
+    <div id="message"></div>
   </div>
-
-  <div class="exam-info">
-    <label for="student-email" style="display: block; margin-bottom: 5px; font-weight: bold;">Your Email Address:</label>
-    <input type="email" id="student-email" placeholder="Enter your email address" required 
-           style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc; margin-bottom: 10px;">
-  </div>
-
-  <div id="exam-container">
-    <p class="loading">Please wait while we load your exam...</p>
-  </div>
-
-  <button id="submit-btn" disabled>Submit Exam</button>
-
-  <div id="message"></div>
 
   <script>
-    // Get student ID from URL or use hardcoded for testing
-    const urlParams = new URLSearchParams(window.location.search);
-    let studentId = urlParams.get('studentId') ; 
-    
-    // DOM elements
-    const examContainer = document.getElementById('exam-container');
-    const examInfo = document.getElementById('exam-info');
-    const submitBtn = document.getElementById('submit-btn');
-    const messageEl = document.getElementById('message');
+    /* ---------- HELPERS ---------- */
+    function parseJwt(t){
+      try{
+        const b = t.split('.')[1].replace(/-/g,'+').replace(/_/g,'/');
+        return JSON.parse(decodeURIComponent(atob(b).split('').map(c=>'%'+('00'+c.charCodeAt(0).toString(16)).slice(-2)).join('')));
+      }catch{return null;}
+    }
+    function logout(){ sessionStorage.clear(); location.href='/login'; }
 
-    let questions = [];
-    let attemptNumber = 0;
-    let totalQuestions = 0;
+    /* ---------- NAVBAR ---------- */
+    const token = sessionStorage.getItem('token');
+    if(!token) { location.href='/login'; }
+    const user  = parseJwt(token)||{};
+    const nav   = document.getElementById('nav-links');
+    nav.innerHTML =
+      (user.role==='admin'   ? `<li><a href="/admin-dashboard">Admin Dashboard</a></li>` :
+       user.role==='lecturer'? `<li><a href="/">Home</a></li><li><a href="/video/courses">Courses</a></li><li><a href="/LecturerProfile">Profile</a></li>` :
+                               `<li><a href="/">Home</a></li><li><a href="/video/courses">Courses</a></li><li><a href="/lecturers">Contact</a></li><li><a href="/StudentProfile">Profile</a></li>`
+      )
+      + `<li><a href="#" onclick="logout()">Logout</a></li>`;
 
-    // Initialize the exam
-    document.addEventListener('DOMContentLoaded', () => {
-      fetchQuestions();
-    });
+    /* ---------- EXAM LOGIC ---------- */
+    const params = new URLSearchParams(location.search);
+    const studentId = params.get('studentId') || 'demo123';
+    const examC  = document.getElementById('exam-container');
+    const infoB  = document.getElementById('exam-info');
+    const submit = document.getElementById('submit-btn');
+    const message= document.getElementById('message');
+    const prog   = document.getElementById('progressBar');
+    let questions=[];
 
-    // Fetch exam questions from API
-    async function fetchQuestions() {
-      try {
-        showMessage("Loading your exam...", 'info');
-        
-        const response = await fetch(`/api/exam?studentId=${studentId}`, {
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-          },
-          credentials: 'include'
-        });
+    document.addEventListener('DOMContentLoaded', loadExam);
+    submit.addEventListener('click', sendExam);
 
-        // Check if response is JSON
-        const contentType = response.headers.get('content-type');
-        if (!contentType || !contentType.includes('application/json')) {
-          const text = await response.text();
-          throw new Error(`Server returned unexpected format: ${text.substring(0, 100)}`);
-        }
-
-        const data = await response.json();
-        
-        if (!response.ok) {
-          throw new Error(data.message || 'Failed to load exam');
-        }
+    async function loadExam(){
+      showMsg('Loading your exam…','warning');
+      try{
+        const res = await fetch(`/api/exam?studentId=${studentId}`);
+        const data= await res.json();
+        if(!res.ok) throw new Error(data.message||'Failed to load exam');
 
         questions = data.questions;
-        attemptNumber = data.attemptNumber;
-        totalQuestions = data.totalQuestions;
-
-        // Update exam info display
-        examInfo.innerHTML = `
-          <p class="attempt-info">Attempt: ${attemptNumber} of 3</p>
-          <p><strong>Total Questions:</strong> ${totalQuestions}</p>
-        `;
-
-        if (questions.length === 0) {
-          throw new Error("No questions available for this exam");
-        }
-
+        infoB.innerHTML=`<span class="attempt">Attempt ${data.attemptNumber} / 3</span> · Total Questions: <strong>${data.totalQuestions}</strong>`;
         renderQuestions();
-        showMessage("Exam loaded successfully. Good luck!", 'success');
-      } catch (error) {
-        console.error('Exam load error:', error);
-        examContainer.innerHTML = `
-          <div class="error">
-            <p>Failed to load exam:</p>
-            <p>${error.message}</p>
-            ${error.message.includes('passed') ? 
-              '<p><a href="/api/exam/certificate?studentId=' + studentId + '" class="certificate-link">View Certificate</a></p>' : ''}
-          </div>
-        `;
-        submitBtn.disabled = true;
+        submit.disabled=false;
+        showMsg('Exam loaded – good luck!','success',1500);
+      }catch(err){
+        examC.innerHTML=`<div class="error" style="padding:18px;border-radius:8px">${err.message}</div>`;
+        submit.disabled=true; showMsg(err.message,'error');
       }
     }
 
-    // Render questions to the page
-    function renderQuestions() {
-      examContainer.innerHTML = '';
-      
-      questions.forEach((question, index) => {
-        const questionDiv = document.createElement('div');
-        questionDiv.className = 'question';
-        questionDiv.id = `question-${question._id}`;
-
-        const questionText = document.createElement('div');
-        questionText.className = 'question-text';
-        questionText.textContent = `${index + 1}. ${question.text}`;
-        questionDiv.appendChild(questionText);
-
-        question.options.forEach((option, optionIndex) => {
-          const optionDiv = document.createElement('div');
-          optionDiv.className = 'option';
-
-          const input = document.createElement('input');
-          input.type = 'radio';
-          input.name = `question-${question._id}`;
-          input.value = optionIndex;
-          input.id = `q${index}-opt${optionIndex}`;
-          input.required = true;
-
-          const label = document.createElement('label');
-          label.htmlFor = input.id;
-          label.textContent = option.text;
-
-          optionDiv.appendChild(input);
-          optionDiv.appendChild(label);
-          questionDiv.appendChild(optionDiv);
+    function renderQuestions(){
+      examC.innerHTML='';
+      questions.forEach((q,idx)=>{
+        const div=document.createElement('div');
+        div.className='question';
+        div.innerHTML=`<div class="question-text">${idx+1}. ${q.text}</div><div class="options"></div>`;
+        q.options.forEach((opt,i)=>{
+          div.querySelector('.options').insertAdjacentHTML('beforeend',`
+            <label class="option">
+              <input type="radio" name="q-${q._id}" value="${i}">
+              <span>${opt.text}</span>
+            </label>`);
         });
-
-        examContainer.appendChild(questionDiv);
+        examC.appendChild(div);
       });
-
-      submitBtn.disabled = false;
+      examC.addEventListener('change',e=>{
+        if(e.target.type==='radio'){
+          document.querySelectorAll('.option').forEach(o=>o.classList.remove('selected'));
+          e.target.closest('.option').classList.add('selected');
+          updateProgress();
+        }
+      });
     }
 
-    // Handle exam submission
-    submitBtn.addEventListener('click', async () => {
-      // Get student email
-      const userEmail = document.getElementById('student-email').value.trim();
-      
-      // Validate email
-      if (!userEmail) {
-        showMessage('Please enter your email address', 'error');
-        document.getElementById('student-email').focus();
-        return;
+    function updateProgress(){
+      const answered=[...document.querySelectorAll('.options')]
+        .filter(opts=>opts.querySelector('input:checked')).length;
+      prog.style.width=`${(answered/questions.length)*100}%`;
+    }
+
+    async function sendExam(){
+      const email = document.getElementById('student-email').value.trim();
+      if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+        showMsg('Please enter a valid email','error');return;
       }
-      
-      // Validate email format
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(userEmail)) {
-        showMessage('Please enter a valid email address', 'error');
-        document.getElementById('student-email').focus();
-        return;
-      }
-      
-      // Gather answers
-      const answers = questions.map(question => {
-        const selected = document.querySelector(`input[name="question-${question._id}"]:checked`);
-        return {
-          question: question._id,
-          selectedOption: selected ? parseInt(selected.value) : null
-        };
+      const answers=questions.map(q=>{
+        const sel=document.querySelector(`input[name="q-${q._id}"]:checked`);
+        return{question:q._id,selectedOption:sel?+sel.value:null};
       });
-
-      // Validate all questions answered
-      const unanswered = answers.filter(a => a.selectedOption === null).length;
-      if (unanswered > 0) {
-        showMessage(`Please answer all questions. ${unanswered} remaining.`, 'error');
-        
-        // Highlight unanswered questions
-        answers.forEach(a => {
-          if (a.selectedOption === null) {
-            document.getElementById(`question-${a.question}`).style.borderLeft = '5px solid #dc3545';
-          }
-        });
-        return;
+      if(answers.some(a=>a.selectedOption===null)){
+        showMsg('Please answer all questions','error');return;
       }
-
-      submitBtn.disabled = true;
-      showMessage("Submitting your exam...", 'warning');
-
-      try {
-        const response = await fetch('/api/exam/submit', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-          },
-          body: JSON.stringify({ userEmail, studentId, answers })
+      submit.disabled=true;showMsg('Submitting…','warning');
+      try{
+        const res=await fetch('/api/exam/submit',{
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({userEmail:email,studentId,answers})
         });
+        const out=await res.json();
+        if(!res.ok) throw new Error(out.message||'Submit failed');
 
-        // Check response type
-        const contentType = response.headers.get('content-type');
-        if (!contentType || !contentType.includes('application/json')) {
-          const text = await response.text();
-          throw new Error(`Unexpected response: ${text.substring(0, 100)}`);
-        }
-
-        const result = await response.json();
-        
-        if (!response.ok) {
-          throw new Error(result.message || 'Submission failed');
-        }
-
-        // Display results
-        let resultHTML = `
-          <p><strong>Score:</strong> ${result.score.toFixed(2)}%</p>
-          <p><strong>Result:</strong> <span class="${result.passed ? 'success' : 'error'}">${
-            result.passed ? "PASSED" : "NOT PASSED"
-          }</span></p>
-          <p><strong>Correct Answers:</strong> ${result.correctAnswers}/${result.totalQuestions}</p>
-          <p><strong>Attempt:</strong> ${result.attemptNumber} of 3</p>
-        `;
-
-        if (result.passed) {
-          resultHTML += `
-    <div class="certificate-message">
-      <h2>Certificate of Completion</h2>
-      <p>This certifies that you have successfully passed the exam.</p>
-      <p>Well done!</p>
-    </div>
-  `;
-        } else if (result.attemptNumber < 3) {
-          resultHTML += `
-            <p>You can try again. ${3 - result.attemptNumber} attempts remaining.</p>
-            <button onclick="window.location.reload()" style="
-              margin-top: 15px;
-              padding: 10px 15px;
-              background-color: #3498db;
-              color: white;
-              border: none;
-              border-radius: 5px;
-              cursor: pointer;
-            ">
-              Try Again
-            </button>
-          `;
+        let html=`<h2>${out.passed?'🎉 Congratulations!':'Results'}</h2>
+                  <p><strong>Score:</strong> ${out.score.toFixed(2)}%</p>
+                  <p><strong>Correct:</strong> ${out.correctAnswers}/${out.totalQuestions}</p>
+                  <p><strong>Attempt:</strong> ${out.attemptNumber}/3</p>`;
+        if(out.passed){
+          html+=`<div class="certificate-msg">
+                   You passed! <a class="certificate-link" href="/api/exam/certificate?studentId=${studentId}">Download certificate</a>
+                 </div>`;
+        } else if(out.attemptNumber<3){
+          html+=`<button class="btn" onclick="location.reload()">Try Again</button>`;
         } else {
-          resultHTML += `
-            <p>You've used all 3 attempts. Please contact support.</p>
-          `;
+          html+=`<p>No attempts left – please contact support.</p>`;
         }
-
-        showMessage(resultHTML, result.passed ? 'success' : 'warning');
-        
-        // Disable all inputs
-        document.querySelectorAll('input[type="radio"]').forEach(input => {
-          input.disabled = true;
-        });
-
-      } catch (error) {
-        console.error('Submission error:', error);
-        showMessage(`Submission failed: ${error.message}`, 'error');
-        submitBtn.disabled = false;
+        examC.innerHTML=''; showMsg(html,out.passed?'success':'warning');
+      }catch(err){
+        showMsg(err.message,'error'); submit.disabled=false;
       }
-    });
+    }
 
-    // Helper function to show messages
-    function showMessage(content, type = '') {
-  messageEl.innerHTML = '';
-  messageEl.className = '';  // clear previous classes
-  if (type) {
-    messageEl.classList.add(type);
-  }
-  
-  if (typeof content === 'string') {
-    // Render content as HTML so tags are parsed
-    messageEl.innerHTML = content;
-  } else {
-    // If content is DOM nodes or fragments, insert them directly
-    messageEl.innerHTML = '';
-    messageEl.appendChild(content);
-  }
-}
-
+    function showMsg(html,type='info',t=0){
+      message.innerHTML=html;
+      message.style.display='block';
+      message.className= type==='info'?'' : type;
+      if(t) setTimeout(()=>message.style.display='none',t);
+    }
   </script>
 </body>
 </html>

@@ -63,7 +63,9 @@ const frontendRoutes = {
   "/users-table": "Admin/usersTable.html",
   "/chat": "Chats/chat.html",
   "/exam": "Student/exam.html",
-  "/exam-management": "Lecturer/exam-management.html"
+  "/exam-management": "Lecturer/exam-management.html",
+  "/lecturers" : "Lecturer/lecturers.html"
+
 };
 
 Object.entries(frontendRoutes).forEach(([route, filePath]) => {
