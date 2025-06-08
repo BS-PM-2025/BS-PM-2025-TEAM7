@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Courses - CI/CD Learning</title>
+  <title>Courses – CI/CD Learning</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <style>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <style>
     /* ---------- Base Styles ---------- */
     * {
       margin: 0;
@@ -287,12 +287,10 @@
       color: #1f2328;
     }
     
-    .video-actions {
-      display: flex;
-      gap: 8px;
-      justify-content: flex-end;
-      margin-top: 15px;
-    }
+    .video-actions{
+  display:flex;
+  gap:12px;                 /* distance between the two buttons   */
+}
     
     /* ---------- Feedback Styles ---------- */
     .feedback-section {
@@ -658,7 +656,12 @@
     background: #24292e;
     color: white;
   }
-  
+  /* GitHub box = take the whole grid row */
+.github-panel{
+  grid-column: 1 / -1;   /* span all columns */
+  margin-top: 20px;      /* little breathing room above */
+}
+
   .github-btn:hover {
     background: #2c3136;
   }
@@ -775,94 +778,308 @@
   margin-top: 40px;
 }
     }
+
+.section-container{
+  position:relative;
+  margin-bottom:48px;
+  padding:24px;
+  background:#ffffff;
+  border:1px solid #d8dee4;
+  border-radius:12px;
+  box-shadow:0 4px 12px rgba(0,0,0,.05);
+  transition:transform .25s, box-shadow .25s;
+}
+
+.section-container:hover{
+  transform:translateY(-4px);
+  box-shadow:0 8px 24px rgba(0,0,0,.08);
+}
+/* ─── SECTION NUMBER FIELD ─────────────────────────────────────── */
+.section-number-group { margin-bottom: 20px; }
+
+/* tidy label */
+.section-number-group label {
+  font-weight: 500;
+  margin-bottom: 6px;
+  display: block;
+}
+
+/* wrap lets us position the icon */
+.section-number-group .input-wrapper {
+  position: relative;
+}
+
+/* pretty input */
+.section-number-group input[type="number"] {
+  width: 100%;
+  padding: 12px 16px 12px 46px;          /* left-pad for icon */
+  font-size: 16px;
+  border: 2px solid #65EFBC;             /* mint border */
+  border-radius: 10px;
+  background: #fff;
+  transition: border .25s, box-shadow .25s;
+  appearance: textfield;                 /* hide arrows Firefox */
+}
+
+/* hide spinners Chrome / Edge / Safari */
+.section-number-group input::-webkit-inner-spin-button,
+.section-number-group input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* mint border while still empty */
+.section-number-group input:required:placeholder-shown {
+  border-color: #65EFBC;
+}
+
+/* focus glow (valid) */
+.section-number-group input:valid:focus {
+  border-color: #65EFBC;
+  box-shadow: 0 0 0 3px rgba(101,239,188,.35);
+  outline: none;
+}
+
+/* out-of-range or non-numeric → red */
+.section-number-group input:out-of-range {
+  border-color: #ff6363;
+}
+
+/* icon */
+.section-number-group .section-icon {
+  position: absolute;
+  top: 50%;
+  left: 16px;
+  transform: translateY(-50%);
+  width: 18px; height: 18px;
+  fill: #65EFBC;
+  pointer-events: none;
+}
+
+/* hint text */
+.section-number-group .hint {
+  margin-top: 6px;
+  font-size: 12px;
+  color: #6b7280;
+}
+
+/* heading row (“Section 1”, “Section 2”… ) */
+.section-header{
+  font:700 24px/1.2 'Inter',sans-serif;
+  color:#657EEF;
+  border-bottom:2px solid #d8dee4;
+  padding-bottom:8px;
+  margin-bottom:24px;
+}
+
+/* grid that holds the video-cards INSIDE each section */
+.videos-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);   /* 3-up on desktop */
+  gap:30px;
+}
+
+/* nice greyed-out / locked effect for students */
+.locked-overlay{
+  position:absolute;
+  inset:0;
+  background:rgba(255,255,255,.92);
+  backdrop-filter:saturate(140%) blur(3px);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font:500 18px/1.3 'Inter',sans-serif;
+  color:#9ca3af;
+  text-align:center;
+  border-radius:12px;
+  z-index:5;
+}
+/* PDF list empty state */
+.empty-pdfs {
+  color: #6b7280;
+  font-style: italic;
+  margin: 10px 0;
+}
+
+/* PDF item wrapper */
+/* ─────────────────────────────────────────────────────────────
+   PDF Item Flex Layout & Truncation Fix
+───────────────────────────────────────────────────────────── */
+
+.pdf-item {
+  display: flex;
+  align-items: center;
+  /* ensure the item stays on one line */
+  white-space: nowrap;
+}
+
+.pdf-title {
+  /* allow to shrink below its intrinsic size */
+  flex: 1 1 auto;
+  min-width: 0;                /* critical for text-overflow to work */
+  overflow: hidden;
+  text-overflow: ellipsis;     /* show “…” when it’s too long */
+  white-space: nowrap;
+  margin-right: 12px;          /* space before buttons */
+}
+
+.pdf-actions {
+  /* prevent buttons from shrinking or wrapping */
+  flex: 0 0 auto;
+  display: flex;
+  gap: 8px;
+}
+
+
+/* Download button */
+.btn-download {
+  background: linear-gradient(135deg, #657EEF, #7A88D1);
+  color: #fff;
+  text-decoration: none;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+  box-shadow: 0 4px 12px rgba(101, 126, 239, 0.3);
+  transition: transform 0.15s ease, box-shadow 0.2s ease;
+}
+.btn-download:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(101, 126, 239, 0.4);
+}
+.btn-download:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(101, 126, 239, 0.2);
+}
+
+/* Delete button */
+.btn-delete-pdf {
+  background: #ff4c4c;
+  color: #fff;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+  box-shadow: 0 4px 12px rgba(255, 76, 76, 0.3);
+  transition: transform 0.15s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+}
+.btn-delete-pdf:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(255, 76, 76, 0.4);
+}
+.btn-delete-pdf:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(255, 76, 76, 0.2);
+}
+
+/* ------------------------------------------------
+   Responsive tweaks – same breakpoints you already
+   use elsewhere, keeps everything consistent
+   ------------------------------------------------ */
+@media (max-width:1024px){
+  .videos-grid{ grid-template-columns:repeat(2,1fr); }   /* tablets: 2-up */
+}
+
+@media (max-width:768px){
+  .videos-grid{ grid-template-columns:1fr; }              /* phones: 1-up  */
+}
+/* ── UNIFY “Video Title” & “Section Number” STYLE ────────────── */
+.upload-form-group input[type="text"],
+.upload-form-group input[type="number"]{
+  width:100%;
+  padding:12px 16px;
+  font-size:16px;
+  border:1px solid #65EFBC;          /* green border like title box */
+  border-radius:8px;
+  background:#ffffff;
+  transition:border-color .25s, box-shadow .25s;
+  
+  /* hide spinner arrows so the field looks identical */
+  -moz-appearance:textfield;         /* Firefox  */
+          appearance:textfield;      /* Chromium / Safari */
+}
+.upload-form-group input[type="text"]:focus,
+.upload-form-group input[type="number"]:focus{
+  outline:none;
+  border-color:#657EEF;              /* brand blue focus ring       */
+  box-shadow:0 0 0 3px rgba(101,126,239,.25);
+}
+
+/* override the browser’s default red ‘:invalid’ outline */
+.upload-form-group input[type="number"]:required:invalid{
+  border-color:#65EFBC;              /* keep it green while empty   */
+  box-shadow:none;
+}
+
+/* remove WebKit arrows (Chrome, Edge, Safari)                */
+.upload-form-group input[type="number"]::-webkit-inner-spin-button,
+.upload-form-group input[type="number"]::-webkit-outer-spin-button{
+  -webkit-appearance:none; margin:0;
+}
+
   </style>
 </head>
 <body>
-  <!-- HEADER -->
-    <header>
-        <div class="logo-container">
-      <svg class="logo-img" viewBox="0 0 24 24" fill="#657EEF" xmlns="http://www.w3.org/2000/svg">
-        <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.652.242 2.873.118 3.176.77.84 1.235 1.91 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
+  <header>
+    <div class="logo-container">
+      <svg class="logo-img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.230.957-.266 1.983-.399 3.003-.404 1.020.005 2.047.138 3.006.404 2.291-1.552 3.297-1.230 3.297-1.230.653 1.652.242 2.873.118 3.176.770.840 1.235 1.910 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.430.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.300 24 12c0-6.627-5.373-12-12-12z"/>
       </svg>
       <span class="logo-text">CI/CD</span>
       <ul class="nav-links" id="nav-links"></ul>
-    </ul>
     </div>
-
   </header>
 
-  
   <main>
     <div class="page-header">
       <h1>Course Videos</h1>
       <p>Browse our collection of CI/CD tutorial videos and enhance your learning experience</p>
     </div>
 
-    <!-- Search Bar -->
     <div class="search-container">
-      <input type="text" id="searchInput" class="search-input" placeholder="Search videos by title...">
+      <input type="text" id="searchInput" class="search-input" placeholder="Search videos by title..." />
       <span class="search-icon">🔍</span>
     </div>
-<div id="githubSection" class="github-container" style="display: none;">
-  <h2>GitHub Repository Management</h2>
-  
-  <div class="repo-controls">
-    <button class="btn github-btn" onclick="connectGitHub()" id="connectGitHubBtn">
-      Connect GitHub Account
-    </button>
-    
-    <div id="repoManagement" style="display: none;">
-      <h3>Create New Repository</h3>
-      <div class="form-group">
-        <input type="text" id="repoName" placeholder="Repository name" class="form-input">
-      </div>
-      <div class="form-group">
-        <textarea id="repoDescription" placeholder="Description" class="form-input"></textarea>
-      </div>
-      <div class="form-group">
-        <label>
-          <input type="checkbox" id="repoPrivate"> Private repository
-        </label>
-      </div>
-      <button class="btn github-btn" onclick="createRepo()">Create Repository</button>
-      
-      <h3 style="margin-top: 30px;">Your Repositories</h3>
-      <div id="repoList" class="repo-list"></div>
-    </div>
-  </div>
-</div>
-    <!-- Upload Form -->
-    <div id="uploadForm" style="display:none" class="upload-container">
+
+    <div id="uploadForm" class="upload-container" style="display: none;">
       <h2>Upload New Video</h2>
       <form action="/api/videos/upload" method="POST" enctype="multipart/form-data">
         <div class="upload-form-group">
           <label for="videoTitle">Video Title</label>
-          <input type="text" id="videoTitle" name="title" placeholder="Enter video title" required>
+          <input type="text" id="videoTitle" name="title" placeholder="Enter video title" required />
         </div>
-        
+        <!-- keep your existing markup -->
+<div class="upload-form-group">
+  <label for="videoSection">Section Number (1–4)</label>
+  <input type="number"
+         id="videoSection"
+         name="section"
+         placeholder="Enter section # (1–4)"
+         min="1" max="4" required />
+</div>
+
         <div class="upload-form-group">
           <label>Video File</label>
           <div class="file-upload-wrapper">
-            <input type="file" id="videoFile" name="video" accept="video/*" required style="display: none;">
+            <input type="file" id="videoFile" name="video" accept="video/*" required style="display: none;" />
             <label for="videoFile" class="file-upload-label">
               <span class="file-upload-icon">📁</span>
               <span class="file-upload-text">
-                <strong>Click to upload</strong> or drag and drop<br>
+                <strong>Click to upload</strong> or drag and drop<br />
                 MP4, MOV, or AVI (Max 100MB)
               </span>
             </label>
           </div>
         </div>
-        
         <button type="submit" class="upload-btn">Upload Video</button>
       </form>
     </div>
 
-    <!-- videos -->
-    <div id="videoList" class="video-grid"></div>
+    <div id="sectionsWrapper"></div>
   </main>
 
-  <!-- QUIZ MODAL -->
   <div class="modal-overlay" id="quizModal">
     <div class="quiz-modal">
       <h2 id="quizTitle">Video Quiz</h2>
@@ -871,360 +1088,79 @@
   </div>
 
   <script>
-    /* ---------- Global Variables ---------- */
     const token = sessionStorage.getItem("token");
     const navbar = document.getElementById("nav-links");
     const uploadForm = document.getElementById("uploadForm");
     const searchInput = document.getElementById("searchInput");
+    const sectionsWrapper = document.getElementById("sectionsWrapper");
     let user = null;
     let currentVideoId = null;
     let allVideos = [];
     let courseFeedback = {};
+    let unlockedSections = new Set();
+    let storageKey = null;
 
-    /* ---------- Initialize Page ---------- */
-  function init() {
-    setupAuth();
-    setupSearch();
-    fetchVideos();
-    setupPDFUploadForms();
-    
-    if (user?.role === "student") {
-      document.getElementById('githubSection').style.display = 'block';
-      checkGitHubConnection();
+    async function init() {
+      setupAuth();
+      setupSearch();
+      await fetchVideos();
+      setupPDFUploadForms();
+      setupVideoUploadForm(); 
     }
-  }
-  
-  /* ---------- PDF Upload Form Setup ---------- */
-  function setupPDFUploadForms() {
-    // Add event listeners to all PDF upload forms after videos are rendered
-    setTimeout(() => {
-      document.querySelectorAll('.pdf-upload-form').forEach(form => {
-        form.addEventListener('submit', function(e) {
-          e.preventDefault();
-          
-          const formData = new FormData(this);
-          const courseId = formData.get('courseId');
-          
-          fetch('/api/pdfs/upload', {
-            method: 'POST',
-            headers: {
-              'Authorization': 'Bearer ' + token
-            },
-            body: formData
-          })
-          .then(response => response.json())
-          .then(data => {
-            if (data.success) {
-              alert('PDF uploaded successfully!');
-              // Clear form
-              this.reset();
-              // Refresh PDFs for this course
-              fetchPDFs(courseId);
-            } else {
-              alert('Failed to upload PDF: ' + (data.message || 'Unknown error'));
-            }
-          })
-          .catch(error => {
-            console.error('Error uploading PDF:', error);
-            alert('Failed to upload PDF. Please try again.');
-          });
-        });
-      });
-    }, 1000); // Give time for videos to render
-  }
-  
-  /* ---------- Feedback Functions ---------- */
-function toggleFeedback(courseId) {
-  if (user?.role === "student") {
-    // For students: toggle between form and list
-    const feedbackForm = document.getElementById(`feedback-form-${courseId}`);
-    const feedbackContainer = document.getElementById(`feedback-container-${courseId}`);
-    
-    if (feedbackForm.style.display === "block") {
-      feedbackForm.style.display = "none";
-      feedbackContainer.style.display = "none";
-    } else {
-      feedbackForm.style.display = "block";
-      fetchCourseFeedback(courseId);
-      feedbackContainer.style.display = "block";
-    }
-  } else {
-    // For lecturers: just toggle the feedback list
-    const feedbackContainer = document.getElementById(`feedback-container-${courseId}`);
-    
-    if (feedbackContainer.style.display === "block") {
-      feedbackContainer.style.display = "none";
-    } else {
-      fetchCourseFeedback(courseId);
-      feedbackContainer.style.display = "block";
-    }
-  }
-}
-  
-  function fetchCourseFeedback(courseId) {
-  fetch(`/api/feedback/course/${courseId}`, {
-    headers: {
-      Authorization: "Bearer " + token
-    }
-  })
-  .then(response => response.json())
-  .then(data => {
-    courseFeedback[courseId] = data.feedback || [];
-    renderFeedback(courseId);
-  })
-  .catch(error => {
-    console.error("Error fetching feedback:", error);
-    const feedbackList = document.getElementById(`feedback-list-${courseId}`);
-    if (feedbackList) {
-      feedbackList.innerHTML = '<p>Failed to load feedback. Please try again.</p>';
-    }
-  });
-}
-  
-function renderFeedback(courseId) {
-  const feedbackList = document.getElementById(`feedback-list-${courseId}`);
-  const averageRatingEl = document.getElementById(`average-rating-${courseId}`);
-  const feedback = courseFeedback[courseId] || [];
-  
-  // Always calculate and show average rating
-  if (feedback.length > 0) {
-    const totalRating = feedback.reduce((sum, item) => sum + item.rating, 0);
-    const averageRating = totalRating / feedback.length;
-    const roundedAverage = Math.round(averageRating * 10) / 10;
-    
-    averageRatingEl.innerHTML = `
-      <span class="rating-stars">${'★'.repeat(Math.round(averageRating))}${'☆'.repeat(5 - Math.round(averageRating))}</span>
-      <span class="rating-value">${roundedAverage}</span>
-    `;
-    averageRatingEl.title = `Average: ${roundedAverage} from ${feedback.length} review${feedback.length !== 1 ? 's' : ''}`;
-  } else {
-    averageRatingEl.innerHTML = '<span class="no-rating">No ratings yet</span>';
-    averageRatingEl.title = 'No ratings yet';
-  }
-  
-  // Only populate feedback list if container is visible
-  const feedbackContainer = document.getElementById(`feedback-container-${courseId}`);
-  if (feedbackContainer.style.display === "block") {
-    if (feedback.length === 0) {
-      feedbackList.innerHTML = '<p>No feedback available for this course yet.</p>';
-      return;
-    }
-    
-    let feedbackHTML = '';
-    feedback.forEach(item => {
-      const date = new Date(item.createdAt).toLocaleDateString();
-      const stars = '★'.repeat(item.rating) + '☆'.repeat(5 - item.rating);
-      
-      feedbackHTML += `
-        <div class="feedback-item">
-          <div class="feedback-meta">
-            <span class="feedback-username">${item.username}</span>
-            <span class="feedback-date">${date}</span>
-          </div>
-          <div class="feedback-rating">${stars}</div>
-          <div class="feedback-comment">${item.comment}</div>
-        </div>
-      `;
-    });
-    
-    feedbackList.innerHTML = feedbackHTML;
-  }
-}
-  
-  function submitFeedback(courseId, courseTitle) {
-    const commentEl = document.getElementById(`feedback-comment-${courseId}`);
-    const comment = commentEl.value.trim();
-    const ratingInputs = document.getElementsByName(`rating-${courseId}`);
-    let rating = 0;
-    
-    for (let i = 0; i < ratingInputs.length; i++) {
-      if (ratingInputs[i].checked) {
-        rating = parseInt(ratingInputs[i].value);
-        break;
-      }
-    }
-    
-    if (!comment) {
-      alert("Please enter a comment.");
-      return;
-    }
-    
-    if (rating === 0) {
-      alert("Please select a rating.");
-      return;
-    }
-    
-    fetch("/api/feedback/submit", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + token
-      },
-      body: JSON.stringify({
-        comment,
-        rating,
-        courseId,
-        courseTitle
-      })
-    })
-    .then(response => response.json())
-    .then(data => {
-      alert("Feedback submitted successfully!");
-      commentEl.value = "";
-      for (let i = 0; i < ratingInputs.length; i++) {
-        ratingInputs[i].checked = false;
-      }
-      
-      // Hide the form and refresh feedback
-      document.getElementById(`feedback-form-${courseId}`).style.display = "none";
-      fetchCourseFeedback(courseId);
-    })
-    .catch(error => {
-      console.error("Error submitting feedback:", error);
-      alert("Failed to submit feedback. Please try again.");
-    });
-  }
- function connectGitHub() {
-    window.location.href = '/api/github/login';
-  }
 
-  function checkGitHubConnection() {
-    fetch('/api/users/me', {
-      headers: {
-        Authorization: 'Bearer ' + token
-      }
-    })
-    .then(response => response.json())
-    .then(user => {
-      if (user.githubUsername) {
-        document.getElementById('connectGitHubBtn').style.display = 'none';
-        document.getElementById('repoManagement').style.display = 'block';
-        fetchRepositories();
-      }
-    });
-  }
-
-  function fetchRepositories() {
-    fetch('/api/github/repos', {
-      headers: {
-        Authorization: 'Bearer ' + token
-      }
-    })
-    .then(response => response.json())
-    .then(repos => {
-      const repoList = document.getElementById('repoList');
-      repoList.innerHTML = '';
-      
-      if (repos.length === 0) {
-        repoList.innerHTML = '<p>No repositories found. Create your first one!</p>';
-        return;
-      }
-      
-      repos.forEach(repo => {
-        const repoDiv = document.createElement('div');
-        repoDiv.className = 'repo-item';
-        repoDiv.innerHTML = `
-          <h4>${repo.name} ${repo.private ? '🔒' : '🌍'}</h4>
-          <p>${repo.description || 'No description'}</p>
-          <div class="repo-actions">
-            <button class="btn github-btn" onclick="cloneRepo('${repo.name}')">Clone</button>
-            <a href="${repo.html_url}" target="_blank" class="btn github-btn">View on GitHub</a>
-          </div>
-        `;
-        repoList.appendChild(repoDiv);
-      });
-    });
-  }
-
-  function createRepo() {
-    const name = document.getElementById('repoName').value;
-    const description = document.getElementById('repoDescription').value;
-    const isPrivate = document.getElementById('repoPrivate').checked;
-    
-    if (!name) {
-      alert('Please enter a repository name');
-      return;
-    }
-    
-    fetch('/api/github/repos', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + token
-      },
-      body: JSON.stringify({
-        name,
-        description,
-        isPrivate
-      })
-    })
-    .then(response => response.json())
-    .then(() => {
-      alert('Repository created successfully!');
-      fetchRepositories();
-    })
-    .catch(() => {
-      alert('Failed to create repository');
-    });
-  }
-
-  function cloneRepo(repoName) {
-    // This would be more complex in a real implementation
-    // For now, just show the clone URL
-    fetch('/api/users/me', {
-      headers: {
-        Authorization: 'Bearer ' + token
-      }
-    })
-    .then(response => response.json())
-    .then(user => {
-      alert(`To clone this repository, run:\n\ngit clone https://github.com/${user.githubUsername}/${repoName}.git`);
-    });
-  }
-    /* ---------- Authentication ---------- */
     function setupAuth() {
-      if(token) {
-        user = parseJwt(token);
-        updateNavbar();
-        if(user?.role === "lecturer") {
-          uploadForm.style.display = "block";
-        }
-      } else {
+      if (!token) {
         navbar.innerHTML = `
           <li><a href="/">Home</a></li>
           <li><a href="/signup">Sign Up</a></li>
           <li><a href="/login">Login</a></li>`;
+        return;
+      }
+      user = parseJwt(token);
+      updateNavbar();
+      if (user.role === "lecturer") {
+        uploadForm.style.display = "block";
+      }
+      const userId = user._id || user.id;
+      storageKey = `unlockedSections_${userId}`;
+      if (user.role === "student") {
+        const saved = localStorage.getItem(storageKey);
+        if (saved) {
+          try {
+            JSON.parse(saved).forEach((n) => unlockedSections.add(n));
+          } catch {
+            unlockedSections = new Set([1]);
+          }
+        } else {
+          unlockedSections = new Set([1]);
+        }
       }
     }
 
     function parseJwt(token) {
       try {
-        return JSON.parse(atob(token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')));
-      } catch(e) {
+        return JSON.parse(atob(token.split(".")[1].replace(/-/g, "+").replace(/_/g, "/")));
+      } catch {
         return null;
       }
     }
 
     function updateNavbar() {
-      navbar.innerHTML = '';
-      
-      if(user.role === "admin") {
-        navbar.innerHTML += '<li><a href="/admin-dashboard">Admin Dashboard</a></li>';
-      } else if(user.role === "lecturer") {
+      navbar.innerHTML = "";
+      if (user.role === "admin") {
+        navbar.innerHTML += `<li><a href="/admin-dashboard">Admin Dashboard</a></li>`;
+      } else if (user.role === "lecturer") {
         navbar.innerHTML += `
           <li><a href="/">Home</a></li>
           <li><a href="/video/courses" class="active">Courses</a></li>
           <li><a href="/LecturerProfile">Profile</a></li>`;
-      } else if(user.role === "student") {
+      } else if (user.role === "student") {
         navbar.innerHTML += `
           <li><a href="/">Home</a></li>
           <li><a href="/video/courses" class="active">Courses</a></li>
-          <li><a href="/lecturers" ${location.pathname === "/lecturers" ? 'class="active"' : ''}>Contact</a></li>
-
           <li><a href="/StudentProfile">Profile</a></li>`;
       }
-      
-      navbar.innerHTML += '<li><a href="#" onclick="logout()">Logout</a></li>';
+      navbar.innerHTML += `<li><a href="#" onclick="logout()">Logout</a></li>`;
     }
 
     function logout() {
@@ -1232,259 +1168,646 @@ function renderFeedback(courseId) {
       location.href = "/login";
     }
 
-    /* ---------- Search Functionality ---------- */
     function setupSearch() {
-      searchInput.addEventListener('input', () => {
-        const searchTerm = searchInput.value.toLowerCase();
-        filterVideos(searchTerm);
+      searchInput.addEventListener("input", () => {
+        const term = searchInput.value.toLowerCase();
+        const filtered = term ? allVideos.filter((v) => v.title.toLowerCase().includes(term)) : allVideos;
+        renderSections(filtered);
       });
     }
 
-    function filterVideos(searchTerm) {
-      const filteredVideos = searchTerm 
-        ? allVideos.filter(video => video.title.toLowerCase().includes(searchTerm))
-        : allVideos;
-      
-      renderVideos(filteredVideos);
-    }
+ /* ==================  FETCH VIDEOS (fixed)  =================== */
+async function fetchVideos() {
+  if (!token) return;                       // no auth → nothing to do
+  const commonHeaders = { Authorization: `Bearer ${token}` };
 
-    /* ---------- PDF Management ---------- */
-    function fetchPDFs(courseId) {
-      fetch(`/api/pdfs/course/${courseId}`, {
-        headers: {
-          Authorization: "Bearer " + token
-        }
-      })
-      .then(response => response.json())
-      .then(pdfs => {
-        renderPDFs(courseId, pdfs);
-      })
-      .catch(error => {
-        console.error("Error fetching PDFs:", error);
-        document.getElementById(`pdf-list-${courseId}`).innerHTML = '<p>Failed to load PDF materials.</p>';
-      });
-    }
-    
-    function renderPDFs(courseId, pdfs) {
-      const pdfList = document.getElementById(`pdf-list-${courseId}`);
-      
-      if (!pdfs || pdfs.length === 0) {
-        pdfList.innerHTML = '<p style="color: #6b7280; font-style: italic; margin: 10px 0;">No PDF materials available for this course.</p>';
-        return;
-      }
-      
-      let pdfHTML = '<div style="margin-top: 10px;">';
-      pdfs.forEach(pdf => {
-        pdfHTML += `
-          <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px; border: 1px solid #e2e8f0; border-radius: 6px; margin-bottom: 8px;">
-            <span style="font-weight: 500;">${pdf.title}</span>
-            <div>
-              <a href="/uploads/${pdf.filename}" target="_blank" class="btn quiz-btn" style="padding: 4px 10px; font-size: 12px;">
-                ${user?.role === "student" ? "Download" : "View"}
-              </a>
-              ${user?.role === "lecturer" ? `
-                <button class="btn delete-btn" onclick="deletePDF('${pdf._id}')" style="padding: 4px 10px; font-size: 12px; margin-left: 5px;">
-                  Delete
-                </button>
-              ` : ''}
-            </div>
-          </div>
-        `;
-      });
-      pdfHTML += '</div>';
-      
-      pdfList.innerHTML = pdfHTML;
-    }
-    
-    function deletePDF(pdfId) {
-      if (!confirm("Are you sure you want to delete this PDF?")) return;
-      
-      fetch(`/api/pdfs/${pdfId}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: "Bearer " + token
-        }
-      })
-      .then(response => response.json())
-      .then(() => {
-        alert("PDF deleted successfully!");
-        // Refresh all PDFs for all courses
-        allVideos.forEach(video => {
-          fetchPDFs(video._id);
-        });
-      })
-      .catch(() => {
-        alert("Failed to delete PDF. Please try again.");
-      });
-    }
-    
-    /* ---------- Video Management ---------- */
-    function fetchVideos() {
-      fetch("/api/videos/all")
-        .then(response => response.json())
-        .then(videos => {
-          allVideos = videos || [];
-          renderVideos(allVideos);
-          
-          // Fetch PDFs for each video after rendering
-          videos.forEach(video => {
-            fetchPDFs(video._id);
-          });
-        })
-        .catch(() => {
-          document.getElementById("videoList").innerHTML = `
-            <div class="empty-state">
-              <p>Failed to load videos. Please try again later.</p>
-            </div>`;
-        });
-    }
+  // preferred – works for students and most lecturer builds
+  const MAIN_EP      = "/api/videos/all";
 
-    function renderVideos(videos) {
-      const videoList = document.getElementById("videoList");
-      videoList.innerHTML = '';
-      
-      if(!videos || videos.length === 0) {
-        videoList.innerHTML = `
-          <div class="empty-state">
-            <p>${searchInput.value ? "No matching videos found" : "No videos available yet"}</p>
-          </div>`;
-        return;
-      }
-      
-      videos.forEach(video => {
+  // fallback – some back-ends expose a lecturer-scoped route instead
+  const LECTURER_EP  = user?.role === "lecturer"
+    ? `/api/videos/lecturer/${user._id || user.id}`
+    : null;
+
+  let resp;
+  try {
+    resp = await fetch(MAIN_EP, { headers: commonHeaders });
+    // if the main endpoint is missing / forbidden, fall back once
+    if (!resp.ok && LECTURER_EP) {
+      resp = await fetch(LECTURER_EP, { headers: commonHeaders });
+    }
+    if (!resp.ok) throw new Error(`status ${resp.status}`);
+
+    /* allow 204 No-Content without exploding */
+    allVideos = resp.status === 204 ? [] : await resp.json();
+    renderSections(allVideos);
+  } catch (err) {
+    console.error("Error fetching videos:", err);
+    sectionsWrapper.innerHTML =
+      '<div class="empty-state"><p>Failed to load videos. Please try again later.</p></div>';
+  }
+}
+
+
+function renderSections(videos) {
+  sectionsWrapper.innerHTML = "";
+
+  for (let secNum = 1; secNum <= 4; secNum++) {
+    /* ---------- section shell ---------- */
+    const vids        = videos.filter(v => v.section === secNum);
+    const sectionDiv  = document.createElement("div");
+    sectionDiv.classList.add("section-container");
+    sectionDiv.id     = `section-${secNum}`;
+
+    /* heading */
+    const header = document.createElement("div");
+    header.classList.add("section-header");
+    header.textContent = `Section ${secNum}`;
+    sectionDiv.appendChild(header);
+
+    /* lock overlay (students only) */
+    const overlay = document.createElement("div");
+    overlay.classList.add("locked-overlay");
+    overlay.id = `overlay-${secNum}`;
+    overlay.textContent = "🔒 Section locked. Finish previous section first.";
+    sectionDiv.appendChild(overlay);
+
+    if (user.role === "lecturer") overlay.style.display = "none";
+
+    /* videos grid */
+    const grid = document.createElement("div");
+    grid.classList.add("videos-grid");
+    grid.id = `videos-grid-${secNum}`;
+    sectionDiv.appendChild(grid);
+
+    if (user.role === "lecturer") grid.style.opacity = "1";
+
+    /* ---------- populate video cards ---------- */
+    if (vids.length === 0) {
+      const empty = document.createElement("div");
+      empty.classList.add("empty-state");
+      empty.innerHTML = `<p>No videos uploaded for Section ${secNum} yet.</p>`;
+      grid.appendChild(empty);
+    } else {
+      vids.forEach(video => {
         const card = document.createElement("div");
-        card.className = "video-card";
+        card.classList.add("video-card");
+
+        /* PDF upload form – lecturers only */
+        let pdfFormHtml = "";
+        if (user.role === "lecturer") {
+          pdfFormHtml = `
+            <form class="pdf-upload-form" id="pdf-upload-form-${video._id}" style="margin-top:15px;">
+              <input type="hidden" name="courseId" value="${video._id}">
+              <div class="upload-form-group" style="margin-bottom:10px;">
+                <input type="text" name="title" placeholder="PDF Title" required
+                       style="padding:8px 12px;font-size:14px;background:#f9fafb;border:1px solid #e2e8f0;border-radius:6px;">
+              </div>
+              <div class="upload-form-group" style="margin-bottom:10px;">
+                <input type="file" name="pdf" accept=".pdf" required
+                       style="font-size:14px;background:#f9fafb;border:1px solid #e2e8f0;border-radius:6px;">
+              </div>
+              <button type="submit" class="btn quiz-btn" style="padding:6px 12px;font-size:13px;">
+                Upload PDF
+              </button>
+            </form>`;
+        }
+
+        /* delete button – lecturers only */
+        const lecturerDeleteBtn = user.role === "lecturer"
+          ? `<button class="btn delete-btn" onclick="deleteVideo('${video._id}')">Delete Video</button>`
+          : "";
+
+        const quizBtnLabel = (user.role === "lecturer") ? "Edit Quiz" : "Take Quiz";
+        const safeTitle    = video.title.replace(/'/g, "\\'");   // escape single quotes
+
         card.innerHTML = `
-          <video controls>
+          <video controls data-video-id="${video._id}">
             <source src="/uploads/${video.filename}" type="video/mp4">
             Your browser does not support HTML5 video.
           </video>
           <div class="video-info">
             <h3>${video.title}</h3>
-            
-            <!-- PDF Section -->
+
             <div class="pdf-section" id="pdf-section-${video._id}">
               <h4>Course Materials (PDFs)</h4>
               <div class="pdf-list" id="pdf-list-${video._id}"></div>
-              ${user?.role === "lecturer" ? `
-                <form class="pdf-upload-form" id="pdf-upload-form-${video._id}" style="margin-top: 15px;">
-                  <input type="hidden" name="courseId" value="${video._id}">
-                  <div class="upload-form-group" style="margin-bottom: 10px;">
-                    <input type="text" name="title" placeholder="PDF Title" required style="padding: 8px 12px; font-size: 14px;">
-                  </div>
-                  <div class="upload-form-group" style="margin-bottom: 10px;">
-                    <input type="file" name="pdf" accept=".pdf" required style="font-size: 14px;">
-                  </div>
-                  <button type="submit" class="btn quiz-btn" style="padding: 6px 12px; font-size: 13px;">Upload PDF</button>
-                </form>
-              ` : ''}
+              ${pdfFormHtml}
             </div>
-            
+
             <div class="video-actions">
-              ${user?.role === "lecturer" ? `
-                <button class="btn delete-btn" onclick="deleteVideo(\'${video._id}\')">Delete Video</button>
-              ` : ''}
-              <button class="btn quiz-btn" onclick="showQuiz(\'${video._id}\', \'${video.title}\')">
-                ${user?.role === "lecturer" ? "Edit Quiz" : "Take Quiz"}
+              ${lecturerDeleteBtn}
+              <button class="btn quiz-btn"
+                      onclick="showQuiz('${video._id}', '${safeTitle}')">
+                ${quizBtnLabel}
               </button>
-            </div>           
-            <!-- Feedback Section -->
-              <div class="feedback-section">
-                <div class="feedback-header">
-                  <h4>Feedback 
-                    <span id="average-rating-${video._id}" class="average-rating"></span>
-                  </h4>
-                  <button class="feedback-toggle" onclick="toggleFeedback('${video._id}')">
-                    ${user?.role === "student" ? "Add Feedback" : "View Feedback"}
-                  </button>
-                </div>
-              
-                ${user?.role === "student" ? `
-                  <div id="feedback-form-${video._id}" class="feedback-form" style="display: none;">
-                  <textarea id="feedback-comment-${video._id}" placeholder="Share your thoughts about this course..."></textarea>
+            </div>
+
+            <div class="feedback-section">
+              <div class="feedback-header">
+                <h4>Feedback <span id="average-rating-${video._id}" class="average-rating"></span></h4>
+                <button class="feedback-toggle" onclick="toggleFeedback('${video._id}')">
+                  ${(user.role === "student") ? "Add Feedback" : "View Feedback"}
+                </button>
+              </div>
+              ${user.role === "student" ? `
+                <div id="feedback-form-${video._id}" class="feedback-form" style="display:none;">
+                  <textarea id="feedback-comment-${video._id}" placeholder="Share your thoughts..."></textarea>
                   <div class="rating-container">
                     <div class="star-rating">
-                      <input type="radio" id="star5-${video._id}" name="rating-${video._id}" value="5" />
-                      <label for="star5-${video._id}">★</label>
-                      <input type="radio" id="star4-${video._id}" name="rating-${video._id}" value="4" />
-                      <label for="star4-${video._id}">★</label>
-                      <input type="radio" id="star3-${video._id}" name="rating-${video._id}" value="3" />
-                      <label for="star3-${video._id}">★</label>
-                      <input type="radio" id="star2-${video._id}" name="rating-${video._id}" value="2" />
-                      <label for="star2-${video._id}">★</label>
-                      <input type="radio" id="star1-${video._id}" name="rating-${video._id}" value="1" />
-                      <label for="star1-${video._id}">★</label>
+                      ${[5,4,3,2,1].map(n => `
+                        <input type="radio" id="star${n}-${video._id}" name="rating-${video._id}" value="${n}">
+                        <label for="star${n}-${video._id}">★</label>`).join("")}
                     </div>
                   </div>
-                  <button class="submit-feedback-btn" onclick="submitFeedback('${video._id}', '${video.title}')">Submit Feedback</button>
-                </div>
-              ` : ''}
-              
-            <div id="feedback-container-${video._id}" style="display: none;">
-              <div id="feedback-list-${video._id}" class="feedback-list"></div>
+                  <button class="submit-feedback-btn"
+                          onclick="submitFeedback('${video._id}', '${safeTitle}')">
+                    Submit Feedback
+                  </button>
+                </div>` : ""}
+              <div id="feedback-container-${video._id}" style="display:none;">
+                <div id="feedback-list-${video._id}" class="feedback-list"></div>
+              </div>
             </div>
           </div>`;
-        
-        videoList.appendChild(card);
+
+        grid.appendChild(card);
         fetchCourseFeedback(video._id);
+        fetchPDFs(video._id);
       });
     }
 
-    function deleteVideo(id) {
-      if(!confirm("Are you sure you want to delete this video?")) return;
-      
-      fetch(`/api/videos/${id}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: "Bearer " + token
-        }
-      })
-      .then(response => response.json())
-      .then(() => {
-        fetchVideos();
-      })
-      .catch(() => alert("Failed to delete video. Please try again."));
+    /* ---------- GitHub panel in Section 4 ---------- */
+    if (secNum === 4) {
+      const gh = document.createElement("div");
+gh.className = "github-container github-panel";   // ← extra class
+
+      gh.id        = "githubPanel";
+      gh.innerHTML = `
+        <h2 style="margin-bottom:20px;">GitHub Integration</h2>
+
+        <!-- connect button (hidden once linked) -->
+        <button class="btn github-btn" id="connectGitHubBtn"
+                style="margin-bottom:24px;" onclick="connectGitHub()">
+          🔗 Connect your GitHub
+        </button>
+
+        <!-- repo management (shown after linking) -->
+        <div id="repoManagement" style="display:none;flex-direction:column;gap:24px;">
+
+          <!-- create-repo row -->
+          <div style="display:flex;flex-wrap:wrap;gap:10px;">
+            <input class="form-input" id="repoName"        placeholder="Repository name">
+            <input class="form-input" id="repoDescription" placeholder="Description (optional)">
+            <label style="display:flex;align-items:center;gap:6px;font-size:14px;">
+              <input type="checkbox" id="repoPrivate"> Private
+            </label>
+            <button class="btn github-btn" onclick="createRepo()">Create</button>
+          </div>
+
+          <!-- repo list -->
+          <div class="repo-list" id="repoList"><p>Loading repositories…</p></div>
+        </div>`;
+      grid.appendChild(gh);
+
+      /* kick off GitHub status check */
+      checkGitHubConnection();
     }
 
-    /* ---------- Quiz Modal Functions ---------- */
+    /* finally add the section to the main wrapper */
+    sectionsWrapper.appendChild(sectionDiv);
+  }
+
+  /* lock logic (students only) */
+  if (user.role === "student") {
+    processSectionLocks();
+    attachVideoEndListeners();
+  } else {
+    document.querySelectorAll(".locked-overlay").forEach(o => o.remove());
+  }
+}
+
+
+    function processSectionLocks() {
+      for (let secNum = 1; secNum <= 4; secNum++) {
+        const overlayEl = document.getElementById(`overlay-${secNum}`);
+        const gridEl = document.getElementById(`videos-grid-${secNum}`);
+        if (user.role === "lecturer") {
+          overlayEl.style.display = "none";
+          gridEl.style.opacity = "1";
+          continue;
+        }
+        if (secNum === 1) {
+          unlockedSections.add(1);
+          overlayEl.style.display = "none";
+          gridEl.style.opacity = "1";
+        } else {
+          if (unlockedSections.has(secNum)) {
+            overlayEl.style.display = "none";
+            gridEl.style.opacity = "1";
+          } else {
+            overlayEl.style.display = "flex";
+            gridEl.style.opacity = "0.5";
+          }
+        }
+      }
+      if (user.role === "student" && storageKey) {
+        localStorage.setItem(storageKey, JSON.stringify(Array.from(unlockedSections)));
+      }
+    }
+
+    function attachVideoEndListeners() {
+      document.querySelectorAll("video[data-video-id]").forEach((v) => {
+        v.addEventListener("ended", async () => {
+          if (user.role !== "student") return;
+          const vidId = v.dataset.videoId;
+          await markAsWatched(vidId);
+          unlockNextSection(vidId);
+        });
+      });
+    }
+
+    async function markAsWatched(videoId) {
+      try {
+        await fetch(`/api/progress/watch/${user._id}/${videoId}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        });
+      } catch (e) {
+        console.error("Error marking video watched:", e);
+      }
+    }
+
+    function unlockNextSection(videoId) {
+      const vid = allVideos.find((v) => v._id === videoId);
+      if (!vid) return;
+      const currentSection = vid.section;
+      const nextSection = currentSection + 1;
+      if (nextSection <= 4 && !unlockedSections.has(nextSection)) {
+        unlockedSections.add(nextSection);
+        document.getElementById(`overlay-${nextSection}`).style.display = "none";
+        document.getElementById(`videos-grid-${nextSection}`).style.opacity = "1";
+        if (storageKey) {
+          localStorage.setItem(storageKey, JSON.stringify(Array.from(unlockedSections)));
+        }
+      }
+    }
+
+    function setupPDFUploadForms() {
+      setTimeout(() => {
+        document.querySelectorAll(".pdf-upload-form").forEach((form) => {
+          form.addEventListener("submit", function (e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const courseId = formData.get("courseId");
+            fetch("/api/pdfs/upload", {
+              method: "POST",
+              headers: { Authorization: "Bearer " + token },
+              body: formData,
+            })
+              .then((resp) => resp.json())
+              .then((data) => {
+                if (data.success) {
+                  alert("PDF uploaded successfully!");
+                  this.reset();
+                  fetchPDFs(courseId);
+                } else {
+                  alert("Failed to upload PDF: " + (data.message || "Unknown error"));
+                }
+              })
+              .catch((err) => {
+                console.error("Error uploading PDF:", err);
+                alert("Failed to upload PDF. Please try again.");
+              });
+          });
+        });
+      }, 500);
+    }
+
+    function fetchPDFs(courseId) {
+      fetch(`/api/pdfs/course/${courseId}`, {
+        headers: { Authorization: "Bearer " + token },
+      })
+        .then((resp) => resp.json())
+        .then((pdfs) => {
+          renderPDFs(courseId, pdfs);
+        })
+        .catch((err) => {
+          console.error("Error fetching PDFs:", err);
+          document.getElementById(`pdf-list-${courseId}`).innerHTML =
+            "<p>Failed to load PDF materials.</p>";
+        });
+    }
+
+   function renderPDFs(courseId, pdfs) {
+  const pdfList = document.getElementById(`pdf-list-${courseId}`);
+  if (!pdfs || pdfs.length === 0) {
+    pdfList.innerHTML =
+      '<p class="empty-pdfs">No PDF materials available for this course.</p>';
+    return;
+  }
+  let html = "";
+  pdfs.forEach(pdf => {
+    html += `
+      <div class="pdf-item">
+        <span class="pdf-title">${pdf.title}</span>
+        <div class="pdf-actions">
+          <a href="/uploads/${pdf.filename}"
+             target="_blank"
+             class="btn-download">
+            Download
+          </a>
+          ${
+            user.role === "lecturer"
+              ? `<button class="btn-delete-pdf"
+                          onclick="deletePDF('${pdf._id}', '${courseId}')">
+                   Delete
+                 </button>`
+              : ``
+          }
+        </div>
+      </div>
+    `;
+  });
+  pdfList.innerHTML = html;
+}
+
+
+    function deletePDF(pdfId, courseId) {
+  if (!confirm("Are you sure you want to delete this PDF?")) return;
+  fetch(`/api/pdfs/${pdfId}`, {
+    method: "DELETE",
+    headers: { Authorization: "Bearer " + token },
+  })
+    .then(resp => resp.json())
+    .then(() => {
+      alert("PDF deleted successfully!");
+      // re-fetch only this course's PDFs
+      fetchPDFs(courseId);
+    })
+    .catch(() => {
+      alert("Failed to delete PDF. Please try again.");
+    });
+}
+
+    function toggleFeedback(courseId) {
+      const feedbackForm = document.getElementById(`feedback-form-${courseId}`);
+      const feedbackContainer = document.getElementById(`feedback-container-${courseId}`);
+      if (user.role === "student") {
+        if (feedbackForm.style.display === "block") {
+          feedbackForm.style.display = "none";
+          feedbackContainer.style.display = "none";
+        } else {
+          feedbackForm.style.display = "block";
+          fetchCourseFeedback(courseId);
+          feedbackContainer.style.display = "block";
+        }
+      } else {
+        if (feedbackContainer.style.display === "block") {
+          feedbackContainer.style.display = "none";
+        } else {
+          fetchCourseFeedback(courseId);
+          feedbackContainer.style.display = "block";
+        }
+      }
+    }
+
+    function fetchCourseFeedback(courseId) {
+      fetch(`/api/feedback/course/${courseId}`, {
+        headers: { Authorization: "Bearer " + token },
+      })
+        .then((resp) => resp.json())
+        .then((data) => {
+          courseFeedback[courseId] = data.feedback || [];
+          renderFeedback(courseId);
+        })
+        .catch((err) => {
+          console.error("Error fetching feedback:", err);
+          const fbList = document.getElementById(`feedback-list-${courseId}`);
+          if (fbList) fbList.innerHTML = "<p>Failed to load feedback. Please try again.</p>";
+        });
+    }
+
+    function renderFeedback(courseId) {
+      const feedbackList = document.getElementById(`feedback-list-${courseId}`);
+      const averageRatingEl = document.getElementById(`average-rating-${courseId}`);
+      const feedback = courseFeedback[courseId] || [];
+      if (feedback.length > 0) {
+        const totalRating = feedback.reduce((sum, item) => sum + item.rating, 0);
+        const avg = totalRating / feedback.length;
+        const rounded = Math.round(avg * 10) / 10;
+        averageRatingEl.innerHTML =
+          '<span class="rating-stars">' +
+            '★'.repeat(Math.round(avg)) +
+            '☆'.repeat(5 - Math.round(avg)) +
+          '</span>' +
+          '<span class="rating-value">' + rounded + '</span>';
+        averageRatingEl.title = `Average: ${rounded} from ${feedback.length} review${feedback.length > 1 ? 's' : ''}`;
+      } else {
+        averageRatingEl.innerHTML = '<span class="no-rating">No ratings yet</span>';
+        averageRatingEl.title = "No ratings yet";
+      }
+      const feedbackContainer = document.getElementById(`feedback-container-${courseId}`);
+      if (feedbackContainer.style.display === "block") {
+        if (feedback.length === 0) {
+          feedbackList.innerHTML = "<p>No feedback available for this course yet.</p>";
+          return;
+        }
+        let html = "";
+        feedback.forEach((item) => {
+          const date = new Date(item.createdAt).toLocaleDateString();
+          const stars = "★".repeat(item.rating) + "☆".repeat(5 - item.rating);
+          html +=
+            '<div class="feedback-item">' +
+              '<div class="feedback-meta">' +
+                '<span class="feedback-username">' + item.username + '</span>' +
+                '<span class="feedback-date">' + date + '</span>' +
+              '</div>' +
+              '<div class="feedback-rating">' + stars + '</div>' +
+              '<div class="feedback-comment">' + item.comment + '</div>' +
+            '</div>';
+        });
+        feedbackList.innerHTML = html;
+      }
+    }
+
+    function submitFeedback(courseId, courseTitle) {
+      const commentEl = document.getElementById(`feedback-comment-${courseId}`);
+      const comment = commentEl.value.trim();
+      const ratingInputs = document.getElementsByName(`rating-${courseId}`);
+      let rating = 0;
+      for (let i = 0; i < ratingInputs.length; i++) {
+        if (ratingInputs[i].checked) {
+          rating = parseInt(ratingInputs[i].value);
+          break;
+        }
+      }
+      if (!comment) {
+        alert("Please enter a comment.");
+        return;
+      }
+      if (rating === 0) {
+        alert("Please select a rating.");
+        return;
+      }
+      fetch("/api/feedback/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+        body: JSON.stringify({ comment, rating, courseId, courseTitle }),
+      })
+        .then((resp) => resp.json())
+        .then(() => {
+          alert("Feedback submitted successfully!");
+          commentEl.value = "";
+          for (let i = 0; i < ratingInputs.length; i++) {
+            ratingInputs[i].checked = false;
+          }
+          document.getElementById(`feedback-form-${courseId}`).style.display = "none";
+          fetchCourseFeedback(courseId);
+        })
+        .catch((err) => {
+          console.error("Error submitting feedback:", err);
+          alert("Failed to submit feedback. Please try again.");
+        });
+    }
+
+    function connectGitHub() {
+      window.location.href = "/api/github/login";
+    }
+
+    function checkGitHubConnection() {
+      fetch("/api/users/me", {
+        headers: { Authorization: "Bearer " + token },
+      })
+        .then((resp) => resp.json())
+        .then((me) => {
+          if (me.githubUsername) {
+            document.getElementById("connectGitHubBtn").style.display = "none";
+            document.getElementById("repoManagement").style.display = "flex";
+            fetchRepositories();
+          }
+        });
+    }
+
+    function fetchRepositories() {
+      fetch("/api/github/repos", {
+        headers: { Authorization: "Bearer " + token },
+      })
+        .then((resp) => resp.json())
+        .then((repos) => {
+          const repoList = document.getElementById("repoList");
+          repoList.innerHTML = "";
+          if (!repos.length) {
+            repoList.innerHTML = "<p>No repositories found. Create your first one!</p>";
+            return;
+          }
+          repos.forEach((repo) => {
+            const div = document.createElement("div");
+            div.className = "repo-item";
+            div.innerHTML =
+              '<h4>' + repo.name + (repo.private ? " 🔒" : " 🌍") + '</h4>' +
+              '<p>' + (repo.description || "No description") + '</p>' +
+              '<div class="repo-actions">' +
+                '<button class="btn github-btn" onclick="cloneRepo(\'' + repo.name + '\')">Clone</button>' +
+                '<a href="' + repo.html_url + '" target="_blank" class="btn github-btn">View on GitHub</a>' +
+              '</div>';
+            repoList.appendChild(div);
+          });
+        });
+    }
+
+    function createRepo() {
+      const name = document.getElementById("repoName").value.trim();
+      const description = document.getElementById("repoDescription").value.trim();
+      const isPrivate = document.getElementById("repoPrivate").checked;
+      if (!name) {
+        alert("Please enter a repository name");
+        return;
+      }
+      fetch("/api/github/repos", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+        body: JSON.stringify({ name, description, isPrivate }),
+      })
+        .then((resp) => resp.json())
+        .then(() => {
+          alert("Repository created successfully!");
+          fetchRepositories();
+        })
+        .catch(() => {
+          alert("Failed to create repository");
+        });
+    }
+
+    function cloneRepo(repoName) {
+      fetch("/api/users/me", {
+        headers: { Authorization: "Bearer " + token },
+      })
+        .then((resp) => resp.json())
+        .then((me) => {
+          alert(
+            "To clone this repository, run:\n\n" +
+            "git clone https://github.com/" + me.githubUsername + "/" + repoName + ".git"
+          );
+        });
+    }
+
+    function deleteVideo(id) {
+      if (!confirm("Are you sure you want to delete this video?")) return;
+      fetch(`/api/videos/${id}`, {
+        method: "DELETE",
+        headers: { Authorization: "Bearer " + token },
+      })
+        .then((resp) => resp.json())
+        .then(() => fetchVideos())
+        .catch(() => alert("Failed to delete video. Please try again."));
+    }
+
     function showQuiz(videoId, videoTitle) {
       currentVideoId = videoId;
       const modal = document.getElementById("quizModal");
       const quizTitle = document.getElementById("quizTitle");
       const quizContent = document.getElementById("quizContent");
-      
-      quizTitle.textContent = `${videoTitle} Quiz`;
-      quizContent.innerHTML = ''; // Reset quiz modal
+      quizTitle.textContent = videoTitle + " Quiz";
+      quizContent.innerHTML = "";
       modal.style.display = "flex";
-      
-      fetch(`/api/videos/${videoId}/quiz`)
-        .then(response => response.ok ? response.json() : null)
-        .then(quiz => {
-         if(!quiz || !quiz.questions || quiz.questions.length === 0) {
-          quizContent.innerHTML = `
-            <div class="empty-state">
-              <p>${user?.role === "lecturer"
-                ? "No quiz available. Create one below."
-                : "No quiz available for this video yet."}
-              </p>
-            </div>
-            <div class="modal-actions">
-              <button class="btn close-modal" onclick="closeQuizModal()">Close</button>
-              ${user?.role === "lecturer"
-                ? '<button class="btn save-quiz" onclick="renderQuizEditor(quizContent)">Create Quiz</button>'
-                : ''}
-            </div>`;
-          return;            // nothing else to do
-        }
-
-          if(user?.role === "student") {
+      fetch("/api/videos/" + videoId + "/quiz")
+        .then((resp) => (resp.ok ? resp.json() : null))
+        .then((quiz) => {
+          if (!quiz || !quiz.questions || quiz.questions.length === 0) {
+            quizContent.innerHTML =
+              '<div class="empty-state">' +
+                '<p>' +
+                  (user.role === "lecturer"
+                    ? "No quiz available. Create one below."
+                    : "No quiz available for this video yet.") +
+                '</p>' +
+              '</div>' +
+              '<div class="modal-actions">' +
+                '<button class="btn close-modal" onclick="closeQuizModal()">Close</button>' +
+                (user.role === "lecturer"
+                  ? '<button class="btn save-quiz" onclick="renderQuizEditor(quizContent)">Create Quiz</button>'
+                  : '') +
+              '</div>';
+            return;
+          }
+          if (user.role === "student") {
             renderStudentQuiz(quizContent, quiz);
-          } else if(user?.role === "lecturer") {
+          } else {
             renderQuizEditor(quizContent, quiz);
           }
         })
         .catch(() => {
-          quizContent.innerHTML = '<p>Failed to load quiz. Please try again.</p>';
+          quizContent.innerHTML = "<p>Failed to load quiz. Please try again.</p>";
         });
     }
 
@@ -1494,272 +1817,206 @@ function renderFeedback(courseId) {
     }
 
     function renderStudentQuiz(container, quiz) {
-      let quizHTML = '';
-
-      quiz.questions.forEach((question, index) => {
-        const qid = question._id || `q${index}`;
-        quizHTML += `
-          <div class="quiz-question">
-            <p>${index + 1}. ${question.prompt}</p>
-            ${question.options.map((option, optionIndex) => `
-              <div class="quiz-option">
-                <input type="radio" id="q_${qid}_${optionIndex}" name="q_${qid}" value="${optionIndex}">
-                <label for="q_${qid}_${optionIndex}">${option.text}</label>
-              </div>
-            `).join('')}
-          </div>
-        `;
+      let quizHTML = "";
+      quiz.questions.forEach((q, idx) => {
+        const qid = q._id || "q" + idx;
+        quizHTML +=
+          '<div class="quiz-question">' +
+            '<p>' + (idx + 1) + ". " + q.prompt + '</p>' +
+            q.options.map((opt, i) => {
+              return (
+                '<div class="quiz-option">' +
+                  '<input type="radio" id="q_' + qid + "_" + i + '" name="q_' + qid + '" value="' + i + '">' +
+                  '<label for="q_' + qid + "_" + i + '">' + opt.text + '</label>' +
+                '</div>'
+              );
+            }).join("") +
+          '</div>';
       });
-
-      quizHTML += `
-        <div class="modal-actions">
-          <button class="btn close-modal" onclick="closeQuizModal()">Close</button>
-          <button class="btn quiz-btn submit-quiz-btn" id="submitQuizBtn">Submit Quiz</button>
-        </div>
-      `;
-
+      quizHTML +=
+        '<div class="modal-actions">' +
+          '<button class="btn close-modal" onclick="closeQuizModal()">Close</button>' +
+          '<button class="btn quiz-btn submit-quiz-btn" id="submitQuizBtn">Submit Quiz</button>' +
+        '</div>';
       container.innerHTML = quizHTML;
-
       document.getElementById("submitQuizBtn").addEventListener("click", submitQuiz);
     }
 
     function renderQuizEditor(container, quiz = null) {
-      container.innerHTML = `
-        <div id="quizEditor">
-          <div id="questionsContainer"></div>
-          
-          <div style="display: flex; justify-content: space-between; margin-top: 30px;">
-            <button class="btn quiz-btn" onclick="addQuestionBlock()" 
-                    style="padding: 10px 20px; font-size: 16px;">
-              <span style="font-size: 18px; margin-right: 8px;">+</span> Add New Question
-            </button>
-            
-            <div style="display: flex; gap: 10px;">
-              <button class="btn close-modal" onclick="closeQuizModal()" 
-                      style="padding: 10px 20px;">
-                Cancel
-              </button>
-              <button class="btn save-quiz" onclick="saveQuiz()" 
-                      style="padding: 10px 20px; font-weight: 600;">
-                Save Quiz
-              </button>
-            </div>
-          </div>
-        </div>
-      `;
-
+      container.innerHTML =
+        '<div id="quizEditor">' +
+          '<div id="questionsContainer"></div>' +
+          '<div style="display:flex;justify-content:space-between;margin-top:30px;">' +
+            '<button class="btn quiz-btn" onclick="addQuestionBlock()" style="padding:10px 20px;font-size:16px;">' +
+              '<span style="font-size:18px;margin-right:8px;">+</span> Add New Question' +
+            '</button>' +
+            '<div style="display:flex;gap:10px;">' +
+              '<button class="btn close-modal" onclick="closeQuizModal()" style="padding:10px 20px;">Cancel</button>' +
+              '<button class="btn save-quiz" onclick="saveQuiz()" style="padding:10px 20px;font-weight:600;">Save Quiz</button>' +
+            '</div>' +
+          '</div>' +
+        '</div>';
       const questionsContainer = document.getElementById("questionsContainer");
-      
-      if(quiz && quiz.questions) {
-        quiz.questions.forEach(question => {
-          addQuestionBlock(question);
-        });
+      if (quiz && quiz.questions) {
+        quiz.questions.forEach((q) => addQuestionBlock(q));
       } else {
-        // Add one empty question by default
         addQuestionBlock();
       }
     }
 
     function addQuestionBlock(question = null) {
       const questionsContainer = document.getElementById("questionsContainer");
-      const questionId = question?._id || `q_${Date.now()}`;
+      const questionId = question && question._id ? question._id : "q_" + Date.now();
 
       const questionBlock = document.createElement("div");
       questionBlock.className = "question-block";
-      
-      // Question prompt
-      const prompt = question?.prompt || '';
-      questionBlock.innerHTML = `
-        <div style="margin-bottom: 15px;">
-          <label>Question Text</label>
-          <textarea class="prompt" placeholder="Enter your question here...">${prompt}</textarea>
-        </div>
-        <div style="margin-bottom: 15px;">
-          <label>Options (select the correct answer)</label>
-          <div id="options-container-${questionId}" style="display: grid; gap: 10px;"></div>
-        </div>
-      `;
 
-      // Options container
-      const optionsContainer = questionBlock.querySelector(`#options-container-${questionId}`);
-      
-      // Add options (default 4 or from existing question)
-      const options = question?.options || [
-        { text: '', isCorrect: true },
-        { text: '', isCorrect: false },
-        { text: '', isCorrect: false },
-        { text: '', isCorrect: false }
+      const promptVal = question && question.prompt ? question.prompt : "";
+      questionBlock.innerHTML =
+        '<div style="margin-bottom:15px;">' +
+          '<label>Question Text</label>' +
+          '<textarea class="prompt" placeholder="Enter your question here...">' + promptVal + '</textarea>' +
+        '</div>' +
+        '<div style="margin-bottom:15px;">' +
+          '<label>Options (select the correct answer)</label>' +
+          '<div id="options-container-' + questionId + '" style="display:grid;gap:10px;"></div>' +
+        '</div>';
+      const optionsContainer = questionBlock.querySelector("#options-container-" + questionId);
+
+      const opts = question && question.options ? question.options : [
+        { text: "", isCorrect: true },
+        { text: "", isCorrect: false },
+        { text: "", isCorrect: false },
+        { text: "", isCorrect: false },
       ];
-
-      options.forEach((option, index) => {
-        const optionDiv = document.createElement("div");
-        optionDiv.className = "option-row";
-        
-        optionDiv.innerHTML = `
-          <input type="radio" name="correct_${questionId}" 
-                 ${option.isCorrect ? 'checked' : ''}
-                 style="flex-shrink: 0; width: 18px; height: 18px; cursor: pointer;">
-          <input type="text" class="opt" placeholder="Option ${index + 1}" 
-                 value="${option.text}"
-                 style="flex: 1; padding: 10px; border: 1px solid #e2e8f0; 
-                        border-radius: 6px; background: #fff;">
-          <button class="remove-option-btn" ${options.length <= 2 ? 'disabled' : ''}>
-            ×
-          </button>
-        `;
-        
-        // Add event listener to remove option
-        const removeBtn = optionDiv.querySelector(".remove-option-btn");
-        removeBtn.addEventListener("click", () => {
-          if (optionsContainer.children.length > 2) {
-            optionDiv.remove();
-          }
+      opts.forEach((opt, i) => {
+        const oDiv = document.createElement("div");
+        oDiv.className = "option-row";
+        oDiv.innerHTML =
+          '<input type="radio" name="correct_' + questionId + '" ' + (opt.isCorrect ? 'checked' : '') +
+            ' style="flex-shrink:0;width:18px;height:18px;cursor:pointer;">' +
+          '<input type="text" class="opt" placeholder="Option ' + (i + 1) + '" value="' + opt.text + '"' +
+            ' style="flex:1;padding:10px;border:1px solid #e2e8f0;border-radius:6px;background:#fff;">' +
+          '<button class="remove-option-btn" ' + (opts.length <= 2 ? 'disabled' : '') + '>×</button>';
+        oDiv.querySelector(".remove-option-btn").addEventListener("click", () => {
+          if (optionsContainer.children.length > 2) oDiv.remove();
         });
-        
-        optionsContainer.appendChild(optionDiv);
+        optionsContainer.appendChild(oDiv);
       });
 
-      // Add "Add Option" button
       const addOptionBtn = document.createElement("button");
       addOptionBtn.className = "btn add-option-btn";
       addOptionBtn.textContent = "+ Add Option";
-      
       addOptionBtn.addEventListener("click", () => {
-        const optionCount = optionsContainer.children.length;
-        const optionDiv = document.createElement("div");
-        optionDiv.className = "option-row";
-        
-        optionDiv.innerHTML = `
-          <input type="radio" name="correct_${questionId}" 
-                 style="flex-shrink: 0; width: 18px; height: 18px; cursor: pointer;">
-          <input type="text" class="opt" placeholder="Option ${optionCount + 1}" 
-                 style="flex: 1; padding: 10px; border: 1px solid #e2e8f0; 
-                        border-radius: 6px; background: #fff;">
-          <button class="remove-option-btn">
-            ×
-          </button>
-        `;
-        
-        const removeBtn = optionDiv.querySelector(".remove-option-btn");
-        removeBtn.addEventListener("click", () => {
-          if (optionsContainer.children.length > 2) {
-            optionDiv.remove();
-          }
+        const count = optionsContainer.children.length;
+        const oDiv = document.createElement("div");
+        oDiv.className = "option-row";
+        oDiv.innerHTML =
+          '<input type="radio" name="correct_' + questionId + '"' +
+            ' style="flex-shrink:0;width:18px;height:18px;cursor:pointer;">' +
+          '<input type="text" class="opt" placeholder="Option ' + (count + 1) + '"' +
+            ' style="flex:1;padding:10px;border:1px solid #e2e8f0;border-radius:6px;background:#fff;">' +
+          '<button class="remove-option-btn">×</button>';
+        oDiv.querySelector(".remove-option-btn").addEventListener("click", () => {
+          if (optionsContainer.children.length > 2) oDiv.remove();
         });
-        
-        optionsContainer.appendChild(optionDiv);
+        optionsContainer.appendChild(oDiv);
       });
-      
       optionsContainer.parentNode.insertBefore(addOptionBtn, optionsContainer.nextSibling);
 
-      // Remove question button
-      const removeBtn = document.createElement("button");
-      removeBtn.className = "btn delete-btn";
-      removeBtn.textContent = "Remove Question";
-      removeBtn.style.position = "absolute";
-      removeBtn.style.top = "15px";
-      removeBtn.style.right = "15px";
-      removeBtn.style.padding = "5px 10px";
-      removeBtn.style.fontSize = "13px";
-      
-      removeBtn.addEventListener("click", () => {
-        questionBlock.remove();
-      });
-      
-      questionBlock.appendChild(removeBtn);
+      const removeQBtn = document.createElement("button");
+      removeQBtn.className = "btn delete-btn";
+      removeQBtn.textContent = "Remove Question";
+      removeQBtn.style.position = "absolute";
+      removeQBtn.style.top = "15px";
+      removeQBtn.style.right = "15px";
+      removeQBtn.style.padding = "5px 10px";
+      removeQBtn.style.fontSize = "13px";
+      removeQBtn.addEventListener("click", () => questionBlock.remove());
+      questionBlock.appendChild(removeQBtn);
+
       questionsContainer.appendChild(questionBlock);
     }
 
     function saveQuiz() {
       const questionsContainer = document.getElementById("questionsContainer");
-      const questionBlocks = [...questionsContainer.querySelectorAll('.question-block')];
-      
-      const questions = questionBlocks.map(block => {
-        const prompt = block.querySelector('.prompt').value.trim();
-        const optionInputs = [...block.querySelectorAll('.opt')];
-        const radioInputs = [...block.querySelectorAll('input[type="radio"]')];
-        
-        const options = optionInputs.map((input, index) => ({
-          text: input.value.trim(),
-          isCorrect: radioInputs[index].checked
-        })).filter(opt => opt.text); // Filter out empty options
-        
-        return { prompt, options };
-      }).filter(q => q.prompt && q.options.length >= 2); // At least 2 options required
-      
-      if(questions.length === 0) {
-        alert("Please add at least one valid question with minimum 2 options before saving.");
+      const blocks = Array.from(questionsContainer.querySelectorAll(".question-block"));
+      const questions = blocks
+        .map((block) => {
+          const prompt = block.querySelector(".prompt").value.trim();
+          const optEls = Array.from(block.querySelectorAll(".opt"));
+          const radEls = Array.from(block.querySelectorAll('input[type="radio"]'));
+          const opts = optEls
+            .map((inp, idx) => ({
+              text: inp.value.trim(),
+              isCorrect: radEls[idx].checked,
+            }))
+            .filter((o) => o.text);
+          return { prompt, options: opts };
+        })
+        .filter((q) => q.prompt && q.options.length >= 2);
+      if (!questions.length) {
+        alert("Please add at least one valid question with minimum 2 options.");
         return;
       }
-      
-      fetch(`/api/videos/${currentVideoId}/quiz`, {
+      fetch("/api/videos/" + currentVideoId + "/quiz", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": "Bearer " + token
+          Authorization: "Bearer " + token,
         },
-        body: JSON.stringify({ questions })
+        body: JSON.stringify({ questions }),
       })
-      .then(response => response.json())
-      .then(() => {
-        alert("Quiz saved successfully!");
-        closeQuizModal();
-      })
-      .catch(() => {
-        alert("Failed to save quiz. Please try again.");
-      });
+        .then((resp) => resp.json())
+        .then(() => {
+          alert("Quiz saved successfully!");
+          closeQuizModal();
+        })
+        .catch((err) => {
+          console.error("Error saving quiz:", err);
+          alert("Failed to save quiz. Please try again.");
+        });
     }
 
     function submitQuiz() {
       const quizContent = document.getElementById("quizContent");
-      const submitBtn = document.getElementById("submitQuizBtn");
-
-      // Collect answers
-      const answers = [...quizContent.querySelectorAll('input[type=radio]:checked')]
-        .map(radio => {
-          const questionId = radio.name.slice(2); // remove 'q_' prefix
-          const optionIndex = parseInt(radio.value);
-          return { questionId, optionIndex };
-        });
-
-      // Validation
-      if (answers.length === 0) {
-        alert("Please answer at least one question before submitting.");
+      const checkedRadios = Array.from(quizContent.querySelectorAll('input[type=radio]:checked'));
+      if (!checkedRadios.length) {
+        alert("Please answer at least one question.");
         return;
       }
-
-      // Disable button during submission
+      const answers = checkedRadios.map((radio) => ({
+        questionId: radio.name.slice(2),
+        optionIndex: parseInt(radio.value),
+      }));
+      const submitBtn = document.getElementById("submitQuizBtn");
       submitBtn.disabled = true;
       submitBtn.textContent = "Submitting...";
-
-      fetch(`/api/videos/${currentVideoId}/quiz/submit`, {
+      fetch("/api/videos/" + currentVideoId + "/quiz/submit", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": "Bearer " + token
+          Authorization: "Bearer " + token,
         },
-        body: JSON.stringify({ answers })
+        body: JSON.stringify({ answers }),
       })
-        .then(async response => {
-          const result = await response.json();
-          if (!response.ok) {
-            throw new Error(result.message || "Unknown error occurred");
-          }
-
-          let message = "";
+        .then(async (resp) => {
+          const result = await resp.json();
+          if (!resp.ok) throw new Error(result.message || "Unknown error");
+          let msg;
           if (result.score === 100) {
-            message = `🎉 Perfect! You got ${result.score}% - All answers correct!`;
+            msg = `🎉 Perfect! You got ${result.score}% – All answers correct!`;
           } else if (result.score >= 70) {
-            message = `👍 Good job! You scored ${result.score}%`;
+            msg = `👍 Good job! You scored ${result.score}%`;
           } else {
-            message = `📚 Keep learning! You scored ${result.score}%`;
+            msg = `📚 Keep learning! You scored ${result.score}%`;
           }
-
-          alert(message);
+          alert(msg);
           closeQuizModal();
         })
-        .catch(error => {
-          alert("Failed to submit quiz. Please try again.\n" + error.message);
+        .catch((err) => {
+          console.error("Error submitting quiz:", err);
+          alert("Failed to submit quiz. Please try again.\n" + err.message);
         })
         .finally(() => {
           submitBtn.disabled = false;
@@ -1767,25 +2024,21 @@ function renderFeedback(courseId) {
         });
     }
 
-    /* ---------- Initialize ---------- */
-    init();
-
-    /* ---------- File Upload Preview ---------- */
-    document.getElementById('videoFile').addEventListener('change', function(e) {
+    document.getElementById("videoFile").addEventListener("change", function (e) {
       const fileInput = e.target;
-      const fileUploadLabel = document.querySelector('.file-upload-label');
-      
-      if(fileInput.files.length > 0) {
+      const fileUploadLabel = document.querySelector(".file-upload-label");
+      if (fileInput.files.length > 0) {
         const fileName = fileInput.files[0].name;
-        fileUploadLabel.innerHTML = `
-          <span class="file-upload-icon">🎥</span>
-          <span class="file-upload-text">
-            <strong>${fileName}</strong><br>
-            Ready to upload
-          </span>
-        `;
+        fileUploadLabel.innerHTML =
+          '<span class="file-upload-icon">🎥</span>' +
+          '<span class="file-upload-text">' +
+            '<strong>' + fileName + '</strong><br>' +
+            'Ready to upload' +
+          '</span>';
       }
     });
+
+    init();
   </script>
 </body>
 </html>

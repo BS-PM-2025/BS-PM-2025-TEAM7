@@ -7,6 +7,7 @@ const path    = require("path");
 
 const videoController = require("../controllers/videoController");
 const quizRoutes      = require("./quiz");           // ✅ רואטר של חידונים
+const { authenticateToken } = require("../middleware/auth");  // ADD/CHANGE
 
 /* ───────────── Multer – אחסון קבצי וידאו ───────────── */
 const storage = multer.diskStorage({
