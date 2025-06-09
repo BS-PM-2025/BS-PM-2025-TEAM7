@@ -217,6 +217,8 @@
       <input type="email" id="student-email" placeholder="name@example.com" required
              style="width:100%;padding:11px 14px;border:1px solid #cbd5e1;border-radius:8px;font-size:15px">
     </div>
+        <!-- Add this button before the submit button -->
+<button id="check-cert-btn" class="btn" style="background: var(--accent); color: #003d30; margin-bottom: 16px;">Check Certificate Status</button>
 
     <!-- ───── PROGRESS BAR ───── -->
     <div id="progressWrap"><div id="progressBar"></div></div>
@@ -267,6 +269,36 @@
     let questions=[];
 
     document.addEventListener('DOMContentLoaded', loadExam);
+    // Add this after the DOMContentLoaded event listener
+document.getElementById('check-cert-btn').addEventListener('click', checkCertificateStatus);
+
+async function checkCertificateStatus() {
+  const email = document.getElementById('student-email').value.trim();
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+    showMsg('Please enter a valid email','error');
+    return;
+  }
+
+  showMsg('Checking certificate status...', 'warning');
+  
+  try {
+    const alreadyPassed = await checkPassedStatus(email);
+    
+    if (alreadyPassed) {
+      const html = `
+        <h2>🎉 You have already passed!</h2>
+        <div class="certificate-msg">
+          Download your certificate <a href="certificate?name=${username}&date=${new Date().toLocaleDateString()}">here</a>.
+        </div>
+      `;
+      showMsg(html, 'success');
+    } else {
+      showMsg('You haven\'t passed the exam yet. Please complete the exam to get your certificate.', 'warning');
+    }
+  } catch (err) {
+    showMsg('Error checking certificate status: ' + err.message, 'error');
+  }
+}
     submit.addEventListener('click', sendExam);
 
     async function loadExam(){
