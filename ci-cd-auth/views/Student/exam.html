@@ -257,7 +257,8 @@
 
     /* ---------- EXAM LOGIC ---------- */
     const params = new URLSearchParams(location.search);
-    const studentId = params.get('studentId') || 'demo123';
+    const studentId = params.get('studentId') || user._id;
+    const username = params.get('username') || user.username || 'Student';
     const examC  = document.getElementById('exam-container');
     const infoB  = document.getElementById('exam-info');
     const submit = document.getElementById('submit-btn');
@@ -316,11 +317,38 @@
       prog.style.width=`${(answered/questions.length)*100}%`;
     }
 
+
+    async function checkPassedStatus(email) {
+  try {
+    const res = await fetch(`/api/exam/status?email=${encodeURIComponent(email)}`);
+    if (!res.ok) throw new Error('Failed to check status');
+    const data = await res.json();
+    return data.passed; // true or false
+  } catch (e) {
+    console.error(e);
+    return false; // fallback to false if error
+  }
+}
+
+
     async function sendExam(){
       const email = document.getElementById('student-email').value.trim();
       if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
         showMsg('Please enter a valid email','error');return;
       }
+      const alreadyPassed = await checkPassedStatus(email);
+
+  if (alreadyPassed) {
+    const html = `
+      <h2>🎉 You have already passed!</h2>
+      <div class="certificate-msg">
+        Download your certificate <a href="certificate?name=${username}&date=${new Date().toLocaleDateString()}">here</a>.
+      </div>
+    `;
+    examC.innerHTML = '';
+    showMsg(html, 'success');
+    return;
+  }
       const answers=questions.map(q=>{
         const sel=document.querySelector(`input[name="q-${q._id}"]:checked`);
         return{question:q._id,selectedOption:sel?+sel.value:null};
@@ -344,7 +372,8 @@
                   <p><strong>Attempt:</strong> ${out.attemptNumber}/3</p>`;
         if(out.passed){
           html+=`<div class="certificate-msg">
-                   You passed! <a class="certificate-link" href="/api/exam/certificate?studentId=${studentId}">Download certificate</a>
+                   You passed! <a  href="certificate?name=${username}&date=${new Date().toLocaleDateString()}"
+">Download certificate</a>
                  </div>`;
         } else if(out.attemptNumber<3){
           html+=`<button class="btn" onclick="location.reload()">Try Again</button>`;

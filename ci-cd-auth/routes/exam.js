@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const express     = require("express");
 const router      = express.Router();
 const Question    = require("../models/Question");
@@ -178,13 +179,55 @@ router.get("/attempts", async (req, res) => {
 
 // ====================== Certificate Routes ======================
 
-// GET  /api/exam/certificate?studentId=...
-//    → Return the most recent Certificate (if any) for this student
+// POST /api/exam/certificate
+// → Creates a certificate after a successful exam attempt
+router.post("/certificate", async (req, res) => {
+  try {
+    const { userEmail, examAttemptId, score } = req.body;
+
+    if (!userEmail || !examAttemptId || score === undefined) {
+      return res.status(400).json({ message: "Missing required fields" });
+    }
+
+    const student = await User.findOne({ email: userEmail });
+    if (!student) {
+      return res.status(404).json({ message: "User not found with that email" });
+    }
+
+    const existing = await Certificate.findOne({
+      student: student._id,
+      examAttempt: examAttemptId
+    });
+    if (existing) {
+      return res.status(409).json({ message: "Certificate already exists for this exam attempt" });
+    }
+
+    const certificate = new Certificate({
+      student: student._id,
+      examAttempt: examAttemptId,
+      score
+    });
+
+    await certificate.save();
+
+    return res.status(201).json({
+      message: "Certificate created successfully",
+      certificateId: certificate.certificateId
+    });
+  } catch (err) {
+    console.error("Error creating certificate:", err);
+    return res.status(500).json({ message: "Failed to create certificate" });
+  }
+});
+
+// GET /api/exam/certificate?studentId=...
+// → Return the most recent Certificate for a student
 router.get("/certificate", async (req, res) => {
   try {
-    const studentId = req.query.studentId;
-    if (!studentId) {
-      return res.status(400).json({ message: "Missing studentId" });
+    const { studentId } = req.query;
+
+    if (!studentId || !mongoose.Types.ObjectId.isValid(studentId)) {
+      return res.status(400).json({ message: "Invalid or missing studentId" });
     }
 
     const certificate = await Certificate.findOne({ student: studentId })
@@ -196,6 +239,7 @@ router.get("/certificate", async (req, res) => {
         message: "No certificate found. You need to pass the exam first."
       });
     }
+
     return res.status(200).json(certificate);
   } catch (err) {
     console.error("Error getting certificate:", err);
@@ -203,12 +247,12 @@ router.get("/certificate", async (req, res) => {
   }
 });
 
-
-// GET  /api/exam/certificates/:certificateId
-//    → Serve the certificate HTML page (front‐end will fetch its data separately)
+// GET /api/exam/certificates/:certificateId
+// → Serve the certificate HTML page
 router.get("/certificates/:certificateId", async (req, res) => {
   try {
     const { certificateId } = req.params;
+
     const certificate = await Certificate.findOne({ certificateId })
       .populate("student", "username email")
       .populate("examAttempt");
@@ -217,7 +261,6 @@ router.get("/certificates/:certificateId", async (req, res) => {
       return res.status(404).json({ message: "Certificate not found" });
     }
 
-    // Serve the HTML template (e.g. /views/Certificate/certificate.html)
     return res.sendFile(path.join(__dirname, "..", "views", "Certificate", "certificate.html"));
   } catch (err) {
     console.error("Error generating certificate HTML:", err);
@@ -225,12 +268,12 @@ router.get("/certificates/:certificateId", async (req, res) => {
   }
 });
 
-
-// GET  /api/exam/certificates/:certificateId/data
-//    → Return just the JSON payload for a given certificateId
+// GET /api/exam/certificates/:certificateId/data
+// → Return the certificate JSON data
 router.get("/certificates/:certificateId/data", async (req, res) => {
   try {
     const { certificateId } = req.params;
+
     const certificate = await Certificate.findOne({ certificateId })
       .populate("student", "username email")
       .populate("examAttempt");
@@ -241,9 +284,9 @@ router.get("/certificates/:certificateId/data", async (req, res) => {
 
     return res.status(200).json({
       certificateId: certificate.certificateId,
-      studentName:   certificate.student.username,
-      score:         certificate.score,
-      issueDate:     certificate.issueDate
+      studentName: certificate.student.username,
+      score: certificate.score,
+      issueDate: certificate.issueDate
     });
   } catch (err) {
     console.error("Error getting certificate data:", err);
@@ -357,6 +400,36 @@ router.put("/questions/:id", async (req, res) => {
   } catch (err) {
     console.error("Error updating question:", err);
     return res.status(500).json({ message: "Failed to update question" });
+  }
+});
+
+
+
+
+// GET /api/exam/status?email=...
+router.get('/status', async (req, res) => {
+  const { email } = req.query;
+
+  if (!email) {
+    return res.status(400).json({ message: 'Email is required' });
+  }
+
+  try {
+    // Find if any attempt exists with passed=true for this email
+    const passedAttempt = await ExamAttempt.findOne({ userEmail: email, passed: true }).sort({ createdAt: -1 });
+
+    if (passedAttempt) {
+      return res.json({
+        passed: true,
+        score: passedAttempt.score,
+        attemptNumber: passedAttempt.attemptNumber,
+      });
+    } else {
+      return res.json({ passed: false });
+    }
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'Server error' });
   }
 });
 
