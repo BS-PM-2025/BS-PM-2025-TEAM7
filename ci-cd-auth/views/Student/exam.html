@@ -83,6 +83,46 @@
     height: 2px;
     background: var(--brand);
   }
+/* ─── Certificate Card ─── */
+.certificate-card {
+  background: #e6fffa;                      /* pale mint */
+  border: 2px solid var(--accent);          /* bright mint border */
+  border-radius: 12px;
+  padding: 24px;
+  margin-top: 24px;
+  text-align: center;
+  box-shadow: 0 4px 16px rgba(0,255,195,0.2);
+}
+.certificate-card h2 {
+  color: #0b5345;                           /* dark teal */
+  font-size: 24px;
+  margin-bottom: 12px;
+}
+.certificate-text {
+  color: #0f4f3f;                           /* slightly lighter */
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+.certificate-button {
+  display: inline-block;
+  background: linear-gradient(135deg, #00ffc3 0%, #14e8ba 100%);
+  color: #003d30;
+  padding: 12px 28px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 999px;                     /* pill shape */
+  text-decoration: none;
+  box-shadow: 0 6px 20px rgba(0,255,195,0.3);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.certificate-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,255,195,0.4);
+}
+.certificate-button:active {
+  transform: translateY(0) scale(0.98);
+  box-shadow: 0 4px 12px rgba(0,255,195,0.2);
+}
 
   /* ───── MAIN WRAP ───── */
   .main-wrap {
@@ -208,6 +248,9 @@
   </header>
 
   <div class="main-wrap">
+        <!-- ───── MESSAGE BOX ───── -->
+    <div id="message"></div>
+
     <!-- ───── INFO BANNER ───── -->
     <div id="exam-info" class="info-banner">Loading exam information…</div>
 
@@ -231,8 +274,6 @@
     <!-- ───── SUBMIT BUTTON ───── -->
     <button id="submit-btn" class="btn" disabled>Submit Exam</button>
 
-    <!-- ───── MESSAGE BOX ───── -->
-    <div id="message"></div>
   </div>
 
   <script>
@@ -253,7 +294,7 @@
     nav.innerHTML =
       (user.role==='admin'   ? `<li><a href="/admin-dashboard">Admin Dashboard</a></li>` :
        user.role==='lecturer'? `<li><a href="/">Home</a></li><li><a href="/video/courses">Courses</a></li><li><a href="/LecturerProfile">Profile</a></li>` :
-                               `<li><a href="/">Home</a></li><li><a href="/video/courses">Courses</a></li><li><a href="/lecturers">Contact</a></li><li><a href="/StudentProfile">Profile</a></li>`
+                               `<li><a href="/">Home</a></li><li><a href="/video/courses">Courses</a></li><li><a href="/StudentProfile">Profile</a></li>`
       )
       + `<li><a href="#" onclick="logout()">Logout</a></li>`;
 
@@ -274,31 +315,51 @@ document.getElementById('check-cert-btn').addEventListener('click', checkCertifi
 
 async function checkCertificateStatus() {
   const email = document.getElementById('student-email').value.trim();
-  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
-    showMsg('Please enter a valid email','error');
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    showMsg('Please enter a valid email', 'error');
     return;
   }
 
   showMsg('Checking certificate status...', 'warning');
-  
+
   try {
     const alreadyPassed = await checkPassedStatus(email);
-    
+
     if (alreadyPassed) {
+      // 1. hide questions + controls
+      document.getElementById('exam-container').innerHTML = '';
+      document.getElementById('progressWrap').style.display = 'none';
+      document.getElementById('submit-btn').style.display     = 'none';
+
+      // 2. hide the “Check Certificate Status” button itself
+      document.getElementById('check-cert-btn').style.display = 'none';
+
+      // 3. render your success block
       const html = `
-        <h2>🎉 You have already passed!</h2>
-        <div class="certificate-msg">
-          Download your certificate <a href="certificate?name=${username}&date=${new Date().toLocaleDateString()}">here</a>.
-        </div>
-      `;
-      showMsg(html, 'success');
+    <div class="certificate-card">
+      <h2>🎉 You’ve already passed!</h2>
+      <p class="certificate-text">
+        Congratulations on mastering the CI/CD modules. Your certificate is ready.
+      </p>
+      <a
+        href="/certificate?name=${encodeURIComponent(username)}&date=${encodeURIComponent(new Date().toLocaleDateString())}"
+        class="certificate-button"
+      >
+        Download Certificate
+      </a>
+    </div>
+  `;
+  document.getElementById('check-cert-btn').insertAdjacentHTML('afterend', html);
+  showMsg('', '');
+
     } else {
-      showMsg('You haven\'t passed the exam yet. Please complete the exam to get your certificate.', 'warning');
+      showMsg("You haven't passed the exam yet. Please complete the exam to get your certificate.", 'warning');
     }
   } catch (err) {
     showMsg('Error checking certificate status: ' + err.message, 'error');
   }
 }
+
     submit.addEventListener('click', sendExam);
 
     async function loadExam(){

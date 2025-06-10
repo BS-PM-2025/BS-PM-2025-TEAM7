@@ -516,6 +516,7 @@
           navbar.innerHTML += '<li><a href="/">Home</a></li>';
           navbar.innerHTML += '<li><a href="/video/courses">Courses</a></li>';
           navbar.innerHTML += '<li><a href="/StudentProfile">Profile</a></li>';
+          navbar.innerHTML += '<li><a href="/lecturers">Contact</a></li>';
           navbar.innerHTML += '<li><a href="/chat">Chat</a></li>';
         }
 
@@ -1083,7 +1084,14 @@
       `;
     }
   }
-
+   const ctaButton = document.querySelector('.cta-button');
+    if (token) {
+      // signed in: send straight to courses
+      ctaButton.setAttribute('href', '/video/courses');
+    } else {
+      // not signed in: send to login
+      ctaButton.setAttribute('href', '/login');
+    }
   // Initial load
   loadFeedback();
 });

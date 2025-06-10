@@ -133,6 +133,39 @@
       border-color: #657EEF;
       box-shadow: 0 2px 12px rgba(139, 154, 235, 0.2);
     }
+      .exam-description {
+    max-width: 700px;
+    margin: 16px auto 24px;
+    font-size: 16px;
+    color: #1f2328;
+    text-align: center;
+    line-height: 1.5;
+  }
+      /* ─── Beautiful Exam CTA Button ─── */
+    .exam-cta-button {
+      display: inline-block;
+      background: linear-gradient(135deg, #657EEF 0%, #4A65E6 100%);
+      color: #ffffff;
+      padding: 14px 48px;
+      font-size: 16px;
+      font-weight: 600;
+      border-radius: 50px;
+      box-shadow: 0 6px 18px rgba(101, 126, 239, 0.3);
+      text-decoration: none;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+    }
+
+    .exam-cta-button:hover {
+      background: linear-gradient(135deg, #4A65E6 0%, #657EEF 100%);
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 10px 28px rgba(101, 126, 239, 0.4);
+    }
+
+    .exam-cta-button:active {
+      transform: translateY(0) scale(0.98);
+      box-shadow: 0 4px 12px rgba(101, 126, 239, 0.2);
+    }
+
 
     .search-icon {
       position: absolute;
@@ -1385,6 +1418,22 @@ gh.className = "github-container github-panel";   // ← extra class
   } else {
     document.querySelectorAll(".locked-overlay").forEach(o => o.remove());
   }
+    if (user.role === "student") {
+    const examDiv = document.createElement("div");
+    examDiv.className = "section-container";
+    examDiv.id        = "section-exam";
+    examDiv.innerHTML = `
+      <div class="section-header">🎓 Final Certification Exam</div>
+      <p class="exam-description">
+        You’ve completed every module—now prove your CI/CD mastery and earn your official certificate!
+      </p>
+      <div class="videos-grid" style="justify-content:center;padding:40px 0;">
+      <a href="/exam" class="cta-button exam-cta-button">
+             Start Final Exam</a>      </div>
+    `;
+    sectionsWrapper.appendChild(examDiv);
+  }
+  
 }
 
 
