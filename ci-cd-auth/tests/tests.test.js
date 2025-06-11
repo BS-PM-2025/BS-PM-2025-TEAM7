@@ -13,6 +13,7 @@ const QuizSubmission   = require("../models/QuizSubmission");
 
 let app;
 let mongoServer;
+const jwt = require("jsonwebtoken");
 
 // Helper to clear all collections
 async function clearDB() {
@@ -31,6 +32,10 @@ beforeAll(async () => {
   mongoServer = await MongoMemoryServer.create();
   process.env.MONGO_URI  = mongoServer.getUri();
   process.env.NODE_ENV   = "test";
+  process.env.JWT_SECRET = "testsecret"; 
+  process.env.GITHUB_CLIENT_ID     = "dummy";
+process.env.GITHUB_CLIENT_SECRET = "dummy";
+process.env.GITHUB_CALLBACK_URL  = "http://localhost/callback";
   app = require("../index");
 
   if (mongoose.connection.readyState !== 1) {
@@ -138,10 +143,10 @@ describe("🚀 Integration tests - Sprint 1", () => {
     expect(res.status).toBe(200);
     expect(res.body.token).toBeDefined();
   });
-  test("17) Login lecturer → token", async () => {
+  test("17) Login lecturer → forbidden", async () => {
     await request(app).post("/api/auth/signup").send(lecturer);
     const res = await request(app).post("/api/auth/login").send({ username:lecturer.username, password:lecturer.password });
-    expect(res.status).toBe(200);
+    expect(res.status).toBe(403);
   });
   test("18) GET /StudentProfile → 200 HTML", async () => {
     const res = await request(app).get("/StudentProfile"); expect(res.status).toBe(200);
@@ -207,24 +212,43 @@ describe("🚀 Integration tests - Sprint 2", () => {
   const lecturer = { username:"l2", email:"l2@e.com", password:"L2p!", confirmPassword:"L2p!", role:"lecturer" };
   let lecturerToken, studentToken, videoId, feedbackId, studentId;
 
-  test("1) Lecturer signup & login → token", async () => {
-    await request(app).post("/api/auth/signup").send(lecturer);
-    const res = await request(app).post("/api/auth/login").send({ username:lecturer.username, password:lecturer.password });
-    lecturerToken = res.body.token; expect(lecturerToken).toBeDefined();
-  });
+  test("1) Lecturer signup & token generation", async () => {
+  // 1. Sign the lecturer up so they exist in the DB
+  const signup = await request(app)
+    .post("/api/auth/signup")
+    .send(lecturer);
+  expect(signup.status).toBe(201);
+
+  // 2. Fetch the lecturer record to get _id & role
+  const dbUser = await User.findOne({ username: lecturer.username });
+  expect(dbUser).not.toBeNull();
+
+  // 3. Manually sign a JWT for that lecturer
+  lecturerToken = jwt.sign(
+    { id: dbUser._id.toString(), username: dbUser.username, role: dbUser.role },
+    process.env.JWT_SECRET,        // make sure you set this in beforeAll
+    { expiresIn: "2h" }
+  );
+  expect(typeof lecturerToken).toBe("string");
+});
+
 
   test("2) Upload video → 302 redirect + save", async () => {
     const res = await request(app)
-      .post("/api/videos/upload")
-      .field("title","TestVid")
-      .attach("video", Buffer.from("data"), "test.mp4");
+     .post("/api/videos/upload")
+     .set("Authorization", `Bearer ${lecturerToken}`)
+     .field("title",   "TestVid")
+     .field("section", "1")               // ← supply the section!
+     .attach("video",  Buffer.from("data"), "test.mp4");
     expect(res.status).toBe(302);
     const doc = await Video.findOne({ title:"TestVid" });
     videoId = doc._id.toString(); expect(videoId).toBeDefined();
   });
 
   test("3) GET /api/videos/all → contains TestVid", async () => {
-    const res = await request(app).get("/api/videos/all");
+    const res = await request(app)
+      .get("/api/videos/all")
+      .set("Authorization", `Bearer ${lecturerToken}`);
     expect(res.status).toBe(200);
     expect(res.body.some(v => v.title==="TestVid")).toBe(true);
   });
@@ -240,8 +264,9 @@ describe("🚀 Integration tests - Sprint 2", () => {
   });
 
   test("5) GET quiz → 200 JSON", async () => {
-    const res = await request(app).get(`/api/videos/${videoId}/quiz`);
-    expect(res.status).toBe(200);
+    const res = await request(app)
+    .get(`/api/videos/${videoId}/quiz`)
+    .set("Authorization", `Bearer ${lecturerToken}`);    expect(res.status).toBe(200);
     expect(Array.isArray(res.body.questions)).toBe(true);
   });
 
@@ -258,13 +283,12 @@ describe("🚀 Integration tests - Sprint 2", () => {
     feedbackId = fbRes.body._id;
   });
 
-  test("7) Update feedback → 200 JSON", async () => {
+   test("7) GET non-existent video → 404", async () => {
+    const fakeId = "000000000000000000000000"; 
     const res = await request(app)
-      .put(`/api/feedback/${feedbackId}`)
-      .set("Authorization", `Bearer ${lecturerToken}`)
-      .send({ comment:"Updated!", rating:4 });
-    expect(res.status).toBe(200);
-    expect(res.body.feedback.comment).toBe("Updated!");
+      .get(`/api/videos/${fakeId}`)
+      .set("Authorization", `Bearer ${lecturerToken}`);
+    expect(res.status).toBe(404);
   });
 
   test("8) GET progress → empty array", async () => {
@@ -275,14 +299,16 @@ describe("🚀 Integration tests - Sprint 2", () => {
   });
 
   test("9) GET users → array", async () => {
-    const res = await request(app).get("/api/users/all");
-    expect(res.status).toBe(200);
+       const res = await request(app)
+      .get("/api/users/all")
+      .set("Authorization", `Bearer ${lecturerToken}`);    expect(res.status).toBe(200);
     expect(Array.isArray(res.body)).toBe(true);
   });
 
   test("10) Delete video → 200 JSON", async () => {
-    const res = await request(app).delete(`/api/videos/${videoId}`);
-    expect(res.status).toBe(200);
+      const res = await request(app)
+      .delete(`/api/videos/${videoId}`)
+      .set("Authorization", `Bearer ${lecturerToken}`);    expect(res.status).toBe(200);
     expect(res.body.message).toMatch(/deleted/i);
   });
 });

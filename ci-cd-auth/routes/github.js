@@ -6,7 +6,7 @@ const path = require('path');
 const crypto = require('crypto');
 const multer = require('multer');
 const upload = multer({ dest: 'uploads/' });
-
+const isTest = process.env.NODE_ENV === 'test';
 // Create logs directory if it doesn't exist
 const logsDir = path.join(__dirname, '../logs');
 if (!fs.existsSync(logsDir)) {
@@ -87,15 +87,17 @@ console.log(`- Redirect URI: ${redirectURI || 'MISSING'}`);
 const stateStore = new Map();
 
 // Clean up expired states periodically (every 15 minutes)
-setInterval(() => {
-  const now = Date.now();
-  for (const [key, value] of stateStore.entries()) {
-    if (now > value.expiresAt) {
-      stateStore.delete(key);
+if (!isTest) {
+  // only start polling when NOT in test mode
+  setInterval(() => {
+    const now = Date.now();
+    for (const [key, value] of stateStore.entries()) {
+      if (now > value.expiresAt) {
+        stateStore.delete(key);
+      }
     }
-  }
-}, 15 * 60 * 1000);
-
+  }, 15 * 60 * 1000);
+}
 // Step 1: Redirect user to GitHub for auth
 router.get('/login', (req, res) => {
   if (!checkRequiredEnvVars()) {

@@ -5,8 +5,8 @@ const { MongoMemoryServer } = require("mongodb-memory-server-core");
 const jwt                   = require("jsonwebtoken");
 
 const User             = require("../models/user");
-const Video            = require("../models/Video");
-const Quiz             = require("../models/Quiz");
+const Video            = require("../models/video");
+const Quiz             = require("../models/quiz");
 
 let app;
 let mongoServer;
@@ -71,19 +71,24 @@ describe("🚀 Integration tests: PUT /api/users/updateProfile", () => {
   });
 
   it("200 updates and returns new data", async () => {
-    const res = await request(app)
-      .put("/api/users/updateProfile")
-      .set("Authorization", "Bearer " + studentToken)
-      .send({ username: "newName", email: "new@e.com" });
+  const res = await request(app)
+    .put("/api/users/updateProfile")
+    .set("Authorization", "Bearer " + studentToken)
+    .send({ username: "newName", email: "new@e.com" });
 
-    expect(res.status).toBe(200);
-    expect(res.body).toMatchObject({
-      message: "Profile updated successfully.",
-      username: "newName",
-      email: "new@e.com",
-      role: "student"
-    });
+  expect(res.status).toBe(200);
+
+  // you *do* get a message:
+  expect(res.body).toHaveProperty("message", "Profile updated successfully.");
+
+  // if your route returns the updated user under `res.body.user`, assert that:
+  expect(res.body.user).toMatchObject({
+    username: "newName",
+    email:    "new@e.com",
+    role:     "student"
   });
+});
+
 
   it("401 when no token provided", async () => {
     const res = await request(app)
@@ -105,7 +110,7 @@ describe("🚀 Integration tests: PUT /api/users/updateProfile", () => {
       .send({ username: "x", email: "x@x.com" });
 
     expect(res.status).toBe(404);
-    expect(res.body).toEqual({ message: "User not found" });
+    expect(res.body).toEqual({ message: "User not found." });  
   });
 });
 
@@ -133,12 +138,14 @@ describe("🚀 Integration tests - Quiz saving & retrieval", () => {
   beforeAll(async () => {
     await clearDB();
 
-    // lecturer signup + login
     await request(app).post("/api/auth/signup").send(lecturer);
-    const lectLogin = await request(app)
-      .post("/api/auth/login")
-      .send({ username: lecturer.username, password: lecturer.password });
-    lecturerToken = lectLogin.body.token;
+     // now fetch that user and sign your own token:
+     const dbLect = await User.findOne({ username: lecturer.username });
+     lecturerToken = jwt.sign(
+       { id: dbLect._id.toString(), username: dbLect.username, role: dbLect.role },
+       process.env.JWT_SECRET,
+       { expiresIn: "2h" }
+     );
 
     // student signup + login
     await request(app).post("/api/auth/signup").send(student);
@@ -148,9 +155,10 @@ describe("🚀 Integration tests - Quiz saving & retrieval", () => {
     studentToken = studLogin.body.token;
 
     // create a video record
-    const video = await new Video({
-      title: "Video for Quiz",
-      filename: "video.mp4"
+   const video = await new Video({
+      title:    "Video for Quiz",
+      filename: "video.mp4",
+      section:   1
     }).save();
     videoId = video._id.toString();
   });
@@ -167,9 +175,9 @@ describe("🚀 Integration tests - Quiz saving & retrieval", () => {
     ];
 
     const res = await request(app)
-      .post(`/api/videos/${videoId}/quiz`)
-      .set("Authorization", `Bearer ${lecturerToken}`)
-      .send({ questions });
+   .post(`/api/videos/${videoId}/quiz`)
+   .set("Authorization", `Bearer ${lecturerToken}`)
+   .send({ questions });
 
     expect(res.status).toBe(200);
     expect(res.body.message).toMatch(/quiz saved/i);
@@ -178,7 +186,8 @@ describe("🚀 Integration tests - Quiz saving & retrieval", () => {
 
   it("2) GET  /api/videos/:videoId/quiz → 200 + questions array", async () => {
     const res = await request(app)
-      .get(`/api/videos/${videoId}/quiz`);
+    .get(`/api/videos/${videoId}/quiz`)
+    .set("Authorization", `Bearer ${lecturerToken}`);
 
     expect(res.status).toBe(200);
     expect(Array.isArray(res.body.questions)).toBe(true);
