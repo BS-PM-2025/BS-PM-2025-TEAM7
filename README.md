@@ -44,16 +44,8 @@ The **CI/CD Learning Platform** is an interactive educational tool designed to b
    git clone https://github.com/your-repo/ci-cd-learning-platform.git
    cd ci-cd-learning-platform
 Install backend dependencies:
-
-bash
-Copy
-Edit
 npm install express mongoose
 Set up frontend (React):
-
-bash
-Copy
-Edit
 npx create-react-app ci-cd-learning-platform
 cd ci-cd-learning-platform
 Configure MongoDB connection in server.js:
@@ -84,7 +76,7 @@ Code Reviews: Pull requests on GitHub with peer reviews.
 
 Mohammed – Product Owner / Developer
 
-Ali Heibb – Developer
+Ali Heib– Developer
 
 Mosaab – Developer
 
