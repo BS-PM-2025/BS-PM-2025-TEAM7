@@ -486,6 +486,10 @@
     <!-- SIDEBAR -->
     <div class="sidebar">
       <h2>Conversations</h2>
+      <div class="conv" id="aiAssistantTile">
+    <div class="avatar">AI</div>
+    <span class="name">CI/CD Assistant</span>
+    </div>
       <div id="conversations">
         <!-- JS will inject each .conv here -->
       </div>
@@ -522,7 +526,53 @@
       sessionStorage.removeItem("token");
       window.location = "/login";
     }
+function addMessageToUI(content, type, sender = "Me") {
+  const messagesBox = document.getElementById("messages");
+  
+  // Remove empty state if exists
+  if (messagesBox.querySelector(".empty-state")) {
+    messagesBox.innerHTML = "";
+  }
+  
+  const messageDiv = document.createElement("div");
+  messageDiv.className = `message ${type}`;
+  
+  const now = new Date();
+  const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  
+  messageDiv.innerHTML = `
+    <span class="meta">${sender} • ${timeString}</span>
+    ${content}
+  `;
+  
+  messagesBox.appendChild(messageDiv);
+  messagesBox.scrollTop = messagesBox.scrollHeight;
+}
+document.getElementById("aiAssistantTile").addEventListener("click", () => {
+  openAIChat();
+});
 
+// Function to open AI chat
+async function openAIChat() {
+  // Highlight AI tile
+  document.querySelectorAll(".conv").forEach(c => c.classList.remove("active"));
+  document.getElementById("aiAssistantTile").classList.add("active");
+  
+  // Set chat header
+  document.getElementById("chatHeader").textContent = "CI/CD Assistant";
+  
+  // Clear and show welcome message
+  const messagesBox = document.getElementById("messages");
+  messagesBox.innerHTML = `
+    <div class="message them">
+      <span class="meta">CI/CD Assistant • Just now</span>
+      Hi! I'm your CI/CD assistant. Ask me about pipelines, authentication, GitHub Actions, Jenkins, or DevOps best practices.
+    </div>
+  `;
+  
+  // Set current chat to AI
+  window.currentChat = 'ai';
+}
     document.addEventListener("DOMContentLoaded", async () => {
       const token = sessionStorage.getItem("token") || localStorage.getItem("token");
       if (!token) return window.location.replace("/login");
@@ -652,40 +702,76 @@
       }
 
       // 4) Send new message when the arrow button is clicked
-      sendBtn.onclick = async () => {
-        const txtArea = document.getElementById("msgInput");
-        const text = txtArea.value.trim();
-        if (!text || !window.currentChat) return;
+sendBtn.onclick = async () => {
+  const txtArea = document.getElementById("msgInput");
+  const text = txtArea.value.trim();
 
-        sendBtn.disabled = true;
-        sendBtn.textContent = "…";
+  if (!text || !window.currentChat) return;
 
-        try {
-          await fetch("/api/chat/send", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: "Bearer " + token,
-            },
-            body: JSON.stringify({
-              recipientId: window.currentChat,
-              content: text,
-            }),
-          });
+  sendBtn.disabled = true;
+  sendBtn.textContent = "…";
 
-          // Clear text and refresh the conversation
-          txtArea.value = "";
-          const tileEl = document.querySelector(`.conv[data-id='${window.currentChat}']`);
-          const username = tileEl.querySelector(".name").textContent;
-          await openChat(window.currentChat, username, tileEl);
-        } catch (e) {
-          console.error("Send failed:", e);
-          alert("Failed to send message.");
-        } finally {
-          sendBtn.disabled = false;
-          sendBtn.textContent = "➤";
-        }
-      };
+  if (window.currentChat === 'ai') {
+    try {
+      // Add user message to UI
+      addMessageToUI(text, 'me');
+
+      // Send message to AI endpoint
+      const response = await fetch("/api/chat/ai", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+        body: JSON.stringify({ message: text }),
+      });
+
+      const result = await response.json();
+
+      // Add AI response to UI
+      addMessageToUI(result.response, 'them', 'CI/CD Assistant');
+    } catch (error) {
+      console.error("AI chat error:", error);
+      addMessageToUI("Sorry, I'm having trouble responding right now.", 'them', 'CI/CD Assistant');
+    } finally {
+      sendBtn.disabled = false;
+      sendBtn.textContent = "➤";
+      txtArea.value = "";
+    }
+  } else {
+    try {
+      // Send regular message to human chat
+      const response = await fetch("/api/chat/send", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+        body: JSON.stringify({
+          recipientId: window.currentChat,
+          content: text,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to send message");
+      }
+
+      // Clear input and refresh conversation
+      txtArea.value = "";
+      const tileEl = document.querySelector(`.conv[data-id='${window.currentChat}']`);
+      const username = tileEl?.querySelector(".name")?.textContent || "Unknown";
+      await openChat(window.currentChat, username, tileEl);
+    } catch (e) {
+      console.error("Send failed:", e);
+      alert("Failed to send message.");
+    } finally {
+      sendBtn.disabled = false;
+      sendBtn.textContent = "➤";
+    }
+  }
+};
+
 
       // 5) Allow “Enter” to send (Shift+Enter for newline)
       document
