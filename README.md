@@ -44,11 +44,14 @@ The **CI/CD Learning Platform** is an interactive educational tool designed to b
    git clone https://github.com/your-repo/ci-cd-learning-platform.git
    cd ci-cd-learning-platform
 Install backend dependencies:
-npm install express mongoose
+   ```bash
 npm insatll node 
+npm install express mongoose
 npm install crypto
 npm install nodemailer
 npm insatll openai
+```
+
 Set up frontend (React):
 npx create-react-app ci-cd-learning-platform
 cd ci-cd-learning-platform
