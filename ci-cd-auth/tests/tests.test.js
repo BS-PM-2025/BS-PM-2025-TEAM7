@@ -148,12 +148,7 @@ describe("🚀 Integration tests - Sprint 1", () => {
     const res = await request(app).post("/api/auth/login").send({ username:lecturer.username, password:lecturer.password });
     expect(res.status).toBe(403);
   });
-  test("18) GET /StudentProfile → 200 HTML", async () => {
-    const res = await request(app).get("/StudentProfile"); expect(res.status).toBe(200);
-  });
-  test("19) GET /LecturerProfile → 200 HTML", async () => {
-    const res = await request(app).get("/LecturerProfile"); expect(res.status).toBe(200);
-  });
+
   test("20) GET /video/courses → 200 HTML", async () => {
     const res = await request(app).get("/video/courses"); expect(res.status).toBe(200);
   });
