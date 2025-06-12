@@ -1,5 +1,10 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'node:18'
+            args '-u root --privileged' // give container full permissions
+        }
+    }
 
     environment {
         NPM_CONFIG_LOGLEVEL = 'warn'
@@ -7,28 +12,18 @@ pipeline {
         CI = 'true'
     }
 
-    options {
-        timeout(time: 15, unit: 'MINUTES')
-    }
-
     stages {
-        stage('Install All Dependencies') {
+        stage('Install Dependencies') {
             steps {
-                echo '📦 Installing dependencies for root, backend, and frontend...'
-                sh '''
-                    npm install --unsafe-perm || true
-                    cd server && npm install --unsafe-perm || true
-                    cd ../my-react-app && npm install --unsafe-perm || true
-                '''
+                echo '📦 Installing npm packages...'
+                sh 'npm install'
             }
         }
 
-        stage('Run Backend Tests') {
+        stage('Run Unit Tests') {
             steps {
-                echo '🧪 Running backend unit tests...'
-                dir('server') {
-                    sh 'npm test || true'
-                }
+                echo '🧪 Running Jest tests...'
+                sh 'npm test || true'
             }
         }
     }
