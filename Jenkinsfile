@@ -2,7 +2,7 @@ pipeline {
     agent {
         docker {
             image 'node:18'
-            args '-u root --privileged' // give container full permissions
+            args '-u root --privileged'
         }
     }
 
@@ -15,15 +15,19 @@ pipeline {
     stages {
         stage('Install Dependencies') {
             steps {
-                echo '📦 Installing npm packages...'
-                sh 'npm install'
+                echo '📦 Installing npm packages in /ci-cd-auth ...'
+                dir('ci-cd-auth') {
+                    sh 'npm install'
+                }
             }
         }
 
         stage('Run Unit Tests') {
             steps {
-                echo '🧪 Running Jest tests...'
-                sh 'npm test || true'
+                echo '🧪 Running Jest tests in /ci-cd-auth ...'
+                dir('ci-cd-auth') {
+                    sh 'npm test || true'
+                }
             }
         }
     }
