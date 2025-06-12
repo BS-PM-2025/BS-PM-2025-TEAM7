@@ -58,14 +58,14 @@ cd ci-cd-learning-platform
 Configure MongoDB connection in server.js:
 
 javascript
-Copy
-Edit
+ ```bash
 const mongoose = require(\'mongoose\');
 mongoose.connect(\'mongodb://localhost:27017/ci_cd_db\', {
   useNewUrlParser: true,
   useUnifiedTopology: true
 }).then(() => console.log(\'MongoDB connected\'))
   .catch(err => console.log(err));
+```
 🧰 Development Tools
 IDE: Visual Studio Code
 Recommended Extensions: ESLint, Prettier, React Developer Tools
