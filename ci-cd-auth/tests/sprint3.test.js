@@ -7,9 +7,9 @@ const jwt                   = require("jsonwebtoken");
 const User       = require("../models/user");
 const Video      = require("../models/video");
 const Feedback   = require("../models/FeedBack");
-const Progress   = require("../models/Progress");
-const Certificate= require("../models/Certificate");
-const Question   = require("../models/Question");
+const Progress   = require("../models/progress");
+const Certificate= require("../models/certificate");
+const Question   = require("../models/question");
 const SupportTicket = require("../models/SupportTicket");
 
 let app, mongoServer;
@@ -59,7 +59,7 @@ describe("🔧 Unit tests - Sprint 3", () => {
 });
 
    test("5) VideoProgress model requires video & student", async () => {
-    const VideoProgress = require("../models/VideoProgress");
+    const VideoProgress = require("../models/videoProgress");
     const bad = new VideoProgress({});
     await expect(bad.validate()).rejects.toThrow(/required/);
   });
@@ -78,7 +78,7 @@ describe("🔧 Unit tests - Sprint 3", () => {
   });
    
     test("8) QuizSubmission model requires quiz & student", async () => {
-    const QuizSubmission = require("../models/QuizSubmission");
+    const QuizSubmission = require("../models/quizSubmission");
     const bad = new QuizSubmission({ answers: [] });
     await expect(bad.validate()).rejects.toThrow(/quiz/);
     await expect(bad.validate()).rejects.toThrow(/student/);

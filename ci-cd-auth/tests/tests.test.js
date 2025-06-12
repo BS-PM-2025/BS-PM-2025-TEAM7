@@ -7,9 +7,9 @@ const User             = require("../models/user");
 const Video            = require("../models/video");
 const Course           = require("../models/course");
 const Feedback         = require("../models/FeedBack");
-const Progress         = require("../models/Progress");
-const Quiz             = require("../models/Quiz");
-const QuizSubmission   = require("../models/QuizSubmission");
+const Progress         = require("../models/progress");
+const Quiz             = require("../models/quiz");
+const QuizSubmission   = require("../models/quizSubmission");
 
 let app;
 let mongoServer;

@@ -6,7 +6,7 @@ const jwt                   = require("jsonwebtoken");
 
 const User             = require("../models/user");
 const Video            = require("../models/video");
-const Quiz             = require("../models/Quiz");
+const Quiz             = require("../models/quiz");
 
 let app;
 let mongoServer;
