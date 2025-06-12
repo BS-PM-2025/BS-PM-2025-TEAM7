@@ -19,6 +19,7 @@
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
     "express-session": "^1.18.1",
+    "module-alias": "^2.2.3",
     "mongoose": "^8.14.0",
     "multer": "^1.4.5-lts.2",
     "openai": "^5.3.0",
@@ -37,5 +38,10 @@
   "jest": {
     "testTimeout": 15000,
     "detectOpenHandles": true
+  },
+  "_moduleAliases": {
+    "@models": "models",
+    "@controllers": "controllers",
+    "@routes": "routes"
   }
 }
