@@ -5,7 +5,7 @@ const { MongoMemoryServer } = require("mongodb-memory-server-core");
 const jwt                   = require("jsonwebtoken");
 
 const User       = require("../models/user");
-const Video      = require("../models/video");
+const Video      = require("../models/Video");
 const Feedback   = require("../models/FeedBack");
 const Progress   = require("../models/Progress");
 const Certificate= require("../models/Certificate");
@@ -37,12 +37,6 @@ describe("🔧 Unit tests - Sprint 3", () => {
     }
   });
   
-  test("Course model optional imageUrl works", () => {
-  const Course = require("../models/course");
-  const c = new Course({ courseName: "X", description: "Y" });
-  expect(c.imageUrl).toBeUndefined();
-});
-
   test("1) ExamAttempt model requires exam & student", async () => {
     const ExamAttempt = require("../models/ExamAttempt");
     const bad = new ExamAttempt({});
@@ -58,11 +52,22 @@ describe("🔧 Unit tests - Sprint 3", () => {
     const bad = new SupportTicket({});
     await expect(bad.validate()).rejects.toThrow(/required/);
   });
+    test("4) Course model optional imageUrl works", () => {
+  const Course = require("../models/course");
+  const c = new Course({ courseName: "X", description: "Y" });
+  expect(c.imageUrl).toBeUndefined();
+});
 
    test("5) VideoProgress model requires video & student", async () => {
     const VideoProgress = require("../models/VideoProgress");
     const bad = new VideoProgress({});
     await expect(bad.validate()).rejects.toThrow(/required/);
+  });
+  test("6) Course model requires courseName & description", async () => {
+    const Course = require("../models/course");
+    const bad = new Course({});
+    await expect(bad.validate()).rejects.toThrow(/courseName/);
+    await expect(bad.validate()).rejects.toThrow(/description/);
   });
   test("7) Feedback schema computes averageRating correctly", () => {
     const f1 = new Feedback({ comment:"x", rating:4, username:"a" });
@@ -71,13 +76,8 @@ describe("🔧 Unit tests - Sprint 3", () => {
     const avg = (f1.rating + f2.rating) / 2;
     expect(avg).toBe(3);
   });
-   test("Course model requires courseName & description", async () => {
-    const Course = require("../models/course");
-    const bad = new Course({});
-    await expect(bad.validate()).rejects.toThrow(/courseName/);
-    await expect(bad.validate()).rejects.toThrow(/description/);
-  });
-    test("QuizSubmission model requires quiz & student", async () => {
+   
+    test("8) QuizSubmission model requires quiz & student", async () => {
     const QuizSubmission = require("../models/QuizSubmission");
     const bad = new QuizSubmission({ answers: [] });
     await expect(bad.validate()).rejects.toThrow(/quiz/);
@@ -121,20 +121,20 @@ describe("🚀 Integration tests - Sprint 3", () => {
   });
 
   
-  test("10) GET /api/videos/:fakeId → 404", async () => {
+  test("9) GET /api/videos/:fakeId → 404", async () => {
     const res = await request(app)
       .get("/api/videos/000000000000000000000000")
       .set("Authorization", `Bearer ${lecturerToken}`);
     expect(res.status).toBe(404);
   });
-  test("11) POST /api/auth/logout → 200 JSON", async () => {
+  test("10) POST /api/auth/logout → 200 JSON", async () => {
     const res = await request(app)
       .post("/api/auth/logout")
       .set("Authorization", `Bearer ${studentToken}`);
     expect(res.status).toBe(200);
     expect(res.body).toHaveProperty("message");
   });
-   test("13) GET /api/progress/:id → 200 + empty array", async () => {
+   test("11) GET /api/progress/:id → 200 + empty array", async () => {
     const fake = new mongoose.Types.ObjectId().toString();
     const res = await request(app)
       .get(`/api/progress/${fake}`);
@@ -142,17 +142,17 @@ describe("🚀 Integration tests - Sprint 3", () => {
     expect(Array.isArray(res.body)).toBe(true);
     expect(res.body.length).toBe(0);
   });
-  test("GET /api/pdfs/:id → 404 if not found", async () => {
+  test("12) GET /api/pdfs/:id → 404 if not found", async () => {
     const fake = "000000000000000000000000";
     const res = await request(app).get(`/api/pdfs/${fake}`);
     expect(res.status).toBe(404);
   });
-   test("GET /api/videos/all → 200 + array", async () => {
+   test("13) GET /api/videos/all → 200 + array", async () => {
     const res = await request(app).get("/api/videos/all");
     expect(res.status).toBe(200);
     expect(Array.isArray(res.body)).toBe(true);
   });
-  test("GET /api/videos/:videoId/quiz → 404 if none saved", async () => {
+  test("14) GET /api/videos/:videoId/quiz → 404 if none saved", async () => {
     const vid = new mongoose.Types.ObjectId().toString();
     const res = await request(app).get(`/api/videos/${vid}/quiz`)
       .set("Authorization", `Bearer ${lecturerToken}`);
