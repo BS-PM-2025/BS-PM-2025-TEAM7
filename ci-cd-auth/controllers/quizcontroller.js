@@ -1,6 +1,6 @@
-const Quiz = require("../models/quiz");
-const QuizSubmission = require("../models/quizSubmission");
-const Progress = require("../models/progress");
+const Quiz = require("../models/Quiz");
+const QuizSubmission = require("../models/QuizSubmission");
+const Progress = require("../models/Progress");
 
 exports.getQuiz = async (req, res) => {
   const { videoId } = req.params;

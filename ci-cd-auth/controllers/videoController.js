@@ -1,9 +1,9 @@
 // ci-cd-auth/controllers/videoController.js
-const Video = require("../models/video");
-const Quiz  = require("../models/quiz");
-const QuizSubmission = require("../models/quizSubmission");
-const Progress       = require("../models/progress");
-const VideoProgress  = require("../models/videoProgress");
+const Video = require("../models/Video");
+const Quiz  = require("../models/Quiz");
+const QuizSubmission = require("../models/QuizSubmission");
+const Progress       = require("../models/Progress");
+const VideoProgress  = require("../models/VideoProgress");
 const fs     = require("fs");
 const path   = require("path");
 

@@ -1,8 +1,8 @@
 // ci-cd-auth/controllers/progressController.js
 
-const Progress       = require("../models/progress");        // Your old quiz‐progress model
-const VideoProgress  = require("../models/videoProgress");   // Newly created model
-const Video          = require("../models/video");
+const Progress       = require("../models/Progress");        // Your old quiz‐progress model
+const VideoProgress  = require("../models/VideoProgress");   // Newly created model
+const Video          = require("../models/Video");
 
 /**
  * GET /progress/:studentId
