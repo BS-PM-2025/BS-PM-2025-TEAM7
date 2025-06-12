@@ -45,6 +45,10 @@ The **CI/CD Learning Platform** is an interactive educational tool designed to b
    cd ci-cd-learning-platform
 Install backend dependencies:
 npm install express mongoose
+npm insatll node 
+npm install crypto
+npm install nodemailer
+npm insatll openai
 Set up frontend (React):
 npx create-react-app ci-cd-learning-platform
 cd ci-cd-learning-platform
@@ -64,6 +68,15 @@ IDE: Visual Studio Code
 Recommended Extensions: ESLint, Prettier, React Developer Tools
 
 Version Control: Git and GitHub
+
+
+setup the settengs (add .env file to the main folder )  that contain :
+GITHUB_CLIENT_ID=Ov23liqmVRU1aVroq3Wj
+GITHUB_CLIENT_SECRET=56e0e91efff8f06d572e3beb6767c973c89b0d9b
+GITHUB_REDIRECT_URI=http://localhost:3000/api/github/auth/github/callback
+EMAIL_USER=bookshopping112@gmail.com
+EMAIL_PASS=imsj zdds imys yqea
+
 
 📈 Project Workflow
 Agile Methodology: Weekly sprints with daily stand-ups.
@@ -85,6 +98,5 @@ Hasan – Developer / Scrum Master
 📄 Documentation
 For detailed documentation, refer to the SPMP Document.
 
-📜 License
-This project is licensed under the MIT License. See the LICENSE file for details.
+
 
