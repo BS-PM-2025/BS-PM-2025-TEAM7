@@ -54,6 +54,7 @@ const frontendRoutes = {
   "/": "HomePage/home.html",
   "/login": "HomePage/login.html",
   "/forgetpassword": "HomePage/forgetpassword.html",
+  "/reset-password": "HomePage/resetpassword.html",
   "/student/github": "Student/github.html",
   "/signup": "HomePage/signup.html",
   "/about": "HomePage/about.html",
