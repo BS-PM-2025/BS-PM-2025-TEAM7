@@ -74,11 +74,13 @@ Version Control: Git and GitHub
 
 
 setup the settengs (add .env file to the main folder )  that contain :
+ ```bash
 GITHUB_CLIENT_ID=Ov23liqmVRU1aVroq3Wj
 GITHUB_CLIENT_SECRET=56e0e91efff8f06d572e3beb6767c973c89b0d9b
 GITHUB_REDIRECT_URI=http://localhost:3000/api/github/auth/github/callback
 EMAIL_USER=bookshopping112@gmail.com
 EMAIL_PASS=imsj zdds imys yqea
+```
 
 
 📈 Project Workflow
