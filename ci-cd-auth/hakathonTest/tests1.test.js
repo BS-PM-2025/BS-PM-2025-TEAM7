@@ -5,8 +5,8 @@ const { MongoMemoryServer } = require("mongodb-memory-server-core");
 const jwt                   = require("jsonwebtoken");
 
 const User             = require("../models/user");
-const Video            = require("../models/Video");
-const Quiz             = require("../models/Quiz");
+const Video            = require("../models/video");
+const Quiz             = require("../models/quiz");
 
 let app;
 let mongoServer;

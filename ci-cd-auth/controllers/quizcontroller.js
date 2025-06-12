@@ -1,4 +1,4 @@
-const Quiz = require("../models/Quiz");
+const Quiz = require("../models/quiz");
 const QuizSubmission = require("../models/QuizSubmission");
 const Progress = require("../models/Progress");
 

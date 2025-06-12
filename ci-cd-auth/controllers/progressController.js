@@ -2,7 +2,7 @@
 
 const Progress       = require("../models/Progress");        // Your old quiz‐progress model
 const VideoProgress  = require("../models/VideoProgress");   // Newly created model
-const Video          = require("../models/Video");
+const Video          = require("../models/video");
 
 /**
  * GET /progress/:studentId
